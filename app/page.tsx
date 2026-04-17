@@ -105,6 +105,23 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Stack */}
+      <section
+        className="px-gutter py-section-y"
+        data-testid="stack-section"
+      >
+        <div className="mx-auto max-w-container">
+          <SectionLabel number="03" label="STACK" className="mb-10" />
+          <p className="font-mono text-h2 text-fg leading-relaxed">
+            Next.js &middot; TypeScript &middot; Tailwind &middot; shadcn/ui
+            <br />
+            Supabase &middot; n8n &middot; Python &middot; Playwright
+            <br />
+            Twilio &middot; Resend &middot; Vercel &middot; Claude API
+          </p>
+        </div>
+      </section>
     </>
   );
 }
