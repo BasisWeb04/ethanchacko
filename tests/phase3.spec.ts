@@ -69,7 +69,7 @@ test("/for-agencies returns 200 and contains key copy", async ({ page }) => {
   expect(res?.status()).toBe(200);
   await expect(page.locator("h1")).toContainText("second pair of hands");
   await expect(page.locator("body")).toContainText(
-    "I work white-label with agencies"
+    "White-label contract dev for agencies"
   );
 });
 
@@ -78,7 +78,7 @@ test("/for-clients returns 200 and contains key copy", async ({ page }) => {
   expect(res?.status()).toBe(200);
   await expect(page.locator("h1")).toContainText("One developer");
   await expect(page.locator("body")).toContainText(
-    "Most agencies will sell you a team of five"
+    "single point of contact"
   );
 });
 
