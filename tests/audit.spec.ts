@@ -227,6 +227,39 @@ test("all 4 LIVE work cards have an external link that opens in a new tab", asyn
 });
 
 // ---------------------------------------------------------------------------
+// upwork url is exactly what the user confirmed
+// ---------------------------------------------------------------------------
+
+const UPWORK_URL = "https://www.upwork.com/freelancers/ethanchacko";
+
+test("footer Upwork link points at the exact verified URL", async ({ page }) => {
+  await page.goto("/");
+  const link = page.locator("footer a", { hasText: "Upwork" }).first();
+  await expect(link).toHaveAttribute("href", UPWORK_URL);
+  await expect(link).toHaveAttribute("target", "_blank");
+  await expect(link).toHaveAttribute("rel", /noopener/);
+});
+
+test("command palette Upwork entry opens the exact verified URL in a new tab", async ({
+  page,
+  context,
+}) => {
+  await page.goto("/");
+  await page.keyboard.press("Control+K");
+  await expect(page.locator('[data-testid="command-palette"]')).toBeVisible();
+
+  const pagePromise = context.waitForEvent("page");
+  await page
+    .locator('[data-testid="palette-item"]')
+    .filter({ hasText: /^Open Upwork profile$/ })
+    .click();
+  const newTab = await pagePromise;
+  await newTab.waitForLoadState("domcontentloaded").catch(() => {});
+  expect(newTab.url()).toBe(UPWORK_URL);
+  await newTab.close();
+});
+
+// ---------------------------------------------------------------------------
 // viewports
 // ---------------------------------------------------------------------------
 
