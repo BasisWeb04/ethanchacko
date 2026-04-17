@@ -1,6 +1,7 @@
 import { SectionLabel } from "@/components/section-label";
 import { Button } from "@/components/button";
 import { WorkCard } from "@/components/work-card";
+import { WorkGridReveal } from "@/components/work-grid-reveal";
 import { EmailReveal } from "@/components/email-reveal";
 import { projects } from "@/content/projects";
 
@@ -47,11 +48,9 @@ export default function Home() {
           <h2 className="sr-only">Selected work</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project, i) => (
-              <WorkCard
-                key={project.slug}
-                project={project}
-                priority={i < 3}
-              />
+              <WorkGridReveal key={project.slug} index={i}>
+                <WorkCard project={project} priority={i < 3} />
+              </WorkGridReveal>
             ))}
           </div>
         </div>
