@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SectionLabel } from "@/components/section-label";
 import { EmailReveal } from "@/components/email-reveal";
+import { StackArchitecture } from "@/components/stack-architecture";
 
 export const metadata: Metadata = {
   title: "For Agencies / Ethan Chacko",
@@ -67,6 +68,17 @@ export default function ForAgenciesPage() {
             <span className="font-serif italic text-signal">ships</span>{" "}
             under your brand.
           </h1>
+        </div>
+      </section>
+
+      {/* Workflow */}
+      <section
+        className="px-gutter pb-section-y border-t border-border"
+        data-testid="agencies-workflow"
+      >
+        <div className="mx-auto max-w-container pt-section-y">
+          <SectionLabel label="WORKFLOW" className="mb-12" />
+          <StackArchitecture />
         </div>
       </section>
 
