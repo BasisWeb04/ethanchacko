@@ -81,7 +81,7 @@ export const projects: Project[] = [
     status: "LIVE",
     stack: ["Next.js", "TypeScript", "Supabase", "n8n", "Twilio"],
     thumbnailUrl: "/work/operations-command.webp",
-    thumbnailLabel: "restaurun.basisweb.net",
+    thumbnailLabel: "ops.basisweb.net",
     liveUrl: "https://restaurun.basisweb.net",
     year: "2026",
     context:
