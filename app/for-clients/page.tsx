@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SectionLabel } from "@/components/section-label";
 import { EmailReveal } from "@/components/email-reveal";
+import { ProcessTimeline } from "@/components/process-timeline";
 
 export const metadata: Metadata = {
   title: "For Brands / Ethan Chacko",
@@ -106,6 +107,17 @@ export default function ForClientsPage() {
             <span className="font-serif italic text-signal">run</span>{" "}
             after I&apos;m gone.
           </h1>
+        </div>
+      </section>
+
+      {/* Process timeline */}
+      <section
+        className="px-gutter pb-section-y border-t border-border"
+        data-testid="clients-process"
+      >
+        <div className="mx-auto max-w-container pt-section-y">
+          <SectionLabel label="PROCESS" className="mb-12" />
+          <ProcessTimeline />
         </div>
       </section>
 
