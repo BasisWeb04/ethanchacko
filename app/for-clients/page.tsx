@@ -8,6 +8,90 @@ export const metadata: Metadata = {
     "One developer, full ownership. Custom builds for founders, service businesses, and ops teams.",
 };
 
+type QA = {
+  q: string;
+  a: React.ReactNode;
+};
+
+const faq: QA[] = [
+  {
+    q: "What do I actually get?",
+    a: (
+      <>
+        <p>
+          One developer owns the whole build. You get code that still works in
+          two years, a single point of contact instead of a project manager
+          forwarding emails, and a clean handoff you can maintain or extend.
+        </p>
+        <p>
+          No rotating cast of juniors. No surprise scope. No team of five
+          billing you for eight.
+        </p>
+      </>
+    ),
+  },
+  {
+    q: "How long does this take?",
+    a: (
+      <p>
+        Scoped projects run 2 to 8 weeks on a fixed price. Retainers run
+        ongoing at an hourly rate with a 10 hour per week minimum. A rescue
+        job on an inherited codebase gets scoped after I read the code.
+      </p>
+    ),
+  },
+  {
+    q: "What if I already have a team?",
+    a: (
+      <p>
+        Then you probably don&apos;t need me. Hire a single dev when the work
+        is specific, the team is small, and you want one person who knows
+        every line. If you already have three developers and a PM, bring in
+        another agency. You&apos;ll get faster, noisier output. I&apos;m built
+        for the opposite problem.
+      </p>
+    ),
+  },
+  {
+    q: "Is this a fit for my project?",
+    a: (
+      <>
+        <p>
+          It&apos;s a fit if you&apos;re a service business, SaaS founder, or
+          ops team with something specific that needs building. If you care
+          about code that still runs two years from now. If you want one point
+          of contact.
+        </p>
+        <p>
+          It&apos;s not a fit if you need a design team, brand strategy, or
+          marketing. If you want a rotating cast of juniors at agency margins.
+          If you don&apos;t know what you want built yet. In the last case,
+          hire a product consultant before you hire a developer.
+        </p>
+      </>
+    ),
+  },
+  {
+    q: "What gets built most often?",
+    a: (
+      <p>
+        Custom dashboards. Lead platforms. Internal tools. Scrapers and
+        automation. API integrations. Full-stack web apps. Mobile apps in
+        React Native.
+      </p>
+    ),
+  },
+  {
+    q: "How do we start?",
+    a: (
+      <p>
+        Email me with what you need. I respond within 24 hours with whether
+        it&apos;s a fit and a rough scope.
+      </p>
+    ),
+  },
+];
+
 export default function ForClientsPage() {
   return (
     <>
@@ -25,113 +109,29 @@ export default function ForClientsPage() {
         </div>
       </section>
 
-      {/* Body */}
-      <section className="px-gutter pb-section-y">
-        <div className="mx-auto max-w-container space-y-16">
-          <p className="text-body text-fg-muted max-w-[56ch] text-lg leading-relaxed">
-            Most agencies will sell you a team of five and bill you for eight.
-            I&apos;m one person who builds the whole thing, knows every line of
-            your code, and hands it off clean.
-          </p>
-
-          <div className="grid gap-12 md:grid-cols-2">
-            <div>
-              <p className="font-mono text-mono uppercase tracking-widest text-fg-dim mb-4">
-                BEST FIT IF
-              </p>
-              <ul className="space-y-3 text-body text-fg leading-relaxed">
-                <li className="flex gap-3">
-                  <span className="text-fg-dim">&middot;</span>
-                  <span>
-                    You&apos;re a service business, SaaS founder, or ops team
-                    with something specific that needs building
-                  </span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-fg-dim">&middot;</span>
-                  <span>You care about code that still works in two years</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-fg-dim">&middot;</span>
-                  <span>
-                    You want one point of contact, not a project manager
-                    forwarding emails
-                  </span>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <p className="font-mono text-mono uppercase tracking-widest text-fg-dim mb-4">
-                NOT A FIT IF
-              </p>
-              <ul className="space-y-3 text-body text-fg-muted leading-relaxed">
-                <li className="flex gap-3">
-                  <span className="text-fg-dim">&middot;</span>
-                  <span>
-                    You need a design team, brand strategy, or marketing
-                  </span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-fg-dim">&middot;</span>
-                  <span>
-                    You want a rotating cast of juniors at agency margins
-                  </span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-fg-dim">&middot;</span>
-                  <span>
-                    You don&apos;t know what you want built yet (go hire a
-                    product consultant first)
-                  </span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* What gets built */}
-      <section
-        className="px-gutter py-section-y border-t border-border"
-        data-testid="clients-built"
-      >
-        <div className="mx-auto max-w-container">
-          <SectionLabel label="WHAT GETS BUILT" className="mb-8" />
-          <p className="font-mono text-h2 text-fg leading-relaxed">
-            Custom dashboards &middot; Lead platforms &middot; Internal tools
-            <br />
-            Scrapers &amp; automation &middot; API integrations
-            <br />
-            Full-stack web apps &middot; Mobile (React Native)
-          </p>
-        </div>
-      </section>
-
-      {/* Engagement options */}
-      <section
-        className="px-gutter py-section-y border-t border-border"
-        data-testid="clients-engagement"
-      >
-        <div className="mx-auto max-w-container grid gap-10 md:grid-cols-3">
-          <div>
-            <SectionLabel label="BUILD" className="mb-4" />
-            <p className="text-body text-fg leading-relaxed">
-              Scoped project, fixed price, 2-8 week timelines.
-            </p>
-          </div>
-          <div>
-            <SectionLabel label="RETAINER" className="mb-4" />
-            <p className="text-body text-fg leading-relaxed">
-              Ongoing dev work, hourly, minimum 10hr/week.
-            </p>
-          </div>
-          <div>
-            <SectionLabel label="RESCUE" className="mb-4" />
-            <p className="text-body text-fg leading-relaxed">
-              Inherited code that&apos;s on fire. I&apos;ve fixed worse.
-            </p>
-          </div>
+      {/* FAQ */}
+      <section className="px-gutter pb-section-y" data-testid="clients-faq">
+        <div className="mx-auto max-w-[72ch]">
+          <dl className="border-t border-border">
+            {faq.map(({ q, a }) => (
+              <div
+                key={q}
+                data-testid="faq-item"
+                className="border-b border-border py-14"
+              >
+                <dt
+                  data-testid="faq-question"
+                  className="font-mono text-mono uppercase tracking-widest text-signal mb-6"
+                >
+                  <span className="text-signal-dim">Q.</span>
+                  <span className="ml-3">{q}</span>
+                </dt>
+                <dd className="text-body text-fg leading-relaxed space-y-4 max-w-[60ch]">
+                  {a}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
 
