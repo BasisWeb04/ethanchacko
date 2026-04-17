@@ -11,6 +11,8 @@ const projects: Project[] = [
     status: "LIVE",
     stack: ["Next.js", "TypeScript", "Tailwind", "Supabase", "Twilio"],
     liveUrl: "https://servicecalltracker.com",
+    thumbnailUrl: "/work/servicecalltracker.webp",
+    thumbnailLabel: "servicecalltracker.com",
   },
   {
     slug: "basisweb",
@@ -19,6 +21,8 @@ const projects: Project[] = [
     status: "LIVE",
     stack: ["Next.js", "TypeScript", "Tailwind", "Framer Motion"],
     liveUrl: "https://basisweb.net",
+    thumbnailUrl: "/work/basisweb.webp",
+    thumbnailLabel: "basisweb.net",
   },
   {
     slug: "hammock",
@@ -27,6 +31,8 @@ const projects: Project[] = [
     status: "LIVE",
     stack: ["Next.js", "TypeScript", "Tailwind", "Resend", "Supabase"],
     liveUrl: "https://hammockpropertyinspections.com",
+    thumbnailUrl: "/work/hammock.webp",
+    thumbnailLabel: "hammockpropertyinspections.com",
   },
   {
     slug: "operations-command",
@@ -34,7 +40,9 @@ const projects: Project[] = [
     description: "Work-order intake and routing for restaurant maintenance.",
     status: "LIVE",
     stack: ["Next.js", "TypeScript", "Supabase", "n8n", "Twilio"],
-    liveUrl: "https://ops.basisweb.net",
+    liveUrl: "https://restaurun.basisweb.net",
+    thumbnailUrl: "/work/operations-command.webp",
+    thumbnailLabel: "restaurun.basisweb.net",
   },
   {
     slug: "warpspeed",
@@ -42,6 +50,8 @@ const projects: Project[] = [
     description: "Head-to-head developer bounties, shipped under pressure.",
     status: "SHIPPED",
     stack: ["React Native", "TypeScript", "Expo", "Claude Code"],
+    thumbnailUrl: "/work/warpspeed.webp",
+    thumbnailLabel: "warpspeed / bounty-016",
   },
   {
     slug: "acc-scraper",
@@ -49,6 +59,8 @@ const projects: Project[] = [
     description: "Automated LLC filing scraper for cold outreach.",
     status: "SHIPPED",
     stack: ["Playwright", "Node.js", "TypeScript", "Perplexity API"],
+    thumbnailUrl: "/work/acc-scraper.webp",
+    thumbnailLabel: "acc watcher / maricopa",
   },
   {
     slug: "google-maps-scraper",
@@ -56,6 +68,8 @@ const projects: Project[] = [
     description: "Targeted lead scraper for local service businesses.",
     status: "SHIPPED",
     stack: ["Playwright", "Python", "pandas", "asyncio"],
+    thumbnailUrl: "/work/google-maps-scraper.webp",
+    thumbnailLabel: "gmaps / phx hvac",
   },
 ];
 

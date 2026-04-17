@@ -1,145 +1,86 @@
-Phase 2: homepage + nav fix. Spec sections 5.1 and 7.
+Phase 3: split audience pages + real thumbnails.
 
 ---
 
-Task 0: nav hover underline
+Task 1: Capture real screenshots of live sites.
 
-Current nav items (WORK / FOR AGENCIES / FOR CLIENTS) have no hover
-underline. Add one.
+Create scripts/capture-screenshots.ts using Playwright.
 
-- 1px underline in --signal color
-- 4px underline-offset (matches StyledLink treatment)
-- Slides in from left on hover, draws to 100% width over 220ms with
-  --ease-out
-- On unhover, slides back out to the left (same duration, same easing)
-- Active route (when we have them): underline persists at 100% width,
-  no animation on page load
-- prefers-reduced-motion: no slide, just opacity 0 to 1 on hover
+For each live site:
+- servicecalltracker.com -> /public/work/servicecalltracker.webp
+- basisweb.net -> /public/work/basisweb.webp
+- The Hammock Property Inspections client site -> /public/work/hammock.webp
+  (ask me for the URL before running, I'll provide)
+- restaurun.basisweb.net -> /public/work/operations-command.webp
 
-Implement via a pseudo-element (::after) with transform: scaleX(0) and
-transform-origin: left, not via animating width (width animations jank).
+Settings:
+- Viewport: 1440x900
+- deviceScaleFactor: 2 for retina
+- Wait for network idle + 1500ms for animations to settle
+- Capture full viewport (not full page scroll)
+- Export as webp, quality 85
 
----
+For the three SHIPPED projects without live sites, create placeholder
+assets that DON'T look like placeholders:
+- /public/work/warpspeed.webp: generate a terminal-style screenshot
+  showing a BOUNTY_SPEC.md file with code, using an actual terminal
+  mockup component rendered to an image
+- /public/work/acc-scraper.webp: a mock dashboard showing the scraper
+  output (business names, filing dates, enrichment status)
+- /public/work/google-maps-scraper.webp: a mock CSV/table view of
+  scraped leads
 
-Task 1: Hero (/ 00 MANIFESTO)
+For these three, render the mock UIs in a Next.js route like
+/internal/mock/warpspeed, then Playwright screenshot that route at
+1440x900. This gives real product-looking images, not gray boxes.
 
-- Exact copy from spec 5.1: "I build systems, / not slide decks."
-- "not slide decks" in Instrument Serif italic + --signal color
-- Subhead in --fg-muted, max-width 48ch
-- Two ghost buttons below: FOR AGENCIES → and FOR BRANDS →
-  (both use existing Button component, internal links to /for-agencies
-  and /for-clients)
+Update work cards in app/page.tsx to use real thumbnails from
+/public/work/.
 
----
-
-Task 2: Work grid (/ 02 SELECTED WORK)
-
-- WorkCard component in components/work-card.tsx
-- Props: slug, title, description, status ('LIVE' | 'SHIPPED'), stack[],
-  thumbnailUrl, liveUrl (optional)
-- 3-col grid desktop, 2-col tablet, 1-col mobile
-- Hover: border goes --border to --border-strong, status dot scales 1.15
-- Live cards: external arrow top-right corner of thumbnail, links to
-  liveUrl. stopPropagation so it doesn't trigger the card link.
-- Card body links to /work/[slug]
-- Thumbnails: use solid --bg-elev with project slug text centered in
-  mono as placeholder. Real screenshots come in Phase 5.
-- Seed data as const array in app/page.tsx for now, move to content
-  layer in Phase 4
-- All seven projects from spec 5.1, in spec order
+Add a browser chrome bar to each thumbnail in the WorkCard component:
+- Top 24px of thumbnail is a browser chrome strip
+- --bg-elev background, 1px --border bottom
+- Three traffic light dots on the left in --fg-dim
+- Optional URL string centered in mono small, truncated
+- Actual screenshot fills the rest of the thumbnail area
 
 ---
 
-Task 3: Stack section (/ 03 STACK)
+Task 2: /for-agencies page.
 
-- Mono text block, no logos, no icons
-- Exact copy from spec 5.1
-
----
-
-Task 4: Contact section (/ 04 CONTACT)
-
-- Copy from spec 5.1
-- EmailReveal component in components/email-reveal.tsx
-- Initial render: ethan@•••••••.net in mono
-- Click: characters flip in sequence with 25ms stagger, reveals full
-  address, copies to clipboard, shows COPIED toast for 2s
-- Use framer-motion for the char stagger
-- prefers-reduced-motion: skip animation, reveal and copy instantly,
-  still show toast
+Build per spec 5.2. Use the same section-label + content pattern as
+homepage. Route must work: clicking FOR AGENCIES button on homepage
+hero should navigate here cleanly.
 
 ---
 
-Task 5: Playwright QA
+Task 3: /for-clients page.
 
-Use the Playwright MCP to run the site locally and verify Phase 2
-shipped correctly.
+Build per spec 5.3. Same pattern as /for-agencies.
 
-Create tests/phase2.spec.ts with these checks:
+---
 
-- test('hero renders with correct copy')
-  - expect h1 contains "I build systems,"
-  - expect span with class indicating serif italic contains
-    "not slide decks"
-  - expect subhead text matches spec exactly
+Task 4: Playwright QA.
 
-- test('hero CTAs link correctly')
-  - "FOR AGENCIES" button has href="/for-agencies"
-  - "FOR BRANDS" button has href="/for-clients"
-
-- test('work grid has exactly 7 cards')
-  - count of [data-testid="work-card"] is 7
-
-- test('status dot distribution')
-  - count of [data-status="LIVE"] is 4 (SCT, BasisWeb, Hammock, OCC)
-  - count of [data-status="SHIPPED"] is 3 (Warpspeed, ACC, Maps)
-
-- test('live cards have external link arrow')
-  - LIVE cards have an [data-testid="external-link"] with href
-    matching liveUrl
-  - SHIPPED cards do not have this element
-
-- test('stack section contains all 12 tools')
-  - stack section text includes each of: Next.js, TypeScript, Tailwind,
-    shadcn/ui, Supabase, n8n, Python, Playwright, Twilio, Resend,
-    Vercel, Claude API
-
-- test('nav hover underline')
-  - hover WORK nav item, assert pseudo-element transform is scaleX(1)
-    after 250ms
-
-- test('email reveal initial state')
-  - element contains text "ethan@•••••••.net"
-
-- test('email reveal click behavior')
-  - click email element
-  - wait 500ms
-  - element now contains "ethan@basisweb.net"
-  - clipboard content (via page.evaluate navigator.clipboard.readText)
-    is "ethan@basisweb.net"
-  - toast with text "COPIED" is visible
-
-- test('prefers-reduced-motion disables animations')
-  - set page.emulateMedia({ reducedMotion: 'reduce' })
-  - reload
-  - click email element
-  - email reveals within 50ms (not staggered)
-
-Run all tests. If any fail, fix the implementation, not the test.
-Report which tests pass and which fail before I review.
+Extend tests to cover:
+- All 7 work cards have real image src loading from /public/work/
+- No 404s on any image
+- /for-agencies route returns 200 and contains "second pair of hands"
+- /for-clients route returns 200 and contains "One developer"
+- Nav links from homepage to both routes work
+- Browser chrome bar renders on every work card (traffic lights present)
 
 ---
 
 Rules:
+- No em dashes
+- Exact copy from spec sections 5.2 and 5.3
+- Commit after each task
+- Use Context7 MCP if verifying Playwright screenshot APIs
+- Use Playwright MCP to actually run the capture and the tests
+- Do NOT restructure the homepage. Do NOT change the work grid layout.
+  Just swap placeholder thumbnails for real ones and add browser
+  chrome. Structural review comes after Phase 5.
 
-- No em dashes anywhere
-- Exact copy from spec, no paraphrasing
-- Use Context7 MCP if verifying framer-motion, cmdk, or Next.js 14
-  App Router patterns
-- Commit after each numbered task
-- Do not wire up /work/[slug], /for-agencies, or /for-clients pages
-  yet. Buttons and cards should link but the routes will 404 until
-  later phases. That's fine.
-
-Stop after Task 5. Screenshot the homepage top to bottom and paste
-the Playwright results. I'll review before Phase 3.
+Stop after Task 4 passes tests. Report results + screenshot the
+updated homepage.
