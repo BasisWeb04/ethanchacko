@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 
-const leftCol = ["Brief", "Figma", "Slack"];
+const leftCol = ["Brief", "Designs", "Comms"];
 const middleCol = ["Spec parsing", "Claude Code build", "Playwright QA", "Daily updates"];
 const rightCol = ["PR to your repo", "Deploy notes", "Clean docs"];
 
