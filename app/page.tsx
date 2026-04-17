@@ -1,5 +1,62 @@
 import { SectionLabel } from "@/components/section-label";
 import { Button } from "@/components/button";
+import { WorkCard, Project } from "@/components/work-card";
+
+const projects: Project[] = [
+  {
+    slug: "servicecalltracker",
+    title: "ServiceCallTracker",
+    description: "Real-time command center for service businesses.",
+    status: "LIVE",
+    stack: ["Next.js", "TypeScript", "Tailwind", "Supabase", "Twilio"],
+    liveUrl: "https://servicecalltracker.com",
+  },
+  {
+    slug: "basisweb",
+    title: "BasisWeb",
+    description: "Agency platform and client gateway.",
+    status: "LIVE",
+    stack: ["Next.js", "TypeScript", "Tailwind", "Framer Motion"],
+    liveUrl: "https://basisweb.net",
+  },
+  {
+    slug: "hammock",
+    title: "Hammock Property Inspections",
+    description: "Marketing site for a Florida Space Coast home inspector.",
+    status: "LIVE",
+    stack: ["Next.js", "TypeScript", "Tailwind", "Resend", "Supabase"],
+    liveUrl: "https://hammockpropertyinspections.com",
+  },
+  {
+    slug: "operations-command",
+    title: "Operations Command Center",
+    description: "Work-order intake and routing for restaurant maintenance.",
+    status: "LIVE",
+    stack: ["Next.js", "TypeScript", "Supabase", "n8n", "Twilio"],
+    liveUrl: "https://ops.basisweb.net",
+  },
+  {
+    slug: "warpspeed",
+    title: "Warpspeed Bounties",
+    description: "Head-to-head developer bounties, shipped under pressure.",
+    status: "SHIPPED",
+    stack: ["React Native", "TypeScript", "Expo", "Claude Code"],
+  },
+  {
+    slug: "acc-scraper",
+    title: "ACC Business Scraper",
+    description: "Automated LLC filing scraper for cold outreach.",
+    status: "SHIPPED",
+    stack: ["Playwright", "Node.js", "TypeScript", "Perplexity API"],
+  },
+  {
+    slug: "google-maps-scraper",
+    title: "Google Maps Lead Scraper",
+    description: "Targeted lead scraper for local service businesses.",
+    status: "SHIPPED",
+    stack: ["Playwright", "Python", "pandas", "asyncio"],
+  },
+];
 
 export default function Home() {
   return (
@@ -29,6 +86,22 @@ export default function Home() {
             <Button href="/for-clients" data-testid="cta-brands">
               For Brands &rarr;
             </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Work grid */}
+      <section
+        id="work"
+        className="px-gutter py-section-y"
+        data-testid="work-section"
+      >
+        <div className="mx-auto max-w-container">
+          <SectionLabel number="02" label="SELECTED WORK" className="mb-10" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {projects.map((project) => (
+              <WorkCard key={project.slug} project={project} />
+            ))}
           </div>
         </div>
       </section>
