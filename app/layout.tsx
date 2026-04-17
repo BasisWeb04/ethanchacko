@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { Instrument_Serif } from "next/font/google";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
+import { CommandPaletteProvider } from "@/components/command-palette";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -40,9 +41,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} font-sans antialiased`}
       >
-        <Nav />
-        <main className="pt-16">{children}</main>
-        <Footer />
+        <CommandPaletteProvider>
+          <a
+            href="#main"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[300] focus:bg-bg-elev focus:text-fg focus:border focus:border-signal focus:px-3 focus:py-2 focus:font-mono focus:text-mono focus:uppercase focus:tracking-widest"
+          >
+            Skip to main content
+          </a>
+          <Nav />
+          <main id="main" className="pt-16">{children}</main>
+          <Footer />
+        </CommandPaletteProvider>
       </body>
     </html>
   );
