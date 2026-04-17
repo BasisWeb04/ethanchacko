@@ -254,8 +254,10 @@ test("command palette Upwork entry opens the exact verified URL in a new tab", a
     .filter({ hasText: /^Open Upwork profile$/ })
     .click();
   const newTab = await pagePromise;
-  await newTab.waitForLoadState("domcontentloaded").catch(() => {});
-  expect(newTab.url()).toBe(UPWORK_URL);
+  // Read the URL the site opened BEFORE waiting on network so Cloudflare's
+  // challenge-token redirect (?__cf_chl_rt_tk=...) can't rewrite it first.
+  const openedUrl = newTab.url();
+  expect(openedUrl).toBe(UPWORK_URL);
   await newTab.close();
 });
 
