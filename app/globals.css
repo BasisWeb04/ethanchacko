@@ -36,6 +36,29 @@ body {
   position: relative;
 }
 
+.tab-underline {
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tab-underline--active {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab-underline {
+    transition: opacity 180ms ease-out;
+    transform: scaleX(1);
+    transform-origin: left;
+    opacity: 0;
+  }
+  .tab-underline--active {
+    opacity: 1;
+  }
+}
+
 .nav-link::after {
   content: "";
   position: absolute;

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SectionLabel } from "@/components/section-label";
 import { EmailReveal } from "@/components/email-reveal";
 import { StackArchitecture } from "@/components/stack-architecture";
+import { BuildShowcase } from "@/components/build-showcase";
 
 export const metadata: Metadata = {
   title: "For Agencies / Ethan Chacko",
@@ -79,6 +80,17 @@ export default function ForAgenciesPage() {
         <div className="mx-auto max-w-container pt-section-y">
           <SectionLabel label="WORKFLOW" className="mb-12" />
           <StackArchitecture />
+        </div>
+      </section>
+
+      {/* What I build */}
+      <section
+        className="px-gutter pb-section-y border-t border-border"
+        data-testid="agencies-showcase"
+      >
+        <div className="mx-auto max-w-container pt-section-y">
+          <SectionLabel label="WHAT I BUILD" className="mb-12" />
+          <BuildShowcase />
         </div>
       </section>
 

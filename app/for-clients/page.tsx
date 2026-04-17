@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SectionLabel } from "@/components/section-label";
 import { EmailReveal } from "@/components/email-reveal";
 import { ProcessTimeline } from "@/components/process-timeline";
+import { BuildShowcase } from "@/components/build-showcase";
 
 export const metadata: Metadata = {
   title: "For Brands / Ethan Chacko",
@@ -118,6 +119,17 @@ export default function ForClientsPage() {
         <div className="mx-auto max-w-container pt-section-y">
           <SectionLabel label="PROCESS" className="mb-12" />
           <ProcessTimeline />
+        </div>
+      </section>
+
+      {/* What I build */}
+      <section
+        className="px-gutter pb-section-y border-t border-border"
+        data-testid="clients-showcase"
+      >
+        <div className="mx-auto max-w-container pt-section-y">
+          <SectionLabel label="WHAT I BUILD" className="mb-12" />
+          <BuildShowcase />
         </div>
       </section>
 
