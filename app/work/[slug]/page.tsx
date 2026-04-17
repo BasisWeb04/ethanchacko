@@ -106,18 +106,20 @@ export default function CaseStudyPage({ params }: Params) {
           <p className="text-body text-fg-muted max-w-[60ch] mb-8">
             {project.description}
           </p>
-          <div className="flex flex-wrap items-center gap-6 font-mono text-mono uppercase tracking-widest text-fg-muted">
-            {project.liveUrl && (
+          {project.liveUrl && (
+            <div className="mt-8 mb-10">
               <a
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-testid="visit-live"
-                className="inline-flex items-center gap-2 text-fg hover:text-signal transition-colors duration-base focus-visible:outline-signal"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-signal text-signal font-mono text-mono uppercase tracking-widest hover:border-signal hover:bg-signal/10 active:bg-signal/15 focus-visible:border-signal transition-colors duration-base"
               >
-                VISIT LIVE <ArrowUpRight size={14} />
+                VISIT LIVE <ArrowUpRight size={14} aria-hidden="true" />
               </a>
-            )}
+            </div>
+          )}
+          <div className="flex flex-wrap items-center gap-6 font-mono text-mono uppercase tracking-widest text-fg-muted">
             <span className="inline-flex items-center gap-2">
               <StatusDot
                 status={project.status === "LIVE" ? "live" : "shipped"}
@@ -126,7 +128,10 @@ export default function CaseStudyPage({ params }: Params) {
             </span>
             <span>{project.year}</span>
           </div>
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="font-mono text-mono uppercase tracking-widest text-fg-dim mt-10 mb-3">
+            / TECH
+          </div>
+          <div className="flex flex-wrap gap-3">
             {project.stack.map((t) => (
               <span
                 key={t}
