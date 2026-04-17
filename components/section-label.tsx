@@ -1,5 +1,5 @@
 type Props = {
-  number: string;
+  number?: string;
   label: string;
   className?: string;
 };
@@ -9,8 +9,15 @@ export function SectionLabel({ number, label, className = "" }: Props) {
     <div
       className={`font-mono text-mono uppercase text-fg-muted tracking-widest ${className}`}
     >
-      <span className="text-fg-dim">/</span> {number}{" "}
-      <span className="ml-2">{label}</span>
+      <span className="text-fg-dim">/</span>
+      {number ? (
+        <>
+          {" "}
+          {number} <span className="ml-2">{label}</span>
+        </>
+      ) : (
+        <span className="ml-2">{label}</span>
+      )}
     </div>
   );
 }
