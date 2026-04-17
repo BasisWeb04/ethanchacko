@@ -5,9 +5,19 @@ import { ProcessTimeline } from "@/components/process-timeline";
 import { BuildShowcase } from "@/components/build-showcase";
 
 export const metadata: Metadata = {
-  title: "For Brands / Ethan Chacko",
-  description:
-    "One developer, full ownership. Custom builds for founders, service businesses, and ops teams.",
+  title: "For Brands",
+  description: "One developer. Full ownership. Systems that run after I'm gone.",
+  openGraph: {
+    title: "For Brands | Ethan Chacko",
+    description:
+      "One developer. Full ownership. Systems that run after I'm gone.",
+    url: "https://ethanchacko.com/for-clients",
+  },
+  twitter: {
+    title: "For Brands | Ethan Chacko",
+    description:
+      "One developer. Full ownership. Systems that run after I'm gone.",
+  },
 };
 
 type QA = {

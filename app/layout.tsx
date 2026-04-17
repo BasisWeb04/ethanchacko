@@ -25,10 +25,44 @@ const instrumentSerif = Instrument_Serif({
   variable: "--font-instrument-serif",
 });
 
+const DESCRIPTION =
+  "Full-stack developer out of Phoenix. I ship software for agencies and businesses who need something built, not pitched.";
+
 export const metadata: Metadata = {
-  title: "Ethan Chacko",
-  description:
-    "Full-stack developer out of Phoenix. I ship software for agencies and businesses who need something built, not pitched.",
+  metadataBase: new URL("https://ethanchacko.com"),
+  title: {
+    template: "%s | Ethan Chacko",
+    default: "Ethan Chacko, Full-Stack Developer",
+  },
+  description: DESCRIPTION,
+  applicationName: "Ethan Chacko",
+  authors: [{ name: "Ethan Chacko" }],
+  keywords: [
+    "full-stack developer",
+    "Next.js",
+    "TypeScript",
+    "Phoenix",
+    "contract developer",
+    "freelance developer",
+    "agency subcontracting",
+  ],
+  openGraph: {
+    type: "website",
+    title: "Ethan Chacko, Full-Stack Developer",
+    description: DESCRIPTION,
+    url: "https://ethanchacko.com",
+    siteName: "Ethan Chacko",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ethan Chacko, Full-Stack Developer",
+    description: DESCRIPTION,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

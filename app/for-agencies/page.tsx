@@ -5,9 +5,17 @@ import { StackArchitecture } from "@/components/stack-architecture";
 import { BuildShowcase } from "@/components/build-showcase";
 
 export const metadata: Metadata = {
-  title: "For Agencies / Ethan Chacko",
-  description:
-    "White-label subcontracting for agencies who need production code delivered on deadline.",
+  title: "For Agencies",
+  description: "A second pair of hands that ships under your brand.",
+  openGraph: {
+    title: "For Agencies | Ethan Chacko",
+    description: "A second pair of hands that ships under your brand.",
+    url: "https://ethanchacko.com/for-agencies",
+  },
+  twitter: {
+    title: "For Agencies | Ethan Chacko",
+    description: "A second pair of hands that ships under your brand.",
+  },
 };
 
 type Row = {
