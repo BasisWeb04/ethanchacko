@@ -283,14 +283,6 @@ Clean repo, docs, deployment notes.
 You own everything.
 ```
 
-**Rate note**
-
-```
-/ RATE
-Starts at $65/hr. Fixed-price on scoped builds.
-Priority slots for repeat agencies.
-```
-
 **CTA**
 
 ```

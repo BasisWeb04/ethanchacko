@@ -94,18 +94,6 @@ export default function ForAgenciesPage() {
         </div>
       </section>
 
-      {/* Rate */}
-      <section className="px-gutter py-section-y border-t border-border">
-        <div className="mx-auto max-w-container">
-          <SectionLabel label="RATE" className="mb-6" />
-          <p className="text-h2 text-fg max-w-[36ch] leading-tight">
-            Starts at $65/hr. Fixed-price on scoped builds.
-            <br />
-            Priority slots for repeat agencies.
-          </p>
-        </div>
-      </section>
-
       {/* CTA */}
       <section
         className="px-gutter py-section-y border-t border-border"
