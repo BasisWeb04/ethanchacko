@@ -93,9 +93,11 @@ export function WorkCard({
 
       {/* Card body */}
       <Link href={`/work/${project.slug}`} className="block p-4">
-        <div className="mb-2 group-hover:scale-[1.15] origin-left transition-transform duration-base motion-reduce:transform-none inline-block">
-          <StatusDot status={statusType} />
-        </div>
+        <StatusDot
+          status={statusType}
+          scaleOnGroupHover
+          className="mb-2"
+        />
         <h3 className="text-h3 text-fg mb-1">{project.title}</h3>
         <p className="text-small text-fg-muted mb-3">{project.description}</p>
         <div className="flex flex-wrap gap-2">
