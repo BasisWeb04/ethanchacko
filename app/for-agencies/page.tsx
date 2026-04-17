@@ -11,10 +11,20 @@ export const metadata: Metadata = {
     title: "For Agencies | Ethan Chacko",
     description: "A second pair of hands that ships under your brand.",
     url: "https://ethanchacko.com/for-agencies",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Ethan Chacko, Full-Stack Developer",
+      },
+    ],
   },
   twitter: {
+    card: "summary_large_image",
     title: "For Agencies | Ethan Chacko",
     description: "A second pair of hands that ships under your brand.",
+    images: ["/opengraph-image"],
   },
 };
 

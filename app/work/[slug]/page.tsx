@@ -24,11 +24,20 @@ export function generateMetadata({ params }: Params): Metadata {
       description: project.description,
       url: `https://ethanchacko.com/work/${project.slug}`,
       type: "article",
+      images: [
+        {
+          url: "/opengraph-image",
+          width: 1200,
+          height: 630,
+          alt: "Ethan Chacko, Full-Stack Developer",
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: `${project.title} | Ethan Chacko`,
       description: project.description,
+      images: ["/opengraph-image"],
     },
   };
 }
