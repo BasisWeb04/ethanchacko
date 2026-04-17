@@ -133,6 +133,17 @@ Underline from `--fg-dim`, thickness 1px, offset 4px. Hover: underline becomes `
 ```
 Geist Mono, uppercase, `--fg-muted`, tracked wide. Appears before every major section.
 
+### 3.6 Component library (visual-weight components for split pages)
+
+**Process Timeline** (`components/process-timeline.tsx`)
+Four-node horizontal timeline (BRIEF / SCOPE / BUILD / HANDOFF) that shows the engagement arc on /for-clients. Each node has a timestamp overline, a 48px circle, a mono label, and a short description. `useInView` triggers a left-to-right reveal: circles stagger in at 120ms, connector segments between them draw via scaleX. Collapses to a vertical rail on mobile. Hover lifts border + label + description to `--signal`/`--fg`.
+
+**Stack Architecture** (`components/stack-architecture.tsx`)
+Three-column diagram on /for-agencies: YOUR AGENCY -> ETHAN -> YOUR STACK. Middle column carries a `CONTRACT DEV` overline and `--signal` border treatment to mark it as where value is added. Inline SVG arrows connect the columns horizontally; on mobile the columns stack and the arrows rotate to point down. `NO ATTRIBUTION REQUIRED. YOUR CLIENT NEVER KNOWS I EXIST.` renders in `--signal` mono below the diagram.
+
+**Build Showcase** (`components/build-showcase.tsx`)
+Five-tab auto-advancing showcase (DASHBOARDS / AUTOMATION / SCRAPERS / WEB APPS / INTERNAL TOOLS) rendered on both split pages. Each tab shows a real `/public/work/*.webp` screenshot, a category title, a 1-2 sentence description, and 2-3 example project names in mono. Tabs drive a sliding `--signal` underline via the same scaleX origin-swap used on the top nav. Auto-advances every 5s, pauses on hover/focus, click jumps and resets. Reduced-motion disables auto-advance and the fade/slide transition.
+
 ---
 
 ## 4. Information Architecture
@@ -241,6 +252,8 @@ Email renders with reveal interaction. Initial state: `ethan@••••••�
 
 ### 5.2 /for-agencies
 
+**Page order:** HERO, `/ WORKFLOW`, `/ WHAT I BUILD`, contract-sheet rows, CTA.
+
 **Hero**
 
 ```
@@ -252,35 +265,34 @@ that ships under your brand.
 
 Italic `ships` in serif + amber.
 
-**Body**
+**/ WORKFLOW** (Stack Architecture component)
+
+Three-column system architecture: YOUR AGENCY -> ETHAN -> YOUR STACK. Middle column highlighted in `--signal` with a `CONTRACT DEV` overline. Caption below the diagram: `NO ATTRIBUTION REQUIRED. YOUR CLIENT NEVER KNOWS I EXIST.`
+
+**/ WHAT I BUILD** (Build Showcase component)
+
+Five-tab auto-advancing showcase (DASHBOARDS / AUTOMATION / SCRAPERS / WEB APPS / INTERNAL TOOLS) with real screenshots on the left and category description + example projects on the right.
+
+**Contract-sheet rows** (dense `dl` layout, mono label gutter on the left)
 
 ```
-I work white-label with agencies who need
-production code delivered on deadline. No
-attribution required, no client contact unless
-you want it, no surprises.
+/ SCOPE        White-label contract dev for agencies. I ship production
+               code against your spec, under your brand, on your timeline.
 
-What you get:
-· Senior full-stack output at contractor rates
-· Ship discipline (I don't get stuck)
-· Stack fluency across Next, React Native, Python, n8n
-· Clean handoffs with docs your team can own
-```
+/ OWNERSHIP    No attribution required. Clean handoff. You own everything.
 
-**How it works** (3-step, numbered, mono labels)
+/ TURNAROUND   24-hour response on briefs. Build windows from 1 to 6
+               weeks depending on scope.
 
-```
-/ 01  BRIEF
-You send scope and deadline.
-I confirm within 24 hours whether I can ship it.
+/ STACK        Next.js · TypeScript · React Native · Python · n8n
 
-/ 02  BUILD
-I work against your spec under NDA.
-Daily updates if you want them, silent if you don't.
+/ COMMS        Daily updates, weekly updates, or silent-until-shipped.
+               Your call.
 
-/ 03  HANDOFF
-Clean repo, docs, deployment notes.
-You own everything.
+/ FIT          Production builds, integrations, scrapers, dashboards,
+               internal tools, API work.
+               Not a fit for: brand strategy, copywriting, visual design
+               leadership.
 ```
 
 **CTA**
@@ -290,6 +302,8 @@ ethan@basisweb.net
 ```
 
 ### 5.3 /for-clients
+
+**Page order:** HERO, `/ PROCESS`, `/ WHAT I BUILD`, FAQ, CTA.
 
 **Hero**
 
@@ -302,50 +316,24 @@ Systems that run after I'm gone.
 
 Italic `run` in serif + amber.
 
-**Body**
+**/ PROCESS** (Process Timeline component)
 
-Warmer, more explanatory than agencies page. Slower pace.
+Four-node horizontal timeline: BRIEF (DAY 0) -> SCOPE (DAY 1-3) -> BUILD (WEEK 1-4) -> HANDOFF (WEEK 4+). Each node has a timestamp, 48px circle, mono label, and a short description of what happens at that step. Collapses to a vertical rail on mobile.
 
-```
-Most agencies will sell you a team of five and
-bill you for eight. I'm one person who builds
-the whole thing, knows every line of your code,
-and hands it off clean.
+**/ WHAT I BUILD** (Build Showcase component)
 
-Best fit if:
-· You're a service business, SaaS founder, or ops team
-  with something specific that needs building
-· You care about code that still works in two years
-· You want one point of contact, not a project manager
-  forwarding emails
+Same five-tab showcase shared with /for-agencies.
 
-Not a fit if:
-· You need a design team, brand strategy, or marketing
-· You want a rotating cast of juniors at agency margins
-· You don't know what you want built yet (go hire a
-  product consultant first)
-```
+**FAQ**
 
-**What gets built**
+Six Q&A pairs with more vertical breathing room than the contract sheet on /for-agencies. Each question renders in mono + `--signal` with a `Q.` sigil, each answer in Geist Sans body, 60ch max. Questions, in order:
 
-```
-Custom dashboards · Lead platforms · Internal tools
-Scrapers & automation · API integrations
-Full-stack web apps · Mobile (React Native)
-```
-
-**Engagement options**
-
-```
-/ BUILD
-Scoped project, fixed price, 2-8 week timelines.
-
-/ RETAINER
-Ongoing dev work, hourly, minimum 10hr/week.
-
-/ RESCUE
-Inherited code that's on fire. I've fixed worse.
-```
+1. What do I actually get?
+2. How long does this take?
+3. What if I already have a team?
+4. Is this a fit for my project?
+5. What gets built most often?
+6. How do we start?
 
 **CTA**
 
@@ -687,6 +675,9 @@ Approved list:
 4. **Case study pages as engineering post-mortems** with CONTEXT/CONSTRAINTS/APPROACH/STACK/RESULT structure
 5. **Agencies vs Clients pages differentiated by temperature** (pacing and density, not color)
 6. **Contact as reveal** (email obscures and flips in on click, auto-copies)
+7. **Process Timeline** on /for-clients (four-node horizontal reveal, mobile rail)
+8. **Stack Architecture diagram** on /for-agencies (three-column SVG system map with `CONTRACT DEV` middle column)
+9. **Build Showcase** on both split pages (five-tab auto-advancing category showcase with real project screenshots)
 
 ---
 
