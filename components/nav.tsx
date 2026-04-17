@@ -32,7 +32,8 @@ export function Nav() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="font-mono text-mono uppercase text-fg-muted hover:text-fg transition-colors duration-base"
+                className="nav-link font-mono text-mono uppercase text-fg-muted hover:text-fg transition-colors duration-base"
+                data-testid="nav-link"
               >
                 {link.label}
               </Link>
