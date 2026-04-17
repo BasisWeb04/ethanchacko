@@ -38,7 +38,7 @@ export const projects: Project[] = [
     stackDetailed:
       "Next.js 14 \u00B7 TypeScript \u00B7 Tailwind \u00B7 shadcn/ui \u00B7 Supabase \u00B7 Twilio \u00B7 Resend \u00B7 Vercel",
     result:
-      "Feature-complete and launch-ready. 20+ pages, 119 components, full funnel from homepage through solutions wizard to lead capture. 10-page interactive demo dashboard. 40/40 Playwright tests passing.",
+      "Feature-complete and launch-ready. 20+ pages, 119 components, 10-page interactive demo dashboard, 5 industry landing pages. 40 Playwright tests passing, zero build warnings. Full funnel from homepage through solutions wizard to lead capture to Calendly booking.",
   },
   {
     slug: "basisweb",
@@ -51,11 +51,11 @@ export const projects: Project[] = [
     liveUrl: "https://basisweb.net",
     year: "2026",
     context:
-      "Agency platform and client gateway. Scroll-pinned portfolio with device-framed screenshots, numbered capability stack, free contractor tools.",
+      "Agency platform and client gateway for BasisWeb. Scroll-pinned portfolio with device-framed screenshots, numbered capability cards with click-to-flip 3D interaction, bottom sticky pill navbar, free contractor tools.",
     stackDetailed:
       "Next.js 14 \u00B7 TypeScript \u00B7 Tailwind \u00B7 Framer Motion \u00B7 Vercel",
     result:
-      "The agency face of everything I build. Serves as both portfolio and lead capture for the business side.",
+      "Serves as both portfolio and lead capture for the agency. Four free calculator tools embedded as value-add for contractors, ranking in organic search for 'hvac pricing calculator' and adjacent queries.",
   },
   {
     slug: "hammock",
@@ -68,11 +68,11 @@ export const projects: Project[] = [
     liveUrl: "https://hammockpropertyinspections.com",
     year: "2026",
     context:
-      "Client build for a Florida Space Coast home inspector. Clean 5-page marketing site with form backend for booking requests.",
+      "Client build for Hammock Property Inspections, a Florida Space Coast home inspector. Clean 5-page marketing site with booking form backend, mobile-optimized, deployed to the client's own Vercel account via guided screen-share handoff.",
     stackDetailed:
       "Next.js 14 \u00B7 TypeScript \u00B7 Tailwind \u00B7 Resend \u00B7 Supabase \u00B7 Cloudflare Turnstile \u00B7 Vercel",
     result:
-      "Delivered and deployed to the client's own Vercel account. First paying external client build end-to-end.",
+      "Delivered in two milestones. Client owns deployment, repo, and all infrastructure. First paying external client build end to end. Navy / warm neutral / muted teal palette locked in during discovery, Merriweather and Inter for a print-meets-web aesthetic.",
   },
   {
     slug: "operations-command",
@@ -85,11 +85,11 @@ export const projects: Project[] = [
     liveUrl: "https://restaurun.basisweb.net",
     year: "2026",
     context:
-      "Centralized work-order intake and routing for multi-location restaurant maintenance operations. Replaced a ServiceNow/ServiceChannel workflow with a purpose-built tool.",
+      "Centralized work-order intake and routing for multi-location restaurant maintenance operations. Replaced a ServiceNow and ServiceChannel workflow with a purpose-built command center. Automated work orders flow from intake through dispatch to HouseCall Pro via n8n.",
     stackDetailed:
       "Next.js \u00B7 TypeScript \u00B7 Tailwind \u00B7 Supabase \u00B7 n8n \u00B7 HouseCall Pro API \u00B7 Twilio",
     result:
-      "First paying BasisWeb client. Operational system running real restaurant maintenance workflow.",
+      "First paying BasisWeb client. Operational system running real restaurant maintenance workflow across multiple locations. Work orders that previously required manual re-entry into two systems now flow in under 30 seconds from intake to technician.",
   },
   {
     slug: "warpspeed",
