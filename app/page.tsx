@@ -3,6 +3,7 @@ import { Button } from "@/components/button";
 import { WorkCard } from "@/components/work-card";
 import { WorkGridReveal } from "@/components/work-grid-reveal";
 import { EmailReveal } from "@/components/email-reveal";
+import { HeroSerifReveal } from "@/components/hero-reveal";
 import { projects } from "@/content/projects";
 
 export default function Home() {
@@ -15,9 +16,7 @@ export default function Home() {
           <h1 className="text-display text-fg">
             I build systems,
             <br />
-            <span className="font-serif italic text-signal">
-              not slide decks.
-            </span>
+            <HeroSerifReveal>not slide decks.</HeroSerifReveal>
           </h1>
           <p
             className="mt-6 text-lg text-fg-muted max-w-[48ch]"
