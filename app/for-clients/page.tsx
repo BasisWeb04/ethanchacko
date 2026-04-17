@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SectionLabel } from "@/components/section-label";
+import { Section } from "@/components/section";
 import { EmailReveal } from "@/components/email-reveal";
 import { ProcessTimeline } from "@/components/process-timeline";
 import { BuildShowcase } from "@/components/build-showcase";
@@ -132,31 +133,19 @@ export default function ForClientsPage() {
       </section>
 
       {/* Process timeline */}
-      <section
-        className="px-gutter pb-section-y border-t border-border"
-        data-testid="clients-process"
-      >
-        <div className="mx-auto max-w-container pt-section-y">
-          <SectionLabel label="PROCESS" className="mb-12" />
-          <ProcessTimeline />
-        </div>
-      </section>
+      <Section label="PROCESS" testId="clients-process">
+        <ProcessTimeline />
+      </Section>
 
       {/* What I build */}
-      <section
-        className="px-gutter pb-section-y border-t border-border"
-        data-testid="clients-showcase"
-      >
-        <div className="mx-auto max-w-container pt-section-y">
-          <SectionLabel label="WHAT I BUILD" className="mb-12" />
-          <h2 className="sr-only">What I build</h2>
-          <BuildShowcase />
-        </div>
-      </section>
+      <Section label="WHAT I BUILD" testId="clients-showcase">
+        <h2 className="sr-only">What I build</h2>
+        <BuildShowcase />
+      </Section>
 
       {/* FAQ */}
-      <section className="px-gutter pb-section-y" data-testid="clients-faq">
-        <div className="mx-auto max-w-[72ch]">
+      <Section label="QUESTIONS" testId="clients-faq">
+        <div className="max-w-[60ch]">
           <dl className="border-t border-border">
             {faq.map(({ q, a }) => (
               <div
@@ -171,24 +160,19 @@ export default function ForClientsPage() {
                   <span className="text-signal-dim">Q.</span>
                   <span className="ml-3">{q}</span>
                 </dt>
-                <dd className="text-body text-fg leading-relaxed space-y-4 max-w-[60ch]">
+                <dd className="text-body text-fg leading-relaxed space-y-4">
                   {a}
                 </dd>
               </div>
             ))}
           </dl>
         </div>
-      </section>
+      </Section>
 
       {/* CTA */}
-      <section
-        className="px-gutter py-section-y border-t border-border"
-        data-testid="clients-cta"
-      >
-        <div className="mx-auto max-w-container">
-          <EmailReveal />
-        </div>
-      </section>
+      <Section label="CONTACT" testId="clients-cta">
+        <EmailReveal />
+      </Section>
     </>
   );
 }

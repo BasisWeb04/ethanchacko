@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SectionLabel } from "@/components/section-label";
+import { Section } from "@/components/section";
 import { EmailReveal } from "@/components/email-reveal";
 import { StackArchitecture } from "@/components/stack-architecture";
 import { BuildShowcase } from "@/components/build-showcase";
@@ -91,63 +92,44 @@ export default function ForAgenciesPage() {
       </section>
 
       {/* Workflow */}
-      <section
-        className="px-gutter pb-section-y border-t border-border"
-        data-testid="agencies-workflow"
-      >
-        <div className="mx-auto max-w-container pt-section-y">
-          <SectionLabel label="WORKFLOW" className="mb-12" />
-          <StackArchitecture />
-        </div>
-      </section>
+      <Section label="WORKFLOW" testId="agencies-workflow">
+        <StackArchitecture />
+      </Section>
 
       {/* What I build */}
-      <section
-        className="px-gutter pb-section-y border-t border-border"
-        data-testid="agencies-showcase"
-      >
-        <div className="mx-auto max-w-container pt-section-y">
-          <SectionLabel label="WHAT I BUILD" className="mb-12" />
-          <h2 className="sr-only">What I build</h2>
-          <BuildShowcase />
-        </div>
-      </section>
+      <Section label="WHAT I BUILD" testId="agencies-showcase">
+        <h2 className="sr-only">What I build</h2>
+        <BuildShowcase />
+      </Section>
 
-      {/* Contract sheet */}
-      <section className="px-gutter pb-section-y" data-testid="agencies-sheet">
-        <div className="mx-auto max-w-container">
-          <dl className="border-t border-border">
-            {rows.map((row) => (
-              <div
-                key={row.label}
-                data-testid="sheet-row"
-                className="grid grid-cols-1 md:grid-cols-[180px_1fr] gap-3 md:gap-10 border-b border-border py-6"
+      {/* Terms sheet */}
+      <Section label="TERMS" testId="agencies-sheet">
+        <dl className="border-t border-border">
+          {rows.map((row) => (
+            <div
+              key={row.label}
+              data-testid="sheet-row"
+              className="grid grid-cols-1 md:grid-cols-[180px_1fr] gap-3 md:gap-10 border-b border-border py-6"
+            >
+              <dt
+                data-testid="sheet-label"
+                className="font-mono text-mono uppercase tracking-widest text-fg-muted pt-[2px]"
               >
-                <dt
-                  data-testid="sheet-label"
-                  className="font-mono text-mono uppercase tracking-widest text-fg-muted pt-[2px]"
-                >
-                  <span className="text-fg-dim">/</span>
-                  <span className="ml-2">{row.label}</span>
-                </dt>
-                <dd className="text-body text-fg leading-relaxed">
-                  {row.body}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </section>
+                <span className="text-fg-dim">/</span>
+                <span className="ml-2">{row.label}</span>
+              </dt>
+              <dd className="text-body text-fg leading-relaxed">
+                {row.body}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </Section>
 
       {/* CTA */}
-      <section
-        className="px-gutter py-section-y border-t border-border"
-        data-testid="agencies-cta"
-      >
-        <div className="mx-auto max-w-container">
-          <EmailReveal />
-        </div>
-      </section>
+      <Section label="CONTACT" testId="agencies-cta">
+        <EmailReveal />
+      </Section>
     </>
   );
 }

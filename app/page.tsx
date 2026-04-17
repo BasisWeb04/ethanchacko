@@ -1,4 +1,5 @@
 import { SectionLabel } from "@/components/section-label";
+import { Section } from "@/components/section";
 import { Button } from "@/components/button";
 import { WorkCard } from "@/components/work-card";
 import { WorkGridReveal } from "@/components/work-grid-reveal";
@@ -37,62 +38,45 @@ export default function Home() {
       </section>
 
       {/* Work grid */}
-      <section
-        id="work"
-        className="px-gutter py-section-y"
-        data-testid="work-section"
-      >
-        <div className="mx-auto max-w-container">
-          <SectionLabel number="01" label="SELECTED WORK" className="mb-10" />
-          <h2 className="sr-only">Selected work</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project, i) => (
-              <WorkGridReveal key={project.slug} index={i}>
-                <WorkCard project={project} priority={i < 3} />
-              </WorkGridReveal>
-            ))}
-          </div>
+      <Section number="01" label="SELECTED WORK" testId="work-section">
+        <h2 id="work" className="sr-only scroll-mt-24">
+          Selected work
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects.map((project, i) => (
+            <WorkGridReveal key={project.slug} index={i}>
+              <WorkCard project={project} priority={i < 3} />
+            </WorkGridReveal>
+          ))}
         </div>
-      </section>
+      </Section>
 
       {/* Stack */}
-      <section
-        className="px-gutter py-section-y"
-        data-testid="stack-section"
-      >
-        <div className="mx-auto max-w-container">
-          <SectionLabel number="02" label="STACK" className="mb-10" />
-          <h2 className="sr-only">Stack</h2>
-          <p className="font-mono text-h2 text-fg leading-relaxed">
-            Next.js &middot; TypeScript &middot; Tailwind &middot; shadcn/ui
-            <br />
-            Supabase &middot; n8n &middot; Python &middot; Playwright
-            <br />
-            Twilio &middot; Resend &middot; Vercel &middot; Claude API
-          </p>
-        </div>
-      </section>
+      <Section number="02" label="STACK" testId="stack-section">
+        <h2 className="sr-only">Stack</h2>
+        <p className="font-mono text-h2 text-fg leading-relaxed">
+          Next.js &middot; TypeScript &middot; Tailwind &middot; shadcn/ui
+          <br />
+          Supabase &middot; n8n &middot; Python &middot; Playwright
+          <br />
+          Twilio &middot; Resend &middot; Vercel &middot; Claude API
+        </p>
+      </Section>
 
       {/* Contact */}
-      <section
-        className="px-gutter py-section-y"
-        data-testid="contact-section"
-      >
-        <div className="mx-auto max-w-container">
-          <SectionLabel number="03" label="CONTACT" className="mb-10" />
-          <h2 className="sr-only">Contact</h2>
-          <p className="text-h2 text-fg mb-8">
-            Available for agency subcontracting
-            <br />
-            and direct client work.
-          </p>
-          <EmailReveal />
-          <div className="mt-8 flex flex-col gap-2 font-mono text-mono text-fg-muted">
-            <span>Currently in: Phoenix, AZ</span>
-            <span>Response time: within 24 hours</span>
-          </div>
+      <Section number="03" label="CONTACT" testId="contact-section">
+        <h2 className="sr-only">Contact</h2>
+        <p className="text-h2 text-fg mb-8">
+          Available for agency subcontracting
+          <br />
+          and direct client work.
+        </p>
+        <EmailReveal />
+        <div className="mt-8 flex flex-col gap-2 font-mono text-mono text-fg-muted">
+          <span>Currently in: Phoenix, AZ</span>
+          <span>Response time: within 24 hours</span>
         </div>
-      </section>
+      </Section>
     </>
   );
 }
