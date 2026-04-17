@@ -21,7 +21,7 @@ export function Nav() {
           {/* Wordmark */}
           <Link
             href="/"
-            aria-label="Ethan Chacko, home"
+            aria-label="EC home"
             className="font-sans text-lg font-bold text-fg tracking-tight"
           >
             EC

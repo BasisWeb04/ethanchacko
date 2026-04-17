@@ -44,9 +44,14 @@ export default function Home() {
       >
         <div className="mx-auto max-w-container">
           <SectionLabel number="01" label="SELECTED WORK" className="mb-10" />
+          <h2 className="sr-only">Selected work</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project) => (
-              <WorkCard key={project.slug} project={project} />
+            {projects.map((project, i) => (
+              <WorkCard
+                key={project.slug}
+                project={project}
+                priority={i < 3}
+              />
             ))}
           </div>
         </div>
@@ -59,6 +64,7 @@ export default function Home() {
       >
         <div className="mx-auto max-w-container">
           <SectionLabel number="02" label="STACK" className="mb-10" />
+          <h2 className="sr-only">Stack</h2>
           <p className="font-mono text-h2 text-fg leading-relaxed">
             Next.js &middot; TypeScript &middot; Tailwind &middot; shadcn/ui
             <br />
@@ -76,6 +82,7 @@ export default function Home() {
       >
         <div className="mx-auto max-w-container">
           <SectionLabel number="03" label="CONTACT" className="mb-10" />
+          <h2 className="sr-only">Contact</h2>
           <p className="text-h2 text-fg mb-8">
             Available for agency subcontracting
             <br />

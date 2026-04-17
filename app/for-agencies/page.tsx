@@ -98,6 +98,7 @@ export default function ForAgenciesPage() {
       >
         <div className="mx-auto max-w-container pt-section-y">
           <SectionLabel label="WHAT I BUILD" className="mb-12" />
+          <h2 className="sr-only">What I build</h2>
           <BuildShowcase />
         </div>
       </section>

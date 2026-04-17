@@ -43,3 +43,6 @@ next-env.d.ts
 # scripts preview artifacts
 /scripts/_*.png
 /scripts/_*.webp
+
+# lighthouse local reports
+/lighthouse-reports/

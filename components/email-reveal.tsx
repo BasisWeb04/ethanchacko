@@ -44,27 +44,31 @@ export function EmailReveal() {
         onClick={handleClick}
         data-testid="email-reveal"
         className="font-mono text-h2 text-fg cursor-pointer hover:text-signal transition-colors duration-base"
-        aria-label={revealed ? EMAIL : "Click to reveal email address"}
       >
+        <span className="sr-only">
+          {revealed ? `Email address ${EMAIL}` : `Reveal email address ${MASKED}`}
+        </span>
         {!revealed ? (
-          <span>{MASKED}</span>
+          <span aria-hidden="true">{MASKED}</span>
         ) : reducedMotion ? (
-          <span>{EMAIL}</span>
+          <span aria-hidden="true">{EMAIL}</span>
         ) : (
-          emailChars.map((char, i) => (
-            <motion.span
-              key={`${i}-${char}`}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: i * (STAGGER_MS / 1000),
-                duration: 0.15,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-            >
-              {char}
-            </motion.span>
-          ))
+          <span aria-hidden="true">
+            {emailChars.map((char, i) => (
+              <motion.span
+                key={`${i}-${char}`}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  delay: i * (STAGGER_MS / 1000),
+                  duration: 0.15,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                {char}
+              </motion.span>
+            ))}
+          </span>
         )}
       </button>
 

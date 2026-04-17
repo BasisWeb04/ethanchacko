@@ -16,7 +16,13 @@ export type Project = {
   liveUrl?: string;
 };
 
-export function WorkCard({ project }: { project: Project }) {
+export function WorkCard({
+  project,
+  priority = false,
+}: {
+  project: Project;
+  priority?: boolean;
+}) {
   const statusType = project.status === "LIVE" ? "live" : "shipped";
 
   return (
@@ -58,6 +64,7 @@ export function WorkCard({ project }: { project: Project }) {
               alt={`${project.title} preview`}
               fill
               sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+              priority={priority}
               className="object-cover object-top"
             />
           ) : (
@@ -74,10 +81,11 @@ export function WorkCard({ project }: { project: Project }) {
               target="_blank"
               rel="noopener noreferrer"
               data-testid="external-link"
+              aria-label={`Open ${project.title} live site in new tab`}
               onClick={(e) => e.stopPropagation()}
               className="absolute top-3 right-3 z-10 flex items-center justify-center w-8 h-8 rounded-md border border-border bg-bg/80 text-fg-muted hover:text-fg hover:border-border-strong transition-colors duration-base"
             >
-              <ArrowUpRight size={16} />
+              <ArrowUpRight size={16} aria-hidden="true" />
             </a>
           )}
         </div>
