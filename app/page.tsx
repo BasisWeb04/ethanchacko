@@ -112,7 +112,7 @@ export default function Home() {
         data-testid="work-section"
       >
         <div className="mx-auto max-w-container">
-          <SectionLabel number="02" label="SELECTED WORK" className="mb-10" />
+          <SectionLabel number="01" label="SELECTED WORK" className="mb-10" />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project) => (
               <WorkCard key={project.slug} project={project} />
@@ -127,7 +127,7 @@ export default function Home() {
         data-testid="stack-section"
       >
         <div className="mx-auto max-w-container">
-          <SectionLabel number="03" label="STACK" className="mb-10" />
+          <SectionLabel number="02" label="STACK" className="mb-10" />
           <p className="font-mono text-h2 text-fg leading-relaxed">
             Next.js &middot; TypeScript &middot; Tailwind &middot; shadcn/ui
             <br />
@@ -144,7 +144,7 @@ export default function Home() {
         data-testid="contact-section"
       >
         <div className="mx-auto max-w-container">
-          <SectionLabel number="04" label="CONTACT" className="mb-10" />
+          <SectionLabel number="03" label="CONTACT" className="mb-10" />
           <p className="text-h2 text-fg mb-8">
             Available for agency subcontracting
             <br />
