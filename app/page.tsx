@@ -1,6 +1,7 @@
 import { SectionLabel } from "@/components/section-label";
 import { Button } from "@/components/button";
 import { WorkCard, Project } from "@/components/work-card";
+import { EmailReveal } from "@/components/email-reveal";
 
 const projects: Project[] = [
   {
@@ -120,6 +121,26 @@ export default function Home() {
             <br />
             Twilio &middot; Resend &middot; Vercel &middot; Claude API
           </p>
+        </div>
+      </section>
+
+      {/* Contact */}
+      <section
+        className="px-gutter py-section-y"
+        data-testid="contact-section"
+      >
+        <div className="mx-auto max-w-container">
+          <SectionLabel number="04" label="CONTACT" className="mb-10" />
+          <p className="text-h2 text-fg mb-8">
+            Available for agency subcontracting
+            <br />
+            and direct client work.
+          </p>
+          <EmailReveal />
+          <div className="mt-8 flex flex-col gap-2 font-mono text-mono text-fg-muted">
+            <span>Currently in: Phoenix, AZ</span>
+            <span>Response time: within 24 hours</span>
+          </div>
         </div>
       </section>
     </>
