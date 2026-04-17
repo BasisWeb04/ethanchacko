@@ -1,19 +1,12 @@
-"use client";
-
-import { motion, useReducedMotion } from "framer-motion";
-
-const EASE = [0.16, 1, 0.3, 1] as const;
+// Hero serif reveal uses a CSS keyframe (see app/globals.css .hero-serif-reveal)
+// so it renders reliably at SSR + first paint even if JS hydration is delayed.
+// Framer-motion's initial/animate was putting inline opacity:0 into the SSR
+// markup, which left the text invisible whenever client hydration stalled.
 
 export function HeroSerifReveal({ children }: { children: React.ReactNode }) {
-  const reduced = useReducedMotion() ?? false;
   return (
-    <motion.span
-      className="font-serif italic text-signal inline-block"
-      initial={reduced ? false : { opacity: 0, y: 12 }}
-      animate={reduced ? undefined : { opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.3, ease: EASE }}
-    >
+    <span className="hero-serif-reveal font-serif italic text-signal inline-block">
       {children}
-    </motion.span>
+    </span>
   );
 }

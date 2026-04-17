@@ -83,11 +83,12 @@ test("nav hover underline", async ({ page }) => {
   const navLink = page.locator('[data-testid="nav-link"]').first();
   await navLink.hover();
   await page.waitForTimeout(400);
-  const clipPath = await navLink.evaluate(
-    (el) => window.getComputedStyle(el, "::after").clipPath
+  // Underline draws by transforming scaleX from 0 to 1 at transform-origin: left.
+  const transform = await navLink.evaluate(
+    (el) => window.getComputedStyle(el, "::after").transform
   );
-  // Hovered underline clips to the full width, so no 100% right-inset remains.
-  expect(clipPath).not.toContain("100%");
+  expect(transform).not.toBe("none");
+  expect(transform).toMatch(/matrix\(1[,\s]/);
 });
 
 test("email reveal initial state", async ({ page }) => {
