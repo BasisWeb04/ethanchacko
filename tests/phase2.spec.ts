@@ -82,13 +82,12 @@ test("nav hover underline", async ({ page }) => {
   await page.goto("/");
   const navLink = page.locator('[data-testid="nav-link"]').first();
   await navLink.hover();
-  await page.waitForTimeout(250);
-  const transform = await navLink.evaluate((el) => {
-    const after = window.getComputedStyle(el, "::after");
-    return after.transform;
-  });
-  expect(transform).not.toBe("none");
-  expect(transform).toContain("matrix");
+  await page.waitForTimeout(400);
+  const clipPath = await navLink.evaluate(
+    (el) => window.getComputedStyle(el, "::after").clipPath
+  );
+  // Hovered underline clips to the full width, so no 100% right-inset remains.
+  expect(clipPath).not.toContain("100%");
 });
 
 test("email reveal initial state", async ({ page }) => {

@@ -3,12 +3,13 @@ import { test, expect, type Page, type Locator } from "@playwright/test";
 const DESKTOP = { width: 1440, height: 900 };
 const MOBILE = { width: 390, height: 844 };
 
-function parseMatrixScaleX(transform: string): number {
-  if (!transform || transform === "none") return 0;
-  const m = transform.match(/matrix\(([^)]+)\)/);
-  if (!m) return 0;
-  const parts = m[1].split(",").map((n) => parseFloat(n.trim()));
-  return parts[0] ?? 0;
+// Underline now animates with clip-path: inset(0 100% 0 0) -> inset(0 0 0 0).
+// At rest the right inset is 100% and the line is clipped away; on hover it
+// is 0 and the line is fully revealed. Chromium collapses inset(0 0 0 0) to
+// inset(0px).
+function isUnderlineRevealed(clipPath: string): boolean {
+  if (!clipPath || clipPath === "none") return false;
+  return !clipPath.includes("100%");
 }
 
 function visible(locator: Locator): Locator {
@@ -24,31 +25,35 @@ test.describe("Phase 4.6 @ desktop 1440x900", () => {
 
   // --- NAV UNDERLINE ---
 
-  test("nav underline draws to scaleX 1 on hover", async ({ page }) => {
+  test("nav underline draws full width on hover via clip-path", async ({
+    page,
+  }) => {
     await page.goto("/");
     const link = page.locator('[data-testid="nav-link"]').first();
     await link.hover();
-    await afterTransitions(page);
-    const t = await link.evaluate(
-      (el) => window.getComputedStyle(el, "::after").transform
+    await afterTransitions(page, 150);
+    const clipPath = await link.evaluate(
+      (el) => window.getComputedStyle(el, "::after").clipPath
     );
-    expect(parseMatrixScaleX(t)).toBeCloseTo(1, 1);
+    expect(isUnderlineRevealed(clipPath)).toBe(true);
   });
 
-  test("nav underline retreats to scaleX 0 after unhover", async ({ page }) => {
+  test("nav underline retreats (right inset back to 100%) after unhover", async ({
+    page,
+  }) => {
     await page.goto("/");
     const link = page.locator('[data-testid="nav-link"]').first();
     await link.hover();
-    await afterTransitions(page);
+    await afterTransitions(page, 150);
     await page.mouse.move(10, 10);
-    await afterTransitions(page, 200);
-    const t = await link.evaluate(
-      (el) => window.getComputedStyle(el, "::after").transform
+    await afterTransitions(page, 250);
+    const clipPath = await link.evaluate(
+      (el) => window.getComputedStyle(el, "::after").clipPath
     );
-    expect(parseMatrixScaleX(t)).toBeCloseTo(0, 1);
+    expect(clipPath).toContain("100%");
   });
 
-  test("reduced motion nav underline uses opacity, not transform", async ({
+  test("reduced motion nav underline uses opacity and keeps clip-path open", async ({
     browser,
   }) => {
     const ctx = await browser.newContext({
@@ -61,19 +66,20 @@ test.describe("Phase 4.6 @ desktop 1440x900", () => {
 
     const rest = await link.evaluate((el) => {
       const s = window.getComputedStyle(el, "::after");
-      return { opacity: s.opacity, transform: s.transform };
+      return { opacity: s.opacity, clipPath: s.clipPath };
     });
     expect(Number(rest.opacity)).toBeCloseTo(0, 1);
-    expect(parseMatrixScaleX(rest.transform)).toBeCloseTo(1, 1);
+    // Under reduced motion the clip-path is held open so only opacity animates.
+    expect(isUnderlineRevealed(rest.clipPath)).toBe(true);
 
     await link.hover();
     await page.waitForTimeout(240);
     const hovered = await link.evaluate((el) => {
       const s = window.getComputedStyle(el, "::after");
-      return { opacity: s.opacity, transform: s.transform };
+      return { opacity: s.opacity, clipPath: s.clipPath };
     });
     expect(Number(hovered.opacity)).toBeCloseTo(1, 1);
-    expect(parseMatrixScaleX(hovered.transform)).toBeCloseTo(1, 1);
+    expect(isUnderlineRevealed(hovered.clipPath)).toBe(true);
 
     await ctx.close();
   });
