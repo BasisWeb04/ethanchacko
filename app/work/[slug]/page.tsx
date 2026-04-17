@@ -3,12 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowUpRight } from "lucide-react";
-import {
-  getAdjacent,
-  getProject,
-  projects,
-  type Project,
-} from "@/content/projects";
+import { getAdjacent, getProject, projects } from "@/content/projects";
 import { SectionLabel } from "@/components/section-label";
 import { StatusDot } from "@/components/status-dot";
 
@@ -75,14 +70,14 @@ export default function CaseStudyPage({ params }: Params) {
   if (!project) notFound();
   const { prev, next } = getAdjacent(project.slug);
 
-  const sections: Array<{ number: string; label: string; body?: string }> = [
-    { number: "01", label: "CONTEXT", body: project.context },
-    { number: "02", label: "CONSTRAINTS", body: project.constraints },
-    { number: "03", label: "APPROACH", body: project.approach },
-  ].filter((s) => s.body) as Array<{ number: string; label: string; body: string }>;
+  const filled = [
+    { label: "CONTEXT", body: project.context },
+    { label: "CONSTRAINTS", body: project.constraints },
+    { label: "APPROACH", body: project.approach },
+  ].filter((s): s is { label: string; body: string } => Boolean(s.body));
 
   // Renumber based on which sections exist so the sequence stays 01/02/...
-  const renumbered = sections.map((s, i) => ({
+  const renumbered = filled.map((s, i) => ({
     ...s,
     number: String(i + 1).padStart(2, "0"),
   }));

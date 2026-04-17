@@ -21,6 +21,7 @@ export function Nav() {
           {/* Wordmark */}
           <Link
             href="/"
+            aria-label="Ethan Chacko, home"
             className="font-sans text-lg font-bold text-fg tracking-tight"
           >
             EC
@@ -47,6 +48,8 @@ export function Nav() {
               onClick={() => setOpen(!open)}
               className="md:hidden text-fg-muted hover:text-fg transition-colors"
               aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+              aria-controls="mobile-menu"
             >
               {open ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -56,7 +59,7 @@ export function Nav() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="md:hidden border-t border-border bg-bg">
+        <div id="mobile-menu" className="md:hidden border-t border-border bg-bg">
           <div className="px-gutter py-4 flex flex-col gap-4">
             {navLinks.map((link) => (
               <Link

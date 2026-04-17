@@ -71,6 +71,8 @@ export function EmailReveal() {
       <AnimatePresence>
         {copied && (
           <motion.span
+            role="status"
+            aria-live="polite"
             initial={{ opacity: 0, y: 4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}

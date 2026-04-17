@@ -163,11 +163,10 @@ function CommandPaletteModal() {
               ease: [0.16, 1, 0.3, 1],
             }}
           >
-            <button
-              type="button"
-              aria-label="Close command palette"
+            <div
+              aria-hidden="true"
               onClick={close}
-              className="absolute inset-0 bg-[rgba(5,5,5,0.8)] backdrop-blur-sm"
+              className="absolute inset-0 bg-[rgba(5,5,5,0.8)] backdrop-blur-sm cursor-pointer"
             />
             <motion.div
               role="dialog"
@@ -191,6 +190,10 @@ function CommandPaletteModal() {
                   if (e.key === "Escape") {
                     e.preventDefault();
                     close();
+                    return;
+                  }
+                  if (e.key === "Tab") {
+                    e.preventDefault();
                   }
                 }}
               >
