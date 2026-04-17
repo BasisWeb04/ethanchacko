@@ -19,20 +19,26 @@ export type Project = {
 export function WorkCard({
   project,
   priority = false,
+  featured = false,
 }: {
   project: Project;
   priority?: boolean;
+  featured?: boolean;
 }) {
   const statusType = project.status === "LIVE" ? "live" : "shipped";
+  const aspectClass = featured ? "aspect-[16/9]" : "aspect-[16/10]";
 
   return (
     <div
       data-testid="work-card"
       data-status={project.status}
-      className="group border border-border rounded-md bg-bg-elev hover:border-border-strong transition-colors duration-base"
+      data-featured={featured ? "true" : "false"}
+      className="group h-full flex flex-col border border-border rounded-md bg-bg-elev hover:border-border-strong transition-colors duration-base"
     >
       {/* Thumbnail with browser chrome */}
-      <div className="relative aspect-[16/10] rounded-t-md overflow-hidden flex flex-col">
+      <div
+        className={`relative ${aspectClass} rounded-t-md overflow-hidden flex flex-col`}
+      >
         {/* Browser chrome */}
         <div
           data-testid="browser-chrome"
@@ -92,14 +98,27 @@ export function WorkCard({
       </div>
 
       {/* Card body */}
-      <Link href={`/work/${project.slug}`} className="block p-4">
+      <Link
+        href={`/work/${project.slug}`}
+        className={`block flex-1 ${featured ? "p-6" : "p-4"}`}
+      >
         <StatusDot
           status={statusType}
           scaleOnGroupHover
           className="mb-2"
         />
-        <h3 className="text-h3 text-fg mb-1">{project.title}</h3>
-        <p className="text-small text-fg-muted mb-3">{project.description}</p>
+        <h3
+          className={`${featured ? "text-h2" : "text-h3"} text-fg mb-1`}
+        >
+          {project.title}
+        </h3>
+        <p
+          className={`${
+            featured ? "text-body max-w-[52ch]" : "text-small"
+          } text-fg-muted mb-3`}
+        >
+          {project.description}
+        </p>
         <div className="flex flex-wrap gap-2">
           {project.stack.map((tech) => (
             <span

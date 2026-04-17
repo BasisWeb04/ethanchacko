@@ -1,11 +1,9 @@
 import { SectionLabel } from "@/components/section-label";
 import { Section } from "@/components/section";
 import { Button } from "@/components/button";
-import { WorkCard } from "@/components/work-card";
-import { WorkGridReveal } from "@/components/work-grid-reveal";
+import { WorkGrid } from "@/components/work-grid";
 import { EmailReveal } from "@/components/email-reveal";
 import { HeroSerifReveal } from "@/components/hero-reveal";
-import { projects } from "@/content/projects";
 
 export default function Home() {
   return (
@@ -42,13 +40,7 @@ export default function Home() {
         <h2 id="work" className="sr-only scroll-mt-24">
           Selected work
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project, i) => (
-            <WorkGridReveal key={project.slug} index={i}>
-              <WorkCard project={project} priority={i < 3} />
-            </WorkGridReveal>
-          ))}
-        </div>
+        <WorkGrid />
       </Section>
 
       {/* Stack */}
