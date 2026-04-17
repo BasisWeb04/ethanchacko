@@ -145,7 +145,7 @@ function HorizontalNode({
       >
         {node.label}
       </span>
-      <p className="mt-3 text-small text-fg-dim group-hover:text-fg transition-colors duration-base motion-reduce:transition-none max-w-[24ch]">
+      <p className="mt-3 text-small text-fg-muted group-hover:text-fg transition-colors duration-base motion-reduce:transition-none max-w-[24ch]">
         {node.description}
       </p>
     </div>
@@ -211,7 +211,7 @@ function VerticalNode({
         >
           {node.label}
         </span>
-        <p className="mt-2 text-small text-fg-dim group-hover:text-fg transition-colors duration-base motion-reduce:transition-none max-w-[44ch]">
+        <p className="mt-2 text-small text-fg-muted group-hover:text-fg transition-colors duration-base motion-reduce:transition-none max-w-[44ch]">
           {node.description}
         </p>
       </div>
