@@ -1,282 +1,341 @@
-Phase 5: command palette, final polish, full QA audit, push to
-GitHub. This is the shipping phase. After this, the site goes live.
+Phase 5.5: structural overhaul. This is the phase that moves the site
+from "good portfolio" to "agency-grade." Three structural changes:
+left-gutter section layout, asymmetric work grid, beefed-up light
+case studies.
 
-Prerequisite: Phases 1-4.6 all passing. If any prior Playwright test
-is red, STOP and fix first.
-
----
-
-Task 1: Command palette (CMD+K).
-
-Install cmdk: npm install cmdk
-
-Create components/command-palette.tsx as a client component.
-
-Trigger: CMD+K on macOS, CTRL+K on Windows/Linux. Works from any page.
-
-UI:
-- Modal centered on screen
-- Backdrop: backdrop-blur-sm with rgba(5,5,5,0.8) overlay
-- Container: --bg-elev background, 1px --border-strong, max-width
-  560px, max-height 60vh
-- Top: search input, no label, placeholder "Type a command or
-  search...", mono font, no border, 16px padding
-- Below input: 1px --border horizontal line
-- Below line: scrollable list of command groups
-
-Command groups and items:
-
-WORK
-- Go to ServiceCallTracker case study (navigates to /work/servicecalltracker)
-- Go to BasisWeb case study (/work/basisweb)
-- Go to Hammock case study (/work/hammock)
-- Go to Operations Command Center case study (/work/operations-command)
-- Go to Warpspeed Bounties case study (/work/warpspeed)
-- Go to ACC Scraper case study (/work/acc-scraper)
-- Go to Google Maps Scraper case study (/work/google-maps-scraper)
-
-PAGES
-- Home (/)
-- For Agencies (/for-agencies)
-- For Clients (/for-clients)
-
-CONTACT
-- Copy email address (copies ethan@basisweb.net to clipboard, shows
-  toast "COPIED" for 2 seconds)
-- Open Upwork profile (opens Upwork URL in new tab)
-- Email directly (opens mailto:ethan@basisweb.net)
-
-Behavior:
-- CMD+K / CTRL+K toggles open/closed
-- Escape closes
-- Arrow up/down navigates items
-- Enter executes selected item
-- Typing filters items across all groups
-- Clicking outside modal closes it
-- Selected item: --signal left border (3px), --bg-elev (slightly
-  lighter), --fg text
-- Unselected items: --fg-muted text, hover brightens to --fg
-
-Footer inside modal:
-- 1px --border top line
-- Mono small text showing key hints:
-  "↑↓ navigate   ↵ select   esc close"
-
-Animation:
-- Modal fade-in: opacity 0 to 1 + scale 0.98 to 1, 180ms --ease-out
-- Backdrop fade: opacity 0 to 1, 180ms
-- prefers-reduced-motion: no scale, instant opacity swap
-
-Mount: add <CommandPalette /> to root layout so it's available
-everywhere.
-
-Add visual hint in footer of site: small mono "⌘K" button or label
-that opens the palette when clicked. Positions next to the Upwork
-link in the footer. Hover: --signal color.
+Prerequisite: Phase 5.1 must be shipped with all tests passing.
 
 ---
 
-Task 2: OG image + favicon + metadata.
+Task 1: Left-gutter layout applied site-wide.
 
-Create /app/opengraph-image.tsx using Next.js 14 ImageResponse API.
+Current state: sections on homepage, /for-agencies, /for-clients all
+live in a center-constrained column. Only the case study template
+uses left-gutter section labels correctly.
 
-Design: 1200x630, --bg background, large display text centered:
-"I build systems, not slide decks." with italic serif on "not slide
-decks" in --signal color. Small mono text bottom-left: "ethanchacko.com".
-Small mono text bottom-right: "PHX / FULL-STACK".
+Goal: every major section on every page uses the same layout:
+  - Section label in a left column (approx 180-220px wide)
+  - Content in the right column (takes remaining space up to container max)
+  - Hairline --border between sections (full container width)
 
-Create favicon.ico at multiple sizes:
-- Design: "EC" monogram in Geist Sans 700, white on --bg, square with
-  rounded corners at 4px radius
-- Generate at 16x16, 32x32, 48x48, 180x180 (apple-touch-icon)
+Create a shared layout component components/section.tsx:
 
-Update root layout metadata:
-- title template: "%s | Ethan Chacko"
-- default title: "Ethan Chacko, Full-Stack Developer"
-- description: "Full-stack developer out of Phoenix. I ship software
-  for agencies and businesses who need something built, not pitched."
-- openGraph title, description, images, url, siteName
-- twitter card: summary_large_image, title, description, images
+  type SectionProps = {
+    number?: string;
+    label: string;
+    children: React.ReactNode;
+    bordered?: boolean;
+    className?: string;
+  };
+  
+  export function Section({
+    number,
+    label,
+    children,
+    bordered = true,
+    className = "",
+  }: SectionProps) {
+    return (
+      <section
+        className={`px-gutter py-section-y ${
+          bordered ? "border-t border-border" : ""
+        } ${className}`}
+      >
+        <div className="mx-auto max-w-container grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)]">
+          <div className="lg:sticky lg:top-24 lg:self-start">
+            <SectionLabel number={number} label={label} />
+          </div>
+          <div className="min-w-0">{children}</div>
+        </div>
+      </section>
+    );
+  }
 
-Per-page metadata:
-- /for-agencies: "For Agencies | Ethan Chacko" with description "A
-  second pair of hands that ships under your brand."
-- /for-clients: "For Brands | Ethan Chacko" with description "One
-  developer. Full ownership. Systems that run after I'm gone."
-- /work/[slug]: dynamic title "[Project Name] | Ethan Chacko" with
-  project tagline as description
+Apply Section to:
 
----
+  app/page.tsx
+    - Hero stays as-is (no label on hero, it's the entry)
+    - / 01 SELECTED WORK uses <Section number="01" label="SELECTED WORK">
+    - / 02 STACK uses <Section number="02" label="STACK">
+    - / 03 CONTACT uses <Section number="03" label="CONTACT">
 
-Task 3: 404 page.
+  app/for-agencies/page.tsx
+    - Hero stays as-is
+    - / WORKFLOW uses <Section label="WORKFLOW">
+    - / WHAT I BUILD uses <Section label="WHAT I BUILD">
+    - Contract sheet uses <Section label="TERMS">
+      (rename from current unlabeled sheet; label is TERMS)
+    - / CONTACT uses <Section label="CONTACT">
 
-Create app/not-found.tsx.
+  app/for-clients/page.tsx
+    - Hero stays as-is
+    - / PROCESS uses <Section label="PROCESS">
+    - / WHAT I BUILD uses <Section label="WHAT I BUILD">
+    - FAQ uses <Section label="QUESTIONS">
+    - / CONTACT uses <Section label="CONTACT">
 
-Design: match site aesthetic, not a generic Next.js error page.
+The sticky section label on desktop means as user scrolls through a
+long section, the label stays visible in the gutter until the next
+section arrives. This is the "newspaper spine" effect that
+communicates structure.
 
-Layout:
-- Same layout wrapper as site (nav + footer)
-- Centered content
-- Section label: / 404
-- Display text: "This route isn't wired."
-- Subhead in --fg-muted: "Either the URL is off or I haven't shipped
-  this yet. Head back home or hit me up if something's broken."
-- Two ghost buttons: "GO HOME" (links /) and "EMAIL ME"
-  (mailto:ethan@basisweb.net)
+On mobile (< lg breakpoint), the grid collapses to a single column.
+Label renders above content. No sticky behavior.
 
----
+Remove the mx-auto max-w-[72ch] FAQ wrapper in for-clients. It now
+lives inside the Section component's right column and inherits
+container width with its own max-width inside:
 
-Task 4: Accessibility audit and fixes.
-
-Run manual audit:
-- Tab through every page. Every interactive element must be reachable
-  and have a visible focus state (--signal 1px outline, 2px offset).
-- Every image has alt text. Decorative thumbnails get alt="" not
-  missing alt.
-- Every button has an accessible name (aria-label where needed).
-- Color contrast: --fg on --bg must be 7:1+, --fg-muted on --bg must
-  be 4.5:1+. Test with axe DevTools or Lighthouse.
-- prefers-reduced-motion respected on every animation in the app.
-- Email reveal has aria-live="polite" for the COPIED toast.
-- Command palette trap focus inside modal when open, return focus to
-  trigger on close.
-- Skip link at top of every page: "Skip to main content" linking to
-  #main. Visually hidden until focused.
-
-Fix every issue found.
-
----
-
-Task 5: Performance audit.
-
-Run Lighthouse on homepage, /for-agencies, /for-clients, and one
-case study page. Target scores:
-- Performance: 90+
-- Accessibility: 100
-- Best Practices: 100
-- SEO: 100
-
-Common fixes if below target:
-- Use next/image for all raster images (webp already, but needs
-  next/image wrapper for lazy loading + responsive sizing)
-- Preload Geist Sans + Geist Mono with next/font
-- Ensure images have explicit width/height to prevent CLS
-- Remove any render-blocking scripts
-- Ensure OG image generates statically, not at request time
-
-Report before/after scores for each page.
+  <div className="max-w-[60ch]">
+    {faq.map(...)}
+  </div>
 
 ---
 
-Task 6: Full cross-page QA audit.
+Task 2: Asymmetric work grid.
 
-Create tests/audit.spec.ts that runs a complete smoke test across
-every route:
+Current state: 3-column uniform grid, 7 cards all equal size. Reads
+as Claude-generated.
 
-For each route in [/, /for-agencies, /for-clients, all 7
-/work/[slug] routes, a deliberately bad slug to test 404]:
+Replace with a manually composed grid that reflects project hierarchy.
+ServiceCallTracker is the flagship. BasisWeb + Hammock + Operations
+Command Center are LIVE supporting projects. Warpspeed + ACC +
+Google Maps are shipped internal tools.
 
-- Returns correct status code
-- Has title tag
-- Has meta description
-- Has OG image reference
-- Has no console errors during load
-- Has no failed network requests (except deliberate 404 test)
-- Nav renders with HUD chip
-- Footer renders with email + Upwork link
-- Skip link present
+Create components/work-grid.tsx:
 
-Cross-page checks:
-- CMD+K opens command palette from every route
-- Command palette "Home" command navigates correctly from every route
-- Email reveal on homepage copies to clipboard correctly
-- All 7 work cards on homepage link to correct case study slugs
-- All 4 LIVE work cards have external link buttons that open in new tab
+  "use client";
+  import { WorkCard } from "./work-card";
+  import { WorkGridReveal } from "./work-grid-reveal";
+  import { projects } from "@/content/projects";
+  
+  export function WorkGrid() {
+    const bySlug = Object.fromEntries(projects.map((p) => [p.slug, p]));
+    const order = [
+      "servicecalltracker",
+      "basisweb",
+      "hammock",
+      "operations-command",
+      "warpspeed",
+      "acc-scraper",
+      "google-maps-scraper",
+    ];
+    
+    // Desktop layout:
+    // Row 1: SCT spans 2 columns (hero)
+    // Row 2: BasisWeb + Hammock + OCC (3 equal)
+    // Row 3: Warpspeed + ACC + GMaps (3 equal)
+    
+    return (
+      <div className="space-y-6">
+        {/* Row 1: hero */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 lg:row-span-1">
+            <WorkGridReveal index={0}>
+              <WorkCard project={bySlug["servicecalltracker"]} priority featured />
+            </WorkGridReveal>
+          </div>
+          <div className="lg:col-span-1 flex flex-col gap-6">
+            <WorkGridReveal index={1}>
+              <WorkCard project={bySlug["basisweb"]} priority />
+            </WorkGridReveal>
+            <WorkGridReveal index={2}>
+              <WorkCard project={bySlug["hammock"]} priority />
+            </WorkGridReveal>
+          </div>
+        </div>
+        
+        {/* Row 2: OCC alone at mid weight */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <WorkGridReveal index={3}>
+              <WorkCard project={bySlug["operations-command"]} />
+            </WorkGridReveal>
+          </div>
+          <div className="hidden lg:block" />
+        </div>
+        
+        {/* Row 3: three internal tools, equal */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {["warpspeed", "acc-scraper", "google-maps-scraper"].map((slug, i) => (
+            <WorkGridReveal key={slug} index={4 + i}>
+              <WorkCard project={bySlug[slug]} />
+            </WorkGridReveal>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
-Viewport tests at 390x844 (mobile), 768x1024 (tablet), 1440x900 (desktop):
-- HUD chip collapses correctly at mobile
-- Work grid reflows (3 col -> 2 col -> 1 col)
-- Process timeline switches horizontal to vertical at mobile breakpoint
-- Stack architecture stacks columns at mobile breakpoint
-- Build showcase tabs remain tappable at mobile
+WorkCard needs to accept a `featured` prop that affects thumbnail
+aspect ratio and body density:
+
+  In components/work-card.tsx:
+  type Props = {
+    project: Project;
+    priority?: boolean;
+    featured?: boolean;
+  };
+  
+  When featured is true:
+    - Change thumbnail aspect-[16/10] to aspect-[16/9]
+    - Card body padding goes from p-4 to p-6
+    - Title goes from text-h3 to text-h2
+    - Description max-width increases
+
+Update app/page.tsx to use <WorkGrid /> instead of the current
+inline .map over projects.
+
+On mobile and tablet, asymmetric grid collapses:
+  - Mobile: every card full width, stacked
+  - Tablet: 2-column grid, SCT spans both columns
+  - Desktop: the 3-column asymmetric layout above
 
 ---
 
-Task 7: GitHub push.
+Task 3: Case study writeups for the 4 LIVE projects.
 
-Prerequisites before pushing:
-- All Playwright tests passing (Phase 2, 3, 4, 4.5, 4.6, Phase 5 audit)
-- Lighthouse scores meet targets
-- Accessibility audit clean
-- No console errors on any page
-- README.md written (see below)
+File: content/projects.ts
 
-Create README.md at repo root:
+Current LIVE writeups are 1-2 sentences. They feel thin next to the
+SHIPPED project full post-mortems. Add one concrete metric each.
+
+Update context and result for these four:
+
+  servicecalltracker (existing context is fine, beef up result):
+    result: "Feature-complete and launch-ready. 20+ pages, 119
+    components, 10-page interactive demo dashboard, 5 industry
+    landing pages. 40 Playwright tests passing, zero build warnings.
+    Full funnel from homepage through solutions wizard to lead
+    capture to Calendly booking."
+  
+  basisweb:
+    context: "Agency platform and client gateway for BasisWeb. Scroll-
+    pinned portfolio with device-framed screenshots, numbered
+    capability cards with click-to-flip 3D interaction, bottom
+    sticky pill navbar, free contractor tools."
+    result: "Serves as both portfolio and lead capture for the
+    agency. Four free calculator tools embedded as value-add for
+    contractors, ranking in organic search for 'hvac pricing
+    calculator' and adjacent queries."
+  
+  hammock:
+    context: "Client build for Hammock Property Inspections, a
+    Florida Space Coast home inspector. Clean 5-page marketing site
+    with booking form backend, mobile-optimized, deployed to the
+    client's own Vercel account via guided screen-share handoff."
+    result: "Delivered in two milestones. Client owns deployment,
+    repo, and all infrastructure. First paying external client
+    build end to end. Navy / warm neutral / muted teal palette
+    locked in during discovery, Merriweather and Inter for a
+    print-meets-web aesthetic."
+  
+  operations-command:
+    context: "Centralized work-order intake and routing for
+    multi-location restaurant maintenance operations. Replaced a
+    ServiceNow and ServiceChannel workflow with a purpose-built
+    command center. Automated work orders flow from intake through
+    dispatch to HouseCall Pro via n8n."
+    result: "First paying BasisWeb client. Operational system
+    running real restaurant maintenance workflow across multiple
+    locations. Work orders that previously required manual
+    re-entry into two systems now flow in under 30 seconds from
+    intake to technician."
+
+Keep the existing stackDetailed fields. Update only context and
+result where listed above.
 
 ---
-# ethanchacko.com
 
-Personal portfolio for Ethan Chacko. Full-stack developer based in
-Phoenix, AZ.
+Task 4: Homepage hero density fix.
 
-## Stack
+File: app/page.tsx
 
-Next.js 14 (App Router), TypeScript, Tailwind CSS, Framer Motion,
-cmdk, Playwright. Deployed on Vercel.
+The hero currently feels spare because subhead + two buttons is the
+entire above-fold. Add two elements to increase density without
+adding noise:
 
-## Development
+  After the two CTA buttons, add a three-column metadata strip in
+  mono small:
 
-    npm install
-    npm run dev
+  <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-[640px] pt-8 border-t border-border">
+    <div>
+      <div className="font-mono text-[10px] tracking-[0.14em] uppercase text-fg-dim mb-1">
+        BASED IN
+      </div>
+      <div className="font-mono text-mono text-fg">Phoenix, AZ</div>
+    </div>
+    <div>
+      <div className="font-mono text-[10px] tracking-[0.14em] uppercase text-fg-dim mb-1">
+        AVAILABLE FOR
+      </div>
+      <div className="font-mono text-mono text-fg">Subcontracting + direct</div>
+    </div>
+    <div>
+      <div className="font-mono text-[10px] tracking-[0.14em] uppercase text-fg-dim mb-1">
+        RESPONDING
+      </div>
+      <div className="font-mono text-mono text-fg">Within 24 hours</div>
+    </div>
+  </div>
 
-Opens at http://localhost:3000.
+This adds the tactical metadata under the manifesto without breaking
+the manifesto's single-statement impact. Same mono vocabulary as the
+HUD chip and case study metadata, consistent across the site.
 
-## Testing
-
-    npm run test           # Playwright full suite
-    npm run test:ui        # Playwright UI mode
-
-## Deployment
-
-Auto-deployed to production on push to main via Vercel.
-
-## Structure
-
-    app/                Next.js routes
-    components/         Reusable UI components
-    content/            Typed content layer (work projects)
-    public/             Static assets (fonts, images, OG)
-    scripts/            Build-time scripts (screenshot capture)
-    tests/              Playwright test specs
-
-## Contact
-
-ethan@basisweb.net
 ---
 
-Commit all pending work with message "phase 5: command palette,
-polish, audit, ship".
+Task 5: Test updates.
 
-Push to GitHub:
-- Create new public repo github.com/BasisWeb04/ethanchacko if it
-  doesn't already exist
-- Push master branch
-- Paste the repo URL when done so the user can share it
+Update tests/phase2.spec.ts work grid assertions. The layout changes
+mean:
+  - Work cards total is still 7
+  - But column counts vary by row
+  - Update any "single left position" assertion at mobile to still
+    work, any desktop "3 unique left positions" assertion needs to
+    change
+
+Rewrite the relevant tests to match the new grid:
+  - Mobile (390x844): 7 cards, all left-aligned (1 unique left)
+  - Tablet (768x1024): 7 cards, up to 2 unique lefts per row,
+    SCT still full width
+  - Desktop (1440x900): at least 3 unique lefts present across
+    the whole grid; SCT card width is visibly larger than others
+
+Do not weaken tests to make them pass. Do not test specific pixel
+widths (brittle). Test relationships: SCT's width > BasisWeb's width
+at desktop, for example.
+
+Update tests/audit.spec.ts where applicable for the new Section
+component structure. Every page's h1 should still be present.
+Every page should still render a footer. Smoke tests remain valid.
+
+Add a new test file tests/phase55.spec.ts with structural assertions:
+  - Every main page has at least one Section with left-gutter
+    (grid-template-columns containing 220px at lg viewport)
+  - Work grid on homepage has at least 3 distinct row widths at
+    desktop
+  - Case study headers include a promoted VISIT LIVE button above
+    the status row (for LIVE projects)
+  - Hero metadata strip renders 3 columns on desktop, stacks on
+    mobile
 
 ---
 
 Rules:
-- No em dashes in code, copy, or comments
+- No em dashes anywhere
+- Every animation wrapped in prefers-reduced-motion check
+- Sticky section labels only on lg breakpoint and above
 - Commit after each numbered task
-- Use Context7 MCP for cmdk patterns, Next.js 14 metadata API,
-  Next.js 14 ImageResponse API, next/font preloading
-- Use Playwright MCP to run audits
-- If a test fails, fix the implementation, not the test
-- Do NOT deploy to Vercel yet. User will connect domain and deploy
-  after reviewing the GitHub repo.
+- Use Context7 MCP to verify:
+    CSS grid sticky positioning within grid items
+    Tailwind arbitrary grid-cols values
+    framer-motion layout animations if used
+- Run full Playwright suite at end, report results
 
-Stop after Task 7 with the repo URL. Paste:
-- Final Playwright results (all suites)
-- Final Lighthouse scores (all audited pages)
-- GitHub repo URL
-- Any known issues or TODOs for post-launch
+Stop after Task 5. Paste results and screenshots of:
+  - Homepage desktop (1440x900) full page
+  - /for-agencies desktop
+  - /for-clients desktop
+  - Homepage mobile (390x844) full page
+  - One case study desktop
