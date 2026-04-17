@@ -32,6 +32,31 @@ export default function Home() {
               For Brands &rarr;
             </Button>
           </div>
+          <div
+            data-testid="hero-metadata"
+            className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-[640px] pt-8 border-t border-border"
+          >
+            <div>
+              <div className="font-mono text-[10px] tracking-[0.14em] uppercase text-fg-dim mb-1">
+                BASED IN
+              </div>
+              <div className="font-mono text-mono text-fg">Phoenix, AZ</div>
+            </div>
+            <div>
+              <div className="font-mono text-[10px] tracking-[0.14em] uppercase text-fg-dim mb-1">
+                AVAILABLE FOR
+              </div>
+              <div className="font-mono text-mono text-fg">
+                Subcontracting + direct
+              </div>
+            </div>
+            <div>
+              <div className="font-mono text-[10px] tracking-[0.14em] uppercase text-fg-dim mb-1">
+                RESPONDING
+              </div>
+              <div className="font-mono text-mono text-fg">Within 24 hours</div>
+            </div>
+          </div>
         </div>
       </section>
 
