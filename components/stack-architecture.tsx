@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 
 const leftCol = ["Brief", "Designs", "Comms"];
-const middleCol = ["Spec parsing", "Claude Code build", "Playwright QA", "Daily updates"];
+const middleCol = ["Spec parsing", "Build", "Playwright QA", "Daily updates"];
 const rightCol = ["PR to your repo", "Deploy notes", "Clean docs"];
 
 const ROW_HEIGHT = 44;
