@@ -21,29 +21,31 @@ test("hero CTAs link correctly", async ({ page }) => {
   await expect(brandsCta).toHaveAttribute("href", "/for-clients");
 });
 
-test("work grid has exactly 7 cards", async ({ page }) => {
+test("work grid has exactly 8 cards", async ({ page }) => {
   await page.goto("/");
   const cards = page.locator('[data-testid="work-card"]');
-  await expect(cards).toHaveCount(7);
+  await expect(cards).toHaveCount(8);
 });
 
 test("status dot distribution", async ({ page }) => {
   await page.goto("/");
   const liveCards = page.locator('[data-status="LIVE"]');
   const shippedCards = page.locator('[data-status="SHIPPED"]');
-  await expect(liveCards).toHaveCount(4);
+  // 5 LIVE (flagship + SCT + BasisWeb + Hammock + Operations Command), 3 SHIPPED.
+  await expect(liveCards).toHaveCount(5);
   await expect(shippedCards).toHaveCount(3);
 });
 
-test("live cards have external link arrow", async ({ page }) => {
+test("cards with a public site show an external link arrow", async ({ page }) => {
   await page.goto("/");
-  const liveCards = page.locator('[data-status="LIVE"]');
-  const liveCount = await liveCards.count();
-  for (let i = 0; i < liveCount; i++) {
-    const card = liveCards.nth(i);
-    const externalLink = card.locator('[data-testid="external-link"]');
-    await expect(externalLink).toHaveCount(1);
-    const href = await externalLink.getAttribute("href");
+  // Four cards carry a public liveUrl (SCT, BasisWeb, Hammock, Operations
+  // Command). The flagship is LIVE in production but has no public URL, and the
+  // three SHIPPED tools have none either.
+  const externalLinks = page.locator('[data-testid="external-link"]');
+  await expect(externalLinks).toHaveCount(4);
+  const count = await externalLinks.count();
+  for (let i = 0; i < count; i++) {
+    const href = await externalLinks.nth(i).getAttribute("href");
     expect(href).toBeTruthy();
   }
 
@@ -51,8 +53,7 @@ test("live cards have external link arrow", async ({ page }) => {
   const shippedCount = await shippedCards.count();
   for (let i = 0; i < shippedCount; i++) {
     const card = shippedCards.nth(i);
-    const externalLink = card.locator('[data-testid="external-link"]');
-    await expect(externalLink).toHaveCount(0);
+    await expect(card.locator('[data-testid="external-link"]')).toHaveCount(0);
   }
 });
 

@@ -7,10 +7,11 @@ import { projects } from "@/content/projects";
 export function WorkGrid() {
   const bySlug = Object.fromEntries(projects.map((p) => [p.slug, p]));
 
+  const flagship = bySlug["inspection-revenue-engine"];
   const sct = bySlug["servicecalltracker"];
   const basisweb = bySlug["basisweb"];
-  const hammock = bySlug["hammock"];
   const occ = bySlug["operations-command"];
+  const hammock = bySlug["hammock"];
 
   const tools = [
     bySlug["warpspeed"],
@@ -20,28 +21,28 @@ export function WorkGrid() {
 
   return (
     <div data-testid="work-grid" className="space-y-6">
-      {/* Row 1: SCT hero (2 cols on lg) + BasisWeb + Hammock stacked (1 col on lg).
-          On tablet, SCT spans both columns and BW/Hammock share a row. */}
+      {/* Row 1: flagship hero (2 cols on lg) + SCT and BasisWeb stacked (1 col on lg).
+          On tablet, the flagship spans both columns and SCT/BasisWeb share a row. */}
       <div
         data-testid="work-grid-row"
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
       >
         <div className="md:col-span-2 lg:col-span-2 lg:row-span-1">
           <WorkGridReveal index={0}>
-            <WorkCard project={sct} priority featured />
+            <WorkCard project={flagship} priority featured />
           </WorkGridReveal>
         </div>
         <div className="md:col-span-2 lg:col-span-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6 items-stretch">
           <WorkGridReveal index={1}>
-            <WorkCard project={basisweb} priority />
+            <WorkCard project={sct} priority />
           </WorkGridReveal>
           <WorkGridReveal index={2}>
-            <WorkCard project={hammock} priority />
+            <WorkCard project={basisweb} priority />
           </WorkGridReveal>
         </div>
       </div>
 
-      {/* Row 2: OCC at 2-col width on lg, full-width on mobile/tablet. */}
+      {/* Row 2: OCC at 2-col width on lg + Hammock filling the third column. */}
       <div
         data-testid="work-grid-row"
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
@@ -51,7 +52,11 @@ export function WorkGrid() {
             <WorkCard project={occ} />
           </WorkGridReveal>
         </div>
-        <div className="hidden lg:block" aria-hidden="true" />
+        <div className="md:col-span-2 lg:col-span-1">
+          <WorkGridReveal index={4}>
+            <WorkCard project={hammock} />
+          </WorkGridReveal>
+        </div>
       </div>
 
       {/* Row 3: three internal tools, equal weight. */}
@@ -60,7 +65,7 @@ export function WorkGrid() {
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
       >
         {tools.map((project, i) => (
-          <WorkGridReveal key={project.slug} index={4 + i}>
+          <WorkGridReveal key={project.slug} index={5 + i}>
             <WorkCard project={project} />
           </WorkGridReveal>
         ))}

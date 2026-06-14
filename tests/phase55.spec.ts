@@ -49,17 +49,18 @@ test.describe("Phase 5.5 @ desktop 1440x900: asymmetric work grid", () => {
     await expect(rows).toHaveCount(3);
   });
 
-  test("ServiceCallTracker is visibly wider than BasisWeb at desktop", async ({
+  test("the featured flagship card is visibly wider than BasisWeb at desktop", async ({
     page,
   }) => {
     await page.goto("/");
-    const sct = page
+    const featured = page
       .locator('[data-testid="work-card"][data-featured="true"]')
       .first();
-    await expect(sct).toBeVisible();
-    const sctWidth = (await sct.boundingBox())?.width ?? 0;
+    await expect(featured).toBeVisible();
+    await expect(featured).toContainText("Inspection Revenue Engine");
+    const sctWidth = (await featured.boundingBox())?.width ?? 0;
 
-    // BasisWeb sits in the right-column stack alongside Hammock.
+    // BasisWeb sits in the right-column stack alongside ServiceCallTracker.
     const cards = page.locator('[data-testid="work-card"]');
     const allBoxes = await cards.evaluateAll((els) =>
       els.map((el) => {
@@ -187,7 +188,7 @@ test.describe("Phase 5.5 @ mobile 390x844", () => {
     );
     const unique = new Set(lefts);
     expect(unique.size).toBe(1);
-    // All 7 cards still present.
-    expect(lefts.length).toBe(7);
+    // All 8 cards still present.
+    expect(lefts.length).toBe(8);
   });
 });

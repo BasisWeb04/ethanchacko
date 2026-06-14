@@ -21,12 +21,20 @@ test("/for-agencies has no rate block or rate number", async ({ page }) => {
   expect(body).not.toMatch(/\$\s*65\s*\/?\s*hr/i);
 });
 
-test("/for-agencies contract sheet has all 6 labels", async ({ page }) => {
+test("/for-agencies contract sheet has all 7 labels", async ({ page }) => {
   await page.goto("/for-agencies");
   const labels = page.locator('[data-testid="sheet-label"]');
-  await expect(labels).toHaveCount(6);
+  await expect(labels).toHaveCount(7);
 
-  const expected = ["SCOPE", "OWNERSHIP", "TURNAROUND", "STACK", "COMMS", "FIT"];
+  const expected = [
+    "SCOPE",
+    "OWNERSHIP",
+    "TURNAROUND",
+    "PRICING",
+    "STACK",
+    "COMMS",
+    "FIT",
+  ];
   for (const label of expected) {
     await expect(
       page.locator('[data-testid="sheet-label"]', { hasText: label })

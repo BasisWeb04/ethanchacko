@@ -34,6 +34,10 @@ export function useCommandPalette() {
 type WorkItem = { label: string; slug: string };
 
 const workItems: WorkItem[] = [
+  {
+    label: "Go to Inspection Revenue Engine case study",
+    slug: "inspection-revenue-engine",
+  },
   { label: "Go to ServiceCallTracker case study", slug: "servicecalltracker" },
   { label: "Go to BasisWeb case study", slug: "basisweb" },
   { label: "Go to Hammock case study", slug: "hammock" },

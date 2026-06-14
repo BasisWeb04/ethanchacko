@@ -1,5 +1,7 @@
 import { test, expect } from "@playwright/test";
 
+// Slugs whose thumbnail is a slug-named .webp under /public/work/. The flagship
+// (inspection-revenue-engine) uses /work/n8n-overview.png and is checked separately.
 const WORK_SLUGS = [
   "servicecalltracker",
   "basisweb",
@@ -10,12 +12,14 @@ const WORK_SLUGS = [
   "google-maps-scraper",
 ];
 
-test("all 7 work cards have a real thumbnail image from /work/", async ({
+const TOTAL_CARDS = 8;
+
+test("all work cards have a real thumbnail image from /work/", async ({
   page,
 }) => {
   await page.goto("/");
   const cards = page.locator('[data-testid="work-card"]');
-  await expect(cards).toHaveCount(7);
+  await expect(cards).toHaveCount(TOTAL_CARDS);
 
   const count = await cards.count();
   for (let i = 0; i < count; i++) {
@@ -47,6 +51,12 @@ test("no 404s on any work thumbnail image", async ({ page }) => {
     const direct = await page.request.get(`/work/${slug}.webp`);
     expect(direct.status(), `/work/${slug}.webp should return 200`).toBe(200);
   }
+  // Flagship thumbnail is a PNG, not a slug-named webp.
+  const flagshipThumb = await page.request.get("/work/n8n-overview.png");
+  expect(
+    flagshipThumb.status(),
+    "/work/n8n-overview.png should return 200"
+  ).toBe(200);
   expect(failed, failed.join("\n")).toEqual([]);
 });
 
@@ -54,7 +64,7 @@ test("browser chrome bar renders on every work card", async ({ page }) => {
   await page.goto("/");
   const cards = page.locator('[data-testid="work-card"]');
   const count = await cards.count();
-  expect(count).toBe(7);
+  expect(count).toBe(8);
 
   for (let i = 0; i < count; i++) {
     const chrome = cards.nth(i).locator('[data-testid="browser-chrome"]');

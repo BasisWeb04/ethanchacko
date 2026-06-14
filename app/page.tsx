@@ -68,8 +68,36 @@ export default function Home() {
         <WorkGrid />
       </Section>
 
+      {/* Testimonial */}
+      <Section number="02" label="SIGNAL" testId="testimonial-section">
+        <h2 className="sr-only">Client testimonial</h2>
+        <figure className="max-w-[68ch]">
+          <blockquote className="space-y-6">
+            <p className="text-h3 text-fg leading-relaxed">
+              &ldquo;I&apos;ve been in the software development industry for over
+              30 years, and he is one of the most professional people I&apos;ve
+              worked with. He is highly attentive, communicates clearly, and
+              follows requirements exactly while still offering thoughtful input
+              when appropriate.&rdquo;
+            </p>
+            <p className="text-body text-fg-muted leading-relaxed">
+              &ldquo;He provided an extremely detailed and well-organized
+              handoff document that clearly explains the entire setup. That
+              level of thoroughness is rare.&rdquo;
+            </p>
+          </blockquote>
+          <figcaption className="font-mono text-mono uppercase tracking-widest text-fg-dim mt-8">
+            <span className="text-signal-dim">/</span>
+            <span className="ml-2">
+              Verified 5.0 Upwork review &middot; 30-year software-industry
+              veteran
+            </span>
+          </figcaption>
+        </figure>
+      </Section>
+
       {/* Stack */}
-      <Section number="02" label="STACK" testId="stack-section">
+      <Section number="03" label="STACK" testId="stack-section">
         <h2 className="sr-only">Stack</h2>
         <p className="font-mono text-h2 text-fg leading-relaxed">
           Next.js &middot; TypeScript &middot; Tailwind &middot; shadcn/ui
@@ -81,7 +109,7 @@ export default function Home() {
       </Section>
 
       {/* Contact */}
-      <Section number="03" label="CONTACT" testId="contact-section">
+      <Section number="04" label="CONTACT" testId="contact-section">
         <h2 className="sr-only">Contact</h2>
         <p className="text-h2 text-fg mb-8">
           Available for agency subcontracting

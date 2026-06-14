@@ -5,6 +5,7 @@ import { test, expect, type Page } from "@playwright/test";
 // ---------------------------------------------------------------------------
 
 const WORK_SLUGS = [
+  "inspection-revenue-engine",
   "servicecalltracker",
   "basisweb",
   "hammock",
@@ -175,7 +176,7 @@ test("email reveal copies ethan@basisweb.net to clipboard", async ({
 // cross-page: work card links are correct
 // ---------------------------------------------------------------------------
 
-test("all 7 work cards link to the matching case study slug", async ({
+test("all 8 work cards link to the matching case study slug", async ({
   page,
 }) => {
   await page.goto("/");
@@ -187,7 +188,7 @@ test("all 7 work cards link to the matching case study slug", async ({
   const slugs = hrefs
     .filter((h): h is string => !!h)
     .map((h) => h.replace("/work/", ""));
-  // Each slug must be one of our 7, and all 7 must appear at least once.
+  // Each slug must be one of our 8, and all 8 must appear at least once.
   for (const slug of slugs) {
     expect(WORK_SLUGS).toContain(slug);
   }
@@ -196,23 +197,23 @@ test("all 7 work cards link to the matching case study slug", async ({
   }
 });
 
-test("all 4 LIVE work cards have an external link that opens in a new tab", async ({
+test("every public-site card has an external link that opens in a new tab", async ({
   page,
 }) => {
   await page.goto("/");
-  const liveCards = page.locator('[data-status="LIVE"]');
-  const count = await liveCards.count();
-  expect(count).toBe(4);
+  // The flagship is LIVE in production but has no public URL, so the external
+  // link arrows belong only to the LIVE_SLUGS that ship a public site.
+  const externalLinks = page.locator('[data-testid="external-link"]');
+  await expect(externalLinks).toHaveCount(LIVE_SLUGS.size);
+  const count = await externalLinks.count();
   for (let i = 0; i < count; i++) {
-    const card = liveCards.nth(i);
-    const ext = card.locator('[data-testid="external-link"]');
-    await expect(ext).toHaveCount(1);
+    const ext = externalLinks.nth(i);
     await expect(ext).toHaveAttribute("target", "_blank");
     await expect(ext).toHaveAttribute("rel", /noopener/);
   }
-  // Sanity: the 4 LIVE slugs match our LIVE_SLUGS set.
-  const liveHrefs = await liveCards
-    .locator('a[href^="/work/"]')
+  // Sanity: every public-site slug renders as a LIVE card.
+  const liveHrefs = await page
+    .locator('[data-status="LIVE"] a[href^="/work/"]')
     .evaluateAll((els) =>
       els.map((el) => (el as HTMLAnchorElement).getAttribute("href"))
     );

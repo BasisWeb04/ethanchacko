@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { SectionLabel } from "@/components/section-label";
 import { Section } from "@/components/section";
 import { EmailReveal } from "@/components/email-reveal";
@@ -250,6 +252,17 @@ export default function ForAgenciesPage() {
             The rule: impossible asks get caught at discovery, not at the
             deadline.
           </p>
+        </div>
+
+        {/* Full case study link */}
+        <div className="mt-10">
+          <Link
+            href="/work/inspection-revenue-engine"
+            className="inline-flex items-center gap-2 font-mono text-mono uppercase tracking-widest text-signal hover:text-fg transition-colors duration-base"
+          >
+            Read the full case study
+            <ArrowUpRight size={14} aria-hidden="true" />
+          </Link>
         </div>
 
         {/* Third-party review */}
