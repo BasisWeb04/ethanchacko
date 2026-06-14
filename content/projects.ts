@@ -20,9 +20,54 @@ export type Project = {
   approach?: string;
   stackDetailed: string;
   result: string;
+  /** Optional metrics band, rendered above the writeup. Flagship case studies only. */
+  stats?: { value: string; label: string; signal?: boolean }[];
+  /** Optional inline figures/screenshots with captions. Flagship case studies only. */
+  figures?: { src: string; caption: string }[];
 };
 
 export const projects: Project[] = [
+  {
+    slug: "inspection-revenue-engine",
+    title: "Inspection Revenue Engine",
+    description:
+      "Production GoHighLevel and n8n system for a multi-inspector home-inspection company.",
+    status: "LIVE",
+    stack: ["GoHighLevel", "n8n", "Python", "Supabase", "Spectora"],
+    thumbnailUrl: "/work/n8n-overview.png",
+    thumbnailLabel: "n8n / production bridge",
+    year: "2026",
+    context:
+      "A multi-inspector US home-inspection company ran its entire operation on inspection software (Spectora) with no CRM layer underneath it. Years of client and agent history sat siloed in one tool. No marketing attribution, lead generation by hand, follow-up by memory. An established business with real revenue and customers, whose history lived nowhere they could market from or report on.\n\nI designed and built the production system around it: a GoHighLevel CRM from scratch, a custom integration bridging their inspection software into it over self-hosted n8n, a full historical migration of their book of business, and a marketing-to-revenue attribution layer. It has run in production since May 2026 and carries every real booking, report-delivery, and payment event the business runs.",
+    constraints:
+      "The original scope assumed a two-way sync, with data flowing back into the inspection software. Deep discovery killed that assumption. The platform is outbound-webhook-only: no inbound API, no programmatic write path of any kind. The promised direction was technically impossible.\n\nMost builders either quote that two-way sync and miss at the deadline, or quietly de-scope it and hope nobody notices. I put the correction in writing as an explicit scope change while there was still time to act on it, then re-architected around the real constraint.\n\nThe data had to migrate clean on top of that. Years of records, with duplicate contacts and phone-number collisions that GoHighLevel rejects at the server. A migration that loses relationship history is worse than no migration.",
+    approach:
+      "Forward-direction enrichment instead of a fake sync: when a booking fires, the bridge looks the agent up in GoHighLevel and creates or updates the contact, plus a one-time historical backfill through the platform's CSV export path. The client got a complete, continuously updated CRM and zero pretend two-way sync.\n\nThe integration runs on self-hosted n8n on a hardened Linux VPS. Three production event workflows, booking created, report delivered, and payment completed, 21 to 27 nodes each, routing every inspection across a 50-service catalog. Every inbound event dedupes against a composite-keyed Postgres ledger, so vendor retry storms cannot double-write the CRM. Phone-number collisions get caught, retried without the colliding field, and tagged for human review instead of failing silently. An alerting workflow polls hourly and emails the moment any event fails.\n\nThe attribution layer is built to tie a marketing touch to the booking it eventually drives: per-event QR codes feed a tagged capture form and a structured nurture sequence, and the booking webhook traces that touch back to the booking months later.",
+    stackDetailed:
+      "GoHighLevel · Spectora (Advanced-tier webhooks) · n8n (self-hosted) · Python · Supabase / Postgres · Resend · Next.js · hardened Linux VPS behind Caddy with auto-TLS",
+    result:
+      "Live in production since May 2026, carrying the business's real booking, report-delivery, and payment events, its real revenue data, not test traffic. A point-in-time read from the live n8n dashboard: 318 production executions, 0 failed, a 0% failure rate, and a 0.7-second average run time. The residential pipeline alone holds 5,840 opportunities. The system processed 160-plus real events in its first two weeks, and milestone one delivered ahead of a 14-day plan.\n\nThe historical migration moved roughly 8,000 contacts and 6,500-plus opportunities with clean deduplication and zero lost relationship history. The engagement is ongoing: the lifecycle-automation milestone is live, a custom team-operations dashboard is live behind auth on the client's own subdomain, and a monthly retainer is contracted.",
+    stats: [
+      { value: "0", label: "failed events, every audit", signal: true },
+      { value: "0%", label: "failure rate", signal: true },
+      { value: "318", label: "production executions" },
+      { value: "0.7s", label: "avg run time" },
+      { value: "~8,000", label: "contacts migrated" },
+      { value: "6,500+", label: "opportunities migrated" },
+    ],
+    figures: [
+      {
+        src: "/work/n8n-booking-canvas.png",
+        caption:
+          "Booking Created: one of three production event workflows, routing every inspection across a 50-service catalog with native retries and idempotency.",
+      },
+      {
+        src: "/work/n8n-alerting-canvas.png",
+        caption:
+          "The failure-alerting workflow: polls hourly, filters for real errors, and emails the moment a production event fails.",
+      },
+    ],
+  },
   {
     slug: "servicecalltracker",
     title: "ServiceCallTracker",

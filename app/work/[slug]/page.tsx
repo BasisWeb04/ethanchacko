@@ -90,8 +90,16 @@ export default function CaseStudyPage({ params }: Params) {
     ...s,
     number: String(i + 1).padStart(2, "0"),
   }));
-  const stackNumber = String(renumbered.length + 1).padStart(2, "0");
-  const resultNumber = String(renumbered.length + 2).padStart(2, "0");
+  const hasFigures = Boolean(project.figures && project.figures.length);
+  const figuresNumber = hasFigures
+    ? String(renumbered.length + 1).padStart(2, "0")
+    : null;
+  const stackNumber = String(
+    renumbered.length + (hasFigures ? 1 : 0) + 1
+  ).padStart(2, "0");
+  const resultNumber = String(
+    renumbered.length + (hasFigures ? 1 : 0) + 2
+  ).padStart(2, "0");
 
   return (
     <article>
@@ -160,12 +168,67 @@ export default function CaseStudyPage({ params }: Params) {
         </div>
       </div>
 
+      {/* Metrics band */}
+      {project.stats && project.stats.length > 0 && (
+        <div className="px-gutter pb-section-y">
+          <div className="mx-auto max-w-container">
+            <dl className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 border-t border-l border-border">
+              {project.stats.map((s) => (
+                <div
+                  key={s.label}
+                  data-testid="case-stat"
+                  className="border-b border-r border-border px-4 py-5"
+                >
+                  <dt
+                    className={`font-mono text-h3 ${
+                      s.signal ? "text-signal" : "text-fg"
+                    }`}
+                  >
+                    {s.value}
+                  </dt>
+                  <dd className="font-mono text-[11px] uppercase tracking-widest text-fg-dim mt-2 leading-snug">
+                    {s.label}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+      )}
+
       {/* Renumbered body sections */}
       {renumbered.map((s) => (
         <Section key={s.label} number={s.number} label={s.label}>
           {paragraphs(s.body)}
         </Section>
       ))}
+
+      {/* Figures */}
+      {project.figures && project.figures.length > 0 && figuresNumber && (
+        <section className="px-gutter py-section-y border-t border-border">
+          <div className="mx-auto max-w-container grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)]">
+            <SectionLabel number={figuresNumber} label="SYSTEM" />
+            <div className="space-y-10 min-w-0">
+              {project.figures.map((f) => (
+                <figure key={f.src}>
+                  <div className="relative aspect-[16/9] rounded-md overflow-hidden border border-border bg-bg-elev">
+                    <Image
+                      src={f.src}
+                      alt={f.caption}
+                      fill
+                      sizes="(min-width: 1024px) 800px, 100vw"
+                      className="object-cover object-top"
+                    />
+                  </div>
+                  <figcaption className="font-mono text-mono text-fg-dim mt-3 uppercase tracking-widest leading-snug">
+                    {f.caption}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Stack */}
       <Section number={stackNumber} label="STACK">

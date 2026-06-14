@@ -251,6 +251,28 @@ export default function ForAgenciesPage() {
             deadline.
           </p>
         </div>
+
+        {/* Third-party review */}
+        <div className="mt-12 border-l-2 border-signal pl-6 max-w-[68ch]">
+          <p className="text-body text-fg leading-relaxed">
+            &ldquo;I&apos;ve been in the software development industry for over
+            30 years, and he is one of the most professional people I&apos;ve
+            worked with. He is highly attentive, communicates clearly, and
+            follows requirements exactly while still offering thoughtful input
+            when appropriate.&rdquo;
+          </p>
+          <p className="text-body text-fg-muted leading-relaxed mt-4">
+            &ldquo;He provided an extremely detailed and well-organized handoff
+            document that clearly explains the entire setup. That level of
+            thoroughness is rare.&rdquo;
+          </p>
+          <p className="font-mono text-mono uppercase tracking-widest text-fg-dim mt-5">
+            <span className="text-signal-dim">/</span>
+            <span className="ml-2">
+              Verified 5.0 Upwork review, 30-year software-industry veteran
+            </span>
+          </p>
+        </div>
       </Section>
 
       {/* Workflow */}
