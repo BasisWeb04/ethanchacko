@@ -59,7 +59,7 @@ export function AnnotatedExhibit({
               key={c.n}
               aria-hidden="true"
               style={{ left: `${c.x}%`, top: `${c.y}%` }}
-              className="absolute flex h-6 w-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center border border-ink bg-mark font-mono text-[11px] font-semibold text-ink shadow-[0_1px_2px_rgba(28,27,24,0.25)]"
+              className="absolute flex h-6 w-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center border border-[#0A1826] bg-mark font-mono text-[11px] font-semibold text-[#0A1826] shadow-[0_1px_3px_rgba(0,0,0,0.4)]"
             >
               {c.n}
             </span>
@@ -71,7 +71,7 @@ export function AnnotatedExhibit({
         <ol className="mt-4 space-y-2.5">
           {callouts.map((c) => (
             <li key={c.n} className="flex gap-3">
-              <span className="mt-[1px] flex h-5 w-5 shrink-0 items-center justify-center border border-ink bg-mark font-mono text-[11px] font-semibold text-ink">
+              <span className="mt-[1px] flex h-5 w-5 shrink-0 items-center justify-center border border-[#0A1826] bg-mark font-mono text-[11px] font-semibold text-[#0A1826]">
                 {c.n}
               </span>
               <span className="font-mono text-[0.8rem] leading-relaxed text-ink-muted">

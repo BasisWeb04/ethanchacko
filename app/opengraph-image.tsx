@@ -34,12 +34,12 @@ export default async function Image() {
     fetchGoogleFontWeight("Source Serif 4", 400),
   ]);
 
-  const paper = "#FBFAF7";
-  const ink = "#1C1B18";
-  const inkMuted = "#5C5850";
-  const inkDim = "#8A857B";
-  const mark = "#FFD84D";
-  const rule = "#E4E0D6";
+  const paper = "#121211";
+  const ink = "#ECEAE3";
+  const inkMuted = "#A8A29A";
+  const inkDim = "#726D64";
+  const mark = "#2E9BFF";
+  const rule = "#2A2926";
 
   return new ImageResponse(
     (

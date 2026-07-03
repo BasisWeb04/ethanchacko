@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { Source_Serif_4 } from "next/font/google";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
+import { SmoothScroll } from "@/components/smooth-scroll";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -82,6 +83,7 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
+        <SmoothScroll />
         <Nav />
         <main id="main" className="pt-16">
           {children}

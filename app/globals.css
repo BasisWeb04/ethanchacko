@@ -3,23 +3,23 @@
 @tailwind utilities;
 
 /*
-  Palette: a warm, paper-like ground read in daylight, the register of a printed
-  field manual rather than a developer's dark terminal. The single accent is a
-  highlighter yellow, the color you actually mark up evidence with. It is only
-  ever a background fill under ink text, never a text color on paper.
+  Dark ground, warm-neutral rather than pure black, so it reads intentional and
+  not like a default terminal. The single accent is BasisWeb's azure, tying the
+  personal site to the agency brand. It is only ever a fill with dark text on it.
 */
 :root {
-  --paper: #FBFAF7;
-  --paper-elev: #F3F1EB;
-  --ink: #1C1B18;
-  --ink-muted: #5C5850;
-  --ink-dim: #8A857B;
-  --mark: #FFD84D;
-  --mark-wash: #FDECA6;
-  --live: #2E7D46;
-  --pending: #B45D0E;
-  --rule: #E4E0D6;
-  --rule-strong: #CFC9BB;
+  --paper: #121211;
+  --paper-elev: #1C1B18;
+  --ink: #ECEAE3;
+  --ink-muted: #A8A29A;
+  --ink-dim: #726D64;
+  --mark: #2E9BFF;
+  --mark-wash: #8CAAFF;
+  --on-mark: #0A1826;
+  --live: #4ECB7B;
+  --pending: #E8873A;
+  --rule: #2A2926;
+  --rule-strong: #3B392F;
 }
 
 body {
@@ -32,7 +32,7 @@ body {
 /* Marking up evidence: selecting text swipes the highlighter across it. */
 ::selection {
   background: var(--mark);
-  color: var(--ink);
+  color: var(--on-mark);
 }
 
 @layer base {
@@ -45,9 +45,14 @@ body {
   }
 
   :focus-visible {
-    outline: 2px solid var(--ink);
+    outline: 2px solid var(--mark);
     outline-offset: 2px;
     border-radius: 2px;
+  }
+
+  /* Anchor targets clear the fixed nav (native-scroll fallback). */
+  section[id] {
+    scroll-margin-top: 5rem;
   }
 }
 
@@ -57,25 +62,45 @@ body {
   }
 
   /*
-    The highlighter mark: a hand-marked wash behind a phrase, sitting a touch
-    below the baseline like a real marker stroke that overshot the text. Ink
-    stays on top so the phrase reads as marked, never as yellow-on-paper.
+    The accent mark: a solid brand-blue block with dark navy text on top.
+    Clones across wrapped lines.
   */
   .mark-phrase {
-    background-image: linear-gradient(
-      to top,
-      var(--mark-wash) 0%,
-      var(--mark-wash) 42%,
-      transparent 42%
-    );
-    padding: 0 0.06em;
+    background-color: var(--mark);
+    color: var(--on-mark);
+    padding: 0 0.14em;
+    border-radius: 1px;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
   }
+}
+
+/* Native smooth scroll as the fallback when Lenis is off (reduced motion). */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Lenis smooth-scroll runtime styles. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
 }
 
 /*
   Nav underline: a highlighter stroke drawn left-to-right on hover and pinned
-  under the current page. scaleX at transform-origin:left keeps it a single
-  clean pen stroke rather than a fade.
+  under the current page.
 */
 .nav-link {
   position: relative;
@@ -105,6 +130,10 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   .nav-link::after {
     transition: opacity 180ms ease-out;
     transform: scaleX(1);
@@ -142,10 +171,23 @@ body {
   }
 }
 
+/* Shipped marquee: a continuous horizontal drift over a duplicated track. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 48s linear infinite;
+}
+
 /*
   Exhibits are laid onto the page like documents set down on a desk: a short
-  settle from slightly raised and faintly tilted to flat. Used for scroll
-  reveals on case-study exhibits and the homepage receipts strip.
+  settle from slightly raised to flat.
 */
 @keyframes exhibit-settle {
   from {
