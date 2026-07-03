@@ -1,4 +1,16 @@
-import { MapPin, User, Clock, Database, Table2, Bot, Quote } from "lucide-react";
+import {
+  MapPin,
+  User,
+  Users,
+  Clock,
+  Code2,
+  Database,
+  LayoutDashboard,
+  Table2,
+  Utensils,
+  Bot,
+  Quote,
+} from "lucide-react";
 import { Section } from "@/components/section";
 import { Button } from "@/components/button";
 import { EmailReveal } from "@/components/email-reveal";
@@ -207,10 +219,22 @@ export default function Home() {
           system than a proposal about one.
         </p>
         <div className="mt-6 flex flex-wrap gap-2">
-          <Chip icon={Database}>Multi-inspector inspection co</Chip>
-          <Chip icon={Table2}>25-year transportation vet</Chip>
-          <Chip icon={Bot}>Restaurant operators</Chip>
-          <Chip icon={User}>White-label agencies</Chip>
+          <Chip icon={User}>Solo full-stack builder</Chip>
+          <Chip icon={Code2}>Next.js · React · TypeScript</Chip>
+          <Chip icon={Bot}>AI &amp; LLM automation</Chip>
+          <Chip icon={LayoutDashboard}>Dashboards &amp; internal tools</Chip>
+        </div>
+
+        <div className="mt-10">
+          <p className="font-mono text-mono uppercase tracking-widest text-ink-dim">
+            Built for
+          </p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Chip icon={Database}>Multi-inspector inspection co</Chip>
+            <Chip icon={Table2}>25-year transportation vet</Chip>
+            <Chip icon={Utensils}>Restaurant operators</Chip>
+            <Chip icon={Users}>White-label agencies</Chip>
+          </div>
         </div>
       </Section>
 
