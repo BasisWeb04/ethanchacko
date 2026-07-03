@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Ethan Chacko, Full-Stack Developer";
+export const alt = "Ethan Chacko, systems builder in Surprise, AZ";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -20,14 +20,6 @@ async function fetchGoogleFontCssSrc(cssUrl: string) {
   return fontRes.arrayBuffer();
 }
 
-async function fetchGoogleFont(family: string, italic = false) {
-  return fetchGoogleFontCssSrc(
-    `https://fonts.googleapis.com/css2?family=${encodeURIComponent(
-      family
-    )}:ital,wght@${italic ? "1" : "0"},400&display=swap`
-  );
-}
-
 async function fetchGoogleFontWeight(family: string, weight: number) {
   return fetchGoogleFontCssSrc(
     `https://fonts.googleapis.com/css2?family=${encodeURIComponent(
@@ -37,11 +29,17 @@ async function fetchGoogleFontWeight(family: string, weight: number) {
 }
 
 export default async function Image() {
-  const [geistBold, geistRegular, serif] = await Promise.all([
-    fetchGoogleFontWeight("Geist", 700),
-    fetchGoogleFontWeight("Geist", 400),
-    fetchGoogleFont("Instrument Serif", true),
+  const [serifBold, serifRegular] = await Promise.all([
+    fetchGoogleFontWeight("Source Serif 4", 700),
+    fetchGoogleFontWeight("Source Serif 4", 400),
   ]);
+
+  const paper = "#FBFAF7";
+  const ink = "#1C1B18";
+  const inkMuted = "#5C5850";
+  const inkDim = "#8A857B";
+  const mark = "#FFD84D";
+  const rule = "#E4E0D6";
 
   return new ImageResponse(
     (
@@ -49,112 +47,98 @@ export default async function Image() {
         style={{
           width: "100%",
           height: "100%",
-          background: "#050505",
+          background: paper,
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "flex-start",
-          padding: "96px",
+          justifyContent: "space-between",
+          padding: "72px 80px",
           position: "relative",
-          fontFamily: "Geist",
+          fontFamily: "SourceSerif",
         }}
       >
-        <div
-          style={{
-            position: "absolute",
-            top: 72,
-            left: 72,
-            right: 72,
-            height: 1,
-            background: "#1A1A1A",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            bottom: 72,
-            left: 72,
-            right: 72,
-            height: 1,
-            background: "#1A1A1A",
-          }}
-        />
-
-        <div
-          style={{
-            position: "absolute",
-            top: 88,
-            left: 96,
-            fontSize: 22,
-            fontWeight: 400,
-            letterSpacing: "0.14em",
-            textTransform: "uppercase",
-            color: "#8A8A8A",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <span style={{ color: "#4A4A4A" }}>/</span>
-          <span style={{ marginLeft: 12 }}>MANIFESTO</span>
+        {/* Top rule + dateline */}
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <div style={{ width: 16, height: 16, background: mark }} />
+            <div
+              style={{
+                fontSize: 22,
+                fontWeight: 400,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: inkDim,
+                display: "flex",
+              }}
+            >
+              Systems builder · Surprise, AZ
+            </div>
+          </div>
+          <div
+            style={{
+              marginTop: 22,
+              height: 1,
+              width: "100%",
+              background: rule,
+            }}
+          />
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            width: "100%",
-          }}
-        >
+        {/* Name + receipt line */}
+        <div style={{ display: "flex", flexDirection: "column" }}>
           <div
             style={{
               fontWeight: 700,
               fontSize: 128,
-              lineHeight: 1.05,
-              letterSpacing: "-0.035em",
-              color: "#EDEDED",
+              lineHeight: 1.0,
+              letterSpacing: "-0.02em",
+              color: ink,
               display: "flex",
             }}
           >
-            I build systems,
+            Ethan Chacko
           </div>
           <div
             style={{
+              marginTop: 26,
+              fontWeight: 400,
+              fontSize: 36,
+              lineHeight: 1.3,
+              color: inkMuted,
+              maxWidth: 900,
               display: "flex",
-              fontFamily: "InstrumentSerif",
-              fontStyle: "italic",
-              fontSize: 128,
-              lineHeight: 1.05,
-              letterSpacing: "-0.02em",
-              color: "#FFB000",
             }}
           >
-            not slide decks.
+            I build the operational systems service businesses run on.
           </div>
         </div>
 
-        <div
-          style={{
-            position: "absolute",
-            bottom: 88,
-            left: 96,
-            right: 96,
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            fontSize: 22,
-            fontWeight: 400,
-            letterSpacing: "0.14em",
-            textTransform: "uppercase",
-            color: "#8A8A8A",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center" }}>
-            ethanchacko.com
-          </div>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <span style={{ color: "#FFB000" }}>&#x25CF;</span>
-            <span style={{ marginLeft: 12 }}>PHX / FULL-STACK</span>
+        {/* Bottom rule + footer */}
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div
+            style={{
+              marginBottom: 22,
+              height: 1,
+              width: "100%",
+              background: rule,
+            }}
+          />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              fontSize: 22,
+              fontWeight: 400,
+              letterSpacing: "0.06em",
+              color: inkDim,
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center" }}>
+              ethanchacko.com
+            </div>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              Real systems, real screenshots.
+            </div>
           </div>
         </div>
       </div>
@@ -162,9 +146,8 @@ export default async function Image() {
     {
       ...size,
       fonts: [
-        { name: "Geist", data: geistRegular, weight: 400, style: "normal" },
-        { name: "Geist", data: geistBold, weight: 700, style: "normal" },
-        { name: "InstrumentSerif", data: serif, style: "italic", weight: 400 },
+        { name: "SourceSerif", data: serifRegular, weight: 400, style: "normal" },
+        { name: "SourceSerif", data: serifBold, weight: 700, style: "normal" },
       ],
     }
   );

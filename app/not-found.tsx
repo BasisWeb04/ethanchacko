@@ -1,13 +1,10 @@
-import Link from "next/link";
 import { SectionLabel } from "@/components/section-label";
+import { Button } from "@/components/button";
 
 export const metadata = {
-  title: "Not Found",
+  title: "Not found",
   description: "That route isn't wired up.",
 };
-
-const buttonClass =
-  "inline-flex items-center justify-center gap-2 px-6 py-3 border border-border text-fg font-mono text-mono uppercase tracking-widest hover:border-border-strong active:border-signal active:text-signal focus-visible:border-signal focus-visible:outline-none transition-colors duration-base";
 
 export default function NotFound() {
   return (
@@ -17,25 +14,21 @@ export default function NotFound() {
     >
       <div className="mx-auto max-w-container w-full">
         <SectionLabel label="404" className="mb-8" />
-        <h1 className="text-h1 text-fg mb-6">This route isn&apos;t wired.</h1>
-        <p className="text-body text-fg-muted max-w-[52ch] mb-10 leading-relaxed">
+        <h1 className="text-h1 text-ink mb-6">This route isn&apos;t wired.</h1>
+        <p className="text-body text-ink-muted max-w-[52ch] mb-10 leading-relaxed">
           Either the URL is off or I haven&apos;t shipped this yet. Head back
-          home or hit me up if something&apos;s broken.
+          home, or email me if something looks broken.
         </p>
         <div className="flex flex-wrap gap-4">
-          <Link
-            href="/"
-            className={buttonClass}
-            data-testid="not-found-home"
-          >
-            GO HOME
-          </Link>
+          <Button href="/" data-testid="not-found-home">
+            Go home
+          </Button>
           <a
             href="mailto:ethan@basisweb.net"
-            className={buttonClass}
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-ink text-ink font-sans text-[0.95rem] hover:bg-ink hover:text-paper transition-colors duration-base"
             data-testid="not-found-email"
           >
-            EMAIL ME
+            Email me
           </a>
         </div>
       </div>

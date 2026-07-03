@@ -1,23 +1,17 @@
 type Props = {
-  number?: string;
   label: string;
+  /** Only pass an index where sequence is real (a true ordered step). */
+  index?: string;
   className?: string;
 };
 
-export function SectionLabel({ number, label, className = "" }: Props) {
+export function SectionLabel({ label, index, className = "" }: Props) {
   return (
     <div
-      className={`font-mono text-mono uppercase text-fg-muted tracking-widest ${className}`}
+      className={`font-mono text-mono uppercase tracking-widest text-ink-dim ${className}`}
     >
-      <span className="text-fg-dim">/</span>
-      {number ? (
-        <>
-          {" "}
-          {number} <span className="ml-2">{label}</span>
-        </>
-      ) : (
-        <span className="ml-2">{label}</span>
-      )}
+      {index && <span className="text-ink mr-2">{index}</span>}
+      {label}
     </div>
   );
 }

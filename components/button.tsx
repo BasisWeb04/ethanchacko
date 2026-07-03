@@ -17,7 +17,7 @@ type Props = (ButtonProps | LinkProps) & {
 };
 
 export function Button({ children, className = "", ...props }: Props) {
-  const classes = `inline-flex items-center justify-center gap-2 px-6 py-3 border border-border text-fg font-mono text-mono uppercase tracking-widest hover:border-border-strong active:border-signal active:text-signal transition-colors duration-base ${className}`;
+  const classes = `inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-ink text-ink font-sans text-[0.95rem] hover:bg-ink hover:text-paper active:bg-ink active:text-paper transition-colors duration-base ${className}`;
 
   if ("href" in props && props.href) {
     const { href, ...rest } = props as LinkProps;

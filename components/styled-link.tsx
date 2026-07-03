@@ -14,7 +14,7 @@ export function StyledLink({
   className = "",
   ...props
 }: Props) {
-  const classes = `text-fg underline decoration-fg-dim decoration-1 underline-offset-4 hover:decoration-signal transition-colors duration-base ${className}`;
+  const classes = `text-ink underline decoration-rule-strong decoration-1 underline-offset-4 hover:decoration-mark transition-colors duration-base ${className}`;
 
   if (external) {
     return (

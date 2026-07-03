@@ -4,7 +4,7 @@ import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const EMAIL = "ethan@basisweb.net";
-const MASKED = "ethan@\u2022\u2022\u2022\u2022\u2022\u2022\u2022.net";
+const MASKED = "ethan@•••••••.net";
 const STAGGER_MS = 25;
 
 function usePrefersReducedMotion() {
@@ -43,10 +43,12 @@ export function EmailReveal() {
       <button
         onClick={handleClick}
         data-testid="email-reveal"
-        className="font-mono text-h2 text-fg cursor-pointer hover:text-signal transition-colors duration-base"
+        className="font-mono text-h2 text-ink cursor-pointer underline decoration-rule-strong decoration-2 underline-offset-[6px] transition-colors duration-base hover:decoration-mark"
       >
         <span className="sr-only">
-          {revealed ? `Email address ${EMAIL}` : `Reveal email address ${MASKED}`}
+          {revealed
+            ? `Email address ${EMAIL}`
+            : `Reveal email address ${MASKED}`}
         </span>
         {!revealed ? (
           <span aria-hidden="true">{MASKED}</span>
@@ -82,9 +84,9 @@ export function EmailReveal() {
             exit={{ opacity: 0 }}
             transition={{ duration: reducedMotion ? 0 : 0.2 }}
             data-testid="copied-toast"
-            className="absolute -top-8 left-0 font-mono text-mono text-signal uppercase tracking-widest"
+            className="absolute -top-7 left-0 font-mono text-mono uppercase tracking-widest text-ink-muted"
           >
-            COPIED
+            Copied
           </motion.span>
         )}
       </AnimatePresence>

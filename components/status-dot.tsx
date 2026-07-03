@@ -1,48 +1,40 @@
-type Props = {
-  status: "live" | "shipped";
-  className?: string;
-  scaleOnGroupHover?: boolean;
+type Tone = "live" | "pending" | "neutral";
+
+const DOT: Record<Tone, string> = {
+  live: "bg-live",
+  pending: "bg-pending",
+  neutral: "bg-ink-dim",
 };
 
-const DOT_SCALE_CLASS =
-  "inline-block transition-transform duration-base group-hover:scale-[1.15] motion-reduce:transform-none";
+const LABEL: Record<Tone, string> = {
+  live: "text-live",
+  pending: "text-pending",
+  neutral: "text-ink-dim",
+};
 
+/*
+  A single status marker: a small filled dot and a mono label, the way a build
+  log stamps a line. Static and quiet by design; paper does not pulse.
+*/
 export function StatusDot({
-  status,
+  tone,
+  label,
   className = "",
-  scaleOnGroupHover = false,
-}: Props) {
-  if (status === "live") {
-    const dot = (
-      <span className="relative flex h-2 w-2">
-        <span className="absolute inline-flex h-full w-full rounded-full bg-live animate-pulse-live motion-reduce:animate-none" />
-        <span className="relative inline-flex rounded-full h-2 w-2 bg-live" />
-      </span>
-    );
-    return (
-      <span className={`inline-flex items-center gap-2 ${className}`}>
-        {scaleOnGroupHover ? (
-          <span className={DOT_SCALE_CLASS}>{dot}</span>
-        ) : (
-          dot
-        )}
-        <span className="font-mono text-mono uppercase text-live tracking-widest">
-          Live
-        </span>
-      </span>
-    );
-  }
-
-  const dot = <span className="inline-flex rounded-full h-2 w-2 bg-signal" />;
+}: {
+  tone: Tone;
+  label: string;
+  className?: string;
+}) {
   return (
     <span className={`inline-flex items-center gap-2 ${className}`}>
-      {scaleOnGroupHover ? (
-        <span className={DOT_SCALE_CLASS}>{dot}</span>
-      ) : (
-        dot
-      )}
-      <span className="font-mono text-mono uppercase text-signal tracking-widest">
-        Shipped
+      <span
+        className={`inline-block h-[7px] w-[7px] rounded-full ${DOT[tone]}`}
+        aria-hidden="true"
+      />
+      <span
+        className={`font-mono text-mono uppercase tracking-widest ${LABEL[tone]}`}
+      >
+        {label}
       </span>
     </span>
   );

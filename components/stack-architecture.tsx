@@ -135,7 +135,7 @@ export function StackArchitecture() {
       {/* Caption */}
       <p
         data-testid="stack-caption"
-        className="mt-12 text-center font-mono text-mono uppercase tracking-widest text-signal"
+        className="mt-12 text-center font-mono text-mono uppercase tracking-widest text-ink"
       >
         NO ATTRIBUTION REQUIRED. YOUR CLIENT NEVER KNOWS I EXIST.
       </p>
@@ -159,11 +159,11 @@ function ColumnHeader({
       style={style}
     >
       {overline && (
-        <div className="font-mono text-[10px] tracking-[0.14em] uppercase text-signal mb-1">
+        <div className="font-mono text-[10px] tracking-[0.14em] uppercase text-ink mb-1">
           {overline}
         </div>
       )}
-      <div className="font-mono text-mono uppercase tracking-widest text-fg">
+      <div className="font-mono text-mono uppercase tracking-widest text-ink">
         {title}
       </div>
     </div>
@@ -179,12 +179,12 @@ function Row({
   highlight?: boolean;
   style?: React.CSSProperties;
 }) {
-  const border = highlight ? "border-signal" : "border-border";
+  const border = highlight ? "border-ink" : "border-rule";
   return (
     <div
       data-testid="stack-row"
       data-highlight={highlight ? "true" : "false"}
-      className={`flex items-center justify-center bg-bg-elev border ${border} px-3 font-mono text-[12px] text-fg-muted text-center`}
+      className={`flex items-center justify-center bg-paper-elev border ${border} px-3 font-mono text-[12px] text-ink-muted text-center`}
       style={{
         height: `${ROW_HEIGHT}px`,
         marginBottom: `${ROW_GAP}px`,
@@ -245,14 +245,14 @@ function Arrow({ direction }: { direction: "right" | "down" }) {
           y1="5"
           x2="42"
           y2="5"
-          stroke="var(--fg-dim)"
+          stroke="var(--ink-dim)"
           strokeWidth="1"
           vectorEffect="non-scaling-stroke"
         />
         <polyline
           points="38,1 42,5 38,9"
           fill="none"
-          stroke="var(--fg-dim)"
+          stroke="var(--ink-dim)"
           strokeWidth="1"
           vectorEffect="non-scaling-stroke"
         />
@@ -272,13 +272,13 @@ function Arrow({ direction }: { direction: "right" | "down" }) {
         y1="0"
         x2="5"
         y2="30"
-        stroke="var(--fg-dim)"
+        stroke="var(--ink-dim)"
         strokeWidth="1"
       />
       <polyline
         points="1,26 5,30 9,26"
         fill="none"
-        stroke="var(--fg-dim)"
+        stroke="var(--ink-dim)"
         strokeWidth="1"
       />
     </svg>

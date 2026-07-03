@@ -2,27 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  Palette: a warm, paper-like ground read in daylight, the register of a printed
+  field manual rather than a developer's dark terminal. The single accent is a
+  highlighter yellow, the color you actually mark up evidence with. It is only
+  ever a background fill under ink text, never a text color on paper.
+*/
 :root {
-  --bg: #050505;
-  --bg-elev: #0C0C0C;
-  --fg: #EDEDED;
-  --fg-muted: #8A8A8A;
-  --fg-dim: #808080;
-  --border: #1A1A1A;
-  --border-strong: #2A2A2A;
-  --signal: #FFB000;
-  --signal-dim: #B38000;
-  --live: #22C55E;
+  --paper: #FBFAF7;
+  --paper-elev: #F3F1EB;
+  --ink: #1C1B18;
+  --ink-muted: #5C5850;
+  --ink-dim: #8A857B;
+  --mark: #FFD84D;
+  --mark-wash: #FDECA6;
+  --live: #2E7D46;
+  --pending: #B45D0E;
+  --rule: #E4E0D6;
+  --rule-strong: #CFC9BB;
 }
 
 body {
-  color: var(--fg);
-  background: var(--bg);
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Marking up evidence: selecting text swipes the highlighter across it. */
+::selection {
+  background: var(--mark);
+  color: var(--ink);
 }
 
 @layer base {
   * {
-    border-color: var(--border);
+    border-color: var(--rule);
   }
 
   :focus {
@@ -30,7 +45,7 @@ body {
   }
 
   :focus-visible {
-    outline: 1px solid var(--signal);
+    outline: 2px solid var(--ink);
     outline-offset: 2px;
     border-radius: 2px;
   }
@@ -40,32 +55,43 @@ body {
   .text-balance {
     text-wrap: balance;
   }
-}
 
-.nav-link {
-  position: relative;
+  /*
+    The highlighter mark: a hand-marked wash behind a phrase, sitting a touch
+    below the baseline like a real marker stroke that overshot the text. Ink
+    stays on top so the phrase reads as marked, never as yellow-on-paper.
+  */
+  .mark-phrase {
+    background-image: linear-gradient(
+      to top,
+      var(--mark-wash) 0%,
+      var(--mark-wash) 42%,
+      transparent 42%
+    );
+    padding: 0 0.06em;
+  }
 }
 
 /*
-  Underline uses transform: scaleX() pinned at transform-origin: left so the
-  animation is a single-origin draw from left to right on hover, and the
-  reverse (right edge retracts back toward the left) on unhover. This is the
-  most reliable path for a smooth "pen stroke" feel: clip-path inset with a
-  0/100% interpolation collapsed to inset(0px) in Chromium's computed style
-  and the transition snapped.
+  Nav underline: a highlighter stroke drawn left-to-right on hover and pinned
+  under the current page. scaleX at transform-origin:left keeps it a single
+  clean pen stroke rather than a fade.
 */
+.nav-link {
+  position: relative;
+}
 
 .nav-link::after {
   content: "";
   position: absolute;
   left: 0;
-  bottom: -4px;
+  bottom: -3px;
   width: 100%;
-  height: 1px;
-  background: var(--signal);
+  height: 3px;
+  background: var(--mark);
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 400ms linear;
+  transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav-link:hover::after,
@@ -78,21 +104,11 @@ body {
   transition: none;
 }
 
-.tab-underline {
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 400ms linear;
-}
-
-.tab-underline--active {
-  transform: scaleX(1);
-}
-
 @media (prefers-reduced-motion: reduce) {
   .nav-link::after {
+    transition: opacity 180ms ease-out;
     transform: scaleX(1);
     opacity: 0;
-    transition: opacity 180ms ease-out;
   }
 
   .nav-link:hover::after,
@@ -100,11 +116,25 @@ body {
   .nav-link--active::after {
     opacity: 1;
   }
+}
 
+/* Tabbed sections (for-agencies build showcase): the active tab draws the same
+   highlighter stroke underneath itself. */
+.tab-underline {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tab-underline--active {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
   .tab-underline {
+    transition: opacity 180ms ease-out;
     transform: scaleX(1);
     opacity: 0;
-    transition: opacity 180ms ease-out;
   }
 
   .tab-underline--active {
@@ -113,16 +143,14 @@ body {
 }
 
 /*
-  Hero serif accent reveal: CSS keyframe instead of framer-motion so the
-  animation runs regardless of JS hydration state. animation-fill-mode: both
-  keeps the element at the "from" state before the 300ms delay so there's no
-  flash of final state before the animation starts.
+  Exhibits are laid onto the page like documents set down on a desk: a short
+  settle from slightly raised and faintly tilted to flat. Used for scroll
+  reveals on case-study exhibits and the homepage receipts strip.
 */
-
-@keyframes hero-serif-in {
+@keyframes exhibit-settle {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
@@ -130,17 +158,15 @@ body {
   }
 }
 
-.hero-serif-reveal {
-  animation: hero-serif-in 600ms cubic-bezier(0.16, 1, 0.3, 1) 300ms both;
+.exhibit-settle {
+  animation: exhibit-settle 560ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-serif-reveal {
+  .exhibit-settle {
     animation: none;
   }
-}
 
-@media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {

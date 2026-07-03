@@ -113,7 +113,7 @@ Closes on first passing PR.`}
         <div className="h-[26px] flex items-center justify-between px-4 border-t border-[#1c1c20] bg-[#0a0a0c] text-[11px] text-[#6a6a70]">
           <div className="flex items-center gap-4">
             <span className="text-[#22C55E]">&bull; PR #412 passing</span>
-            <span>Claude Code: 4 edits, 0 rejects</span>
+            <span>0 errors, 0 warnings</span>
             <span>elapsed: 3h 14m</span>
           </div>
           <div className="flex items-center gap-4">

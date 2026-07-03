@@ -111,7 +111,7 @@ export function BuildShowcase() {
       {/* Tabs */}
       <div
         role="tablist"
-        className="flex flex-wrap gap-x-8 gap-y-3 border-b border-border pb-4 mb-8"
+        className="flex flex-wrap gap-x-8 gap-y-3 border-b border-rule pb-4 mb-8"
       >
         {categories.map((cat, i) => {
           const isActive = i === active;
@@ -126,13 +126,13 @@ export function BuildShowcase() {
               data-active={isActive ? "true" : "false"}
               onClick={() => handleTabClick(i)}
               className={`relative pb-2 font-mono text-mono uppercase tracking-widest transition-colors duration-base motion-reduce:transition-none ${
-                isActive ? "text-signal" : "text-fg-muted hover:text-fg"
+                isActive ? "text-ink" : "text-ink-muted hover:text-ink"
               }`}
             >
               <span>{cat.tab}</span>
               <span
                 data-testid="showcase-tab-underline"
-                className={`tab-underline pointer-events-none absolute left-0 right-0 bottom-0 h-px bg-signal ${
+                className={`tab-underline pointer-events-none absolute left-0 right-0 bottom-0 h-px bg-mark ${
                   isActive ? "tab-underline--active" : ""
                 }`}
                 aria-hidden="true"
@@ -154,7 +154,7 @@ export function BuildShowcase() {
             animate={reducedMotion ? undefined : { opacity: 1, x: 0 }}
             exit={reducedMotion ? undefined : { opacity: 0, x: -8 }}
             transition={{ duration: reducedMotion ? 0 : 0.22, ease: EASE }}
-            className="relative aspect-[16/10] rounded-md overflow-hidden border border-border bg-bg-elev"
+            className="relative aspect-[16/10] rounded-md overflow-hidden border border-rule bg-paper-elev"
           >
             <Image
               src={current.thumbnail}
@@ -176,20 +176,20 @@ export function BuildShowcase() {
           >
             <h3
               data-testid="showcase-title"
-              className="text-h3 text-fg mb-4"
+              className="text-h3 text-ink mb-4"
             >
               {current.title}
             </h3>
-            <p className="text-body text-fg-muted leading-relaxed max-w-[52ch] mb-6">
+            <p className="text-body text-ink-muted leading-relaxed max-w-[52ch] mb-6">
               {current.description}
             </p>
             <ul className="space-y-2">
               {current.examples.map((ex) => (
                 <li
                   key={ex}
-                  className="font-mono text-mono text-fg-dim uppercase tracking-widest"
+                  className="font-mono text-mono text-ink-dim uppercase tracking-widest"
                 >
-                  <span className="text-signal mr-2">&middot;</span>
+                  <span className="text-ink mr-2">&middot;</span>
                   {ex}
                 </li>
               ))}

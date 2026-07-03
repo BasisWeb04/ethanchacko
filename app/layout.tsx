@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Instrument_Serif } from "next/font/google";
+import { Source_Serif_4 } from "next/font/google";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
-import { CommandPaletteProvider } from "@/components/command-palette";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -18,37 +17,39 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-const instrumentSerif = Instrument_Serif({
+const sourceSerif = Source_Serif_4({
   subsets: ["latin"],
-  weight: "400",
-  style: "italic",
-  variable: "--font-instrument-serif",
+  weight: ["400", "600", "700"],
+  variable: "--font-source-serif",
+  display: "swap",
 });
 
 const DESCRIPTION =
-  "Full-stack developer out of Phoenix. I ship software for agencies and businesses who need something built, not pitched.";
+  "I build the operational systems service businesses run on. CRMs that actually get used, lead engines the client owns outright, and AI that still works a month after the demo. Everything is a real system I built, with real screenshots to prove it. Based in Surprise, Arizona.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://ethanchacko.com"),
   title: {
-    template: "%s | Ethan Chacko",
-    default: "Ethan Chacko, Full-Stack Developer",
+    template: "%s · Ethan Chacko",
+    default: "Ethan Chacko · Systems builder in Surprise, AZ",
   },
   description: DESCRIPTION,
   applicationName: "Ethan Chacko",
   authors: [{ name: "Ethan Chacko" }],
   keywords: [
-    "full-stack developer",
-    "Next.js",
-    "TypeScript",
-    "Phoenix",
-    "contract developer",
-    "freelance developer",
-    "agency subcontracting",
+    "systems builder",
+    "CRM implementation",
+    "GoHighLevel",
+    "operations automation",
+    "AI implementation",
+    "lead generation systems",
+    "Surprise Arizona",
+    "Phoenix West Valley",
+    "service business systems",
   ],
   openGraph: {
     type: "website",
-    title: "Ethan Chacko, Full-Stack Developer",
+    title: "Ethan Chacko · Systems builder in Surprise, AZ",
     description: DESCRIPTION,
     url: "https://ethanchacko.com",
     siteName: "Ethan Chacko",
@@ -56,7 +57,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ethan Chacko, Full-Stack Developer",
+    title: "Ethan Chacko · Systems builder in Surprise, AZ",
     description: DESCRIPTION,
   },
   robots: {
@@ -73,19 +74,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} font-sans antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${sourceSerif.variable} font-serif antialiased`}
       >
-        <CommandPaletteProvider>
-          <a
-            href="#main"
-            className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[300] focus:bg-bg-elev focus:text-fg focus:border focus:border-signal focus:px-3 focus:py-2 focus:font-mono focus:text-mono focus:uppercase focus:tracking-widest"
-          >
-            Skip to main content
-          </a>
-          <Nav />
-          <main id="main" className="pt-16">{children}</main>
-          <Footer />
-        </CommandPaletteProvider>
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[300] focus:bg-paper focus:text-ink focus:border focus:border-ink focus:px-3 focus:py-2 focus:font-mono focus:text-mono focus:uppercase focus:tracking-widest"
+        >
+          Skip to main content
+        </a>
+        <Nav />
+        <main id="main" className="pt-16">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );

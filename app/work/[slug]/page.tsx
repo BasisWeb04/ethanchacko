@@ -1,13 +1,27 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowUpRight } from "lucide-react";
-import { getAdjacent, getProject, projects } from "@/content/projects";
+import {
+  getAdjacent,
+  getProject,
+  projects,
+  type Tone,
+} from "@/content/projects";
 import { SectionLabel } from "@/components/section-label";
 import { StatusDot } from "@/components/status-dot";
+import { StatusLedger } from "@/components/status-ledger";
+import { AnnotatedExhibit } from "@/components/annotated-exhibit";
 
 type Params = { params: { slug: string } };
+
+// The three tool pages carry rendered illustrations of Ethan's own tools, not
+// live captures. Their cover image gets an honest illustration caption.
+const ILLUSTRATION_SLUGS = new Set([
+  "warpspeed",
+  "acc-scraper",
+  "google-maps-scraper",
+]);
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
@@ -20,7 +34,7 @@ export function generateMetadata({ params }: Params): Metadata {
     title: project.title,
     description: project.description,
     openGraph: {
-      title: `${project.title} | Ethan Chacko`,
+      title: `${project.title} · Ethan Chacko`,
       description: project.description,
       url: `https://ethanchacko.com/work/${project.slug}`,
       type: "article",
@@ -29,13 +43,13 @@ export function generateMetadata({ params }: Params): Metadata {
           url: "/opengraph-image",
           width: 1200,
           height: 630,
-          alt: "Ethan Chacko, Full-Stack Developer",
+          alt: "Ethan Chacko, systems builder in Surprise, AZ",
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${project.title} | Ethan Chacko`,
+      title: `${project.title} · Ethan Chacko`,
       description: project.description,
       images: ["/opengraph-image"],
     },
@@ -43,32 +57,35 @@ export function generateMetadata({ params }: Params): Metadata {
 }
 
 function paragraphs(block: string) {
-  return block.split(/\n\n+/).map((p, i) => (
-    <p key={i} className="text-body text-fg leading-relaxed">
-      {p.split("\n").map((line, j, arr) => (
-        <span key={j}>
-          {line}
-          {j < arr.length - 1 && <br />}
-        </span>
-      ))}
-    </p>
-  ));
+  return block
+    .split(/\n\n+/)
+    .filter(Boolean)
+    .map((p, i) => (
+      <p key={i} className="text-body leading-relaxed text-ink">
+        {p.split("\n").map((line, j, arr) => (
+          <span key={j}>
+            {line}
+            {j < arr.length - 1 && <br />}
+          </span>
+        ))}
+      </p>
+    ));
 }
 
-function Section({
-  number,
+function CaseSection({
   label,
   children,
 }: {
-  number: string;
   label: string;
   children: React.ReactNode;
 }) {
   return (
-    <section className="px-gutter py-section-y border-t border-border">
-      <div className="mx-auto max-w-container grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)]">
-        <SectionLabel number={number} label={label} />
-        <div className="space-y-4 max-w-[68ch]">{children}</div>
+    <section className="border-t border-rule px-gutter py-section-y">
+      <div className="mx-auto grid max-w-container gap-x-8 gap-y-6 lg:grid-cols-[200px_minmax(0,1fr)]">
+        <div className="lg:sticky lg:top-24 lg:self-start">
+          <SectionLabel label={label} />
+        </div>
+        <div className="min-w-0 max-w-[68ch] space-y-4">{children}</div>
       </div>
     </section>
   );
@@ -79,71 +96,68 @@ export default function CaseStudyPage({ params }: Params) {
   if (!project) notFound();
   const { prev, next } = getAdjacent(project.slug);
 
-  const filled = [
-    { label: "CONTEXT", body: project.context },
-    { label: "CONSTRAINTS", body: project.constraints },
-    { label: "APPROACH", body: project.approach },
+  const headerStatus: { tone: Tone; label: string } =
+    project.headerStatus ??
+    (project.status === "LIVE"
+      ? { tone: "live", label: "Live" }
+      : { tone: "neutral", label: "Shipped" });
+
+  const legacyProse = [
+    { label: "Context", body: project.context },
+    { label: "Constraints", body: project.constraints },
+    { label: "Approach", body: project.approach },
   ].filter((s): s is { label: string; body: string } => Boolean(s.body));
 
-  // Renumber based on which sections exist so the sequence stays 01/02/...
-  const renumbered = filled.map((s, i) => ({
-    ...s,
-    number: String(i + 1).padStart(2, "0"),
-  }));
-  const hasFigures = Boolean(project.figures && project.figures.length);
-  const figuresNumber = hasFigures
-    ? String(renumbered.length + 1).padStart(2, "0")
-    : null;
-  const stackNumber = String(
-    renumbered.length + (hasFigures ? 1 : 0) + 1
-  ).padStart(2, "0");
-  const resultNumber = String(
-    renumbered.length + (hasFigures ? 1 : 0) + 2
-  ).padStart(2, "0");
+  // Column count tracks the number of stats so the metrics band always closes
+  // its border cleanly (no dangling rule over empty tracks).
+  const statCount = project.stats?.length ?? 0;
+  const statColsClass =
+    statCount === 4
+      ? "grid-cols-2 sm:grid-cols-4"
+      : statCount === 3
+      ? "grid-cols-3"
+      : statCount === 2
+      ? "grid-cols-2"
+      : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-6";
 
   return (
     <article>
       {/* Header */}
-      <header className="px-gutter py-section-y" data-testid="case-header">
+      <header className="px-gutter pt-16 pb-section-y" data-testid="case-header">
         <div className="mx-auto max-w-container">
           <SectionLabel
-            label={`WORK / ${project.slug.toUpperCase()}`}
+            label={project.eyebrow ?? "Case study"}
             className="mb-6"
           />
-          <h1 className="text-h1 text-fg mb-4">{project.title}</h1>
-          <p className="text-body text-fg-muted max-w-[60ch] mb-8">
+          <h1 className="text-h1 text-ink">{project.title}</h1>
+          <p className="mt-4 max-w-[60ch] text-body leading-relaxed text-ink-muted">
             {project.description}
           </p>
-          {project.liveUrl && (
-            <div className="mt-8 mb-10">
+
+          <div className="mt-8 flex flex-wrap items-center gap-6">
+            <StatusDot tone={headerStatus.tone} label={headerStatus.label} />
+            <span className="font-mono text-mono uppercase tracking-widest text-ink-dim">
+              {project.year}
+            </span>
+            {project.liveUrl && (
               <a
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-testid="visit-live"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-signal text-signal font-mono text-mono uppercase tracking-widest hover:border-signal hover:bg-signal/10 active:bg-signal/15 focus-visible:border-signal transition-colors duration-base"
+                className="inline-flex items-center gap-2 border border-ink px-4 py-2 font-sans text-[0.9rem] text-ink transition-colors duration-base hover:bg-ink hover:text-paper"
               >
-                VISIT LIVE <ArrowUpRight size={14} aria-hidden="true" />
+                Visit live site
+                <ArrowUpRight size={14} aria-hidden="true" />
               </a>
-            </div>
-          )}
-          <div className="flex flex-wrap items-center gap-6 font-mono text-mono uppercase tracking-widest text-fg-muted">
-            <span className="inline-flex items-center gap-2">
-              <StatusDot
-                status={project.status === "LIVE" ? "live" : "shipped"}
-              />
-              {project.status}
-            </span>
-            <span>{project.year}</span>
+            )}
           </div>
-          <div className="font-mono text-mono uppercase tracking-widest text-fg-dim mt-10 mb-3">
-            / TECH
-          </div>
-          <div className="flex flex-wrap gap-3">
+
+          <div className="mt-8 flex flex-wrap gap-2">
             {project.stack.map((t) => (
               <span
                 key={t}
-                className="font-mono text-mono text-fg-dim border border-border px-2 py-1"
+                className="border border-rule px-2 py-1 font-mono text-mono text-ink-dim"
               >
                 {t}
               </span>
@@ -152,41 +166,56 @@ export default function CaseStudyPage({ params }: Params) {
         </div>
       </header>
 
-      {/* Thumbnail */}
-      <div className="px-gutter pb-section-y">
-        <div className="mx-auto max-w-container">
-          <div className="relative aspect-[16/10] rounded-md overflow-hidden border border-border bg-bg-elev">
-            <Image
+      {/* Cover exhibit. Rich case studies (those with custom sections) only show
+          a cover when one is explicitly set, so an unlabeled thumbnail never
+          lands next to a claimed number. Light builds fall back to their
+          thumbnail, tiered as an illustration where that is what it is. */}
+      {project.cover ? (
+        <div className="px-gutter pb-section-y">
+          <div className="mx-auto max-w-container">
+            <AnnotatedExhibit {...project.cover} priority />
+          </div>
+        </div>
+      ) : !project.sections && project.thumbnailUrl ? (
+        <div className="px-gutter pb-section-y">
+          <div className="mx-auto max-w-container">
+            <AnnotatedExhibit
               src={project.thumbnailUrl}
               alt={`${project.title} preview`}
-              fill
-              sizes="(min-width: 1024px) 1100px, 100vw"
+              aspect="aspect-[16/10]"
               priority
-              className="object-cover object-top"
+              illustration={ILLUSTRATION_SLUGS.has(project.slug)}
+              caption={
+                ILLUSTRATION_SLUGS.has(project.slug)
+                  ? "Illustration of the tool. A rendered depiction of my own output, not a live capture."
+                  : project.liveUrl
+                  ? project.thumbnailLabel
+                  : `${project.title} preview`
+              }
             />
           </div>
         </div>
-      </div>
+      ) : null}
 
-      {/* Metrics band */}
+      {/* Stats band */}
       {project.stats && project.stats.length > 0 && (
         <div className="px-gutter pb-section-y">
           <div className="mx-auto max-w-container">
-            <dl className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 border-t border-l border-border">
+            <dl className={`grid border-l border-t border-rule ${statColsClass}`}>
               {project.stats.map((s) => (
                 <div
                   key={s.label}
                   data-testid="case-stat"
-                  className="border-b border-r border-border px-4 py-5"
+                  className="border-b border-r border-rule px-4 py-5"
                 >
-                  <dt
-                    className={`font-mono text-h3 ${
-                      s.signal ? "text-signal" : "text-fg"
-                    }`}
-                  >
-                    {s.value}
+                  <dt className="font-mono text-h3 text-ink">
+                    {s.signal ? (
+                      <span className="mark-phrase">{s.value}</span>
+                    ) : (
+                      s.value
+                    )}
                   </dt>
-                  <dd className="font-mono text-[11px] uppercase tracking-widest text-fg-dim mt-2 leading-snug">
+                  <dd className="mt-2 font-mono text-[11px] uppercase leading-snug tracking-widest text-ink-dim">
                     {s.label}
                   </dd>
                 </div>
@@ -196,58 +225,64 @@ export default function CaseStudyPage({ params }: Params) {
         </div>
       )}
 
-      {/* Renumbered body sections */}
-      {renumbered.map((s) => (
-        <Section key={s.label} number={s.number} label={s.label}>
-          {paragraphs(s.body)}
-        </Section>
-      ))}
+      {/* Prose: custom sections, else legacy */}
+      {project.sections
+        ? project.sections.map((s) => (
+            <CaseSection key={s.heading} label={s.heading}>
+              {paragraphs(s.body)}
+            </CaseSection>
+          ))
+        : legacyProse.map((s) => (
+            <CaseSection key={s.label} label={s.label}>
+              {paragraphs(s.body)}
+            </CaseSection>
+          ))}
 
-      {/* Figures */}
-      {project.figures && project.figures.length > 0 && figuresNumber && (
-        <section className="px-gutter py-section-y border-t border-border">
-          <div className="mx-auto max-w-container grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)]">
-            <SectionLabel number={figuresNumber} label="SYSTEM" />
-            <div className="space-y-10 min-w-0">
-              {project.figures.map((f) => (
-                <figure key={f.src}>
-                  <div className="relative aspect-[16/9] rounded-md overflow-hidden border border-border bg-bg-elev">
-                    <Image
-                      src={f.src}
-                      alt={f.caption}
-                      fill
-                      sizes="(min-width: 1024px) 800px, 100vw"
-                      className="object-cover object-top"
-                    />
-                  </div>
-                  <figcaption className="font-mono text-mono text-fg-dim mt-3 uppercase tracking-widest leading-snug">
-                    {f.caption}
-                  </figcaption>
-                </figure>
+      {/* Exhibits */}
+      {project.exhibits && project.exhibits.length > 0 && (
+        <section className="border-t border-rule px-gutter py-section-y">
+          <div className="mx-auto grid max-w-container gap-x-8 gap-y-6 lg:grid-cols-[200px_minmax(0,1fr)]">
+            <div className="lg:sticky lg:top-24 lg:self-start">
+              <SectionLabel label="Exhibits" />
+            </div>
+            <div className="min-w-0 space-y-12">
+              {project.exhibits.map((ex) => (
+                <AnnotatedExhibit key={ex.src} {...ex} />
               ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* Stack */}
-      <Section number={stackNumber} label="STACK">
-        <p className="font-mono text-body text-fg leading-relaxed">
-          {project.stackDetailed}
-        </p>
-      </Section>
+      {/* Status ledger */}
+      {project.ledger && (
+        <CaseSection label="Status">
+          <StatusLedger
+            rows={project.ledger.rows}
+            note={project.ledger.note}
+            title={project.ledger.title}
+          />
+        </CaseSection>
+      )}
 
       {/* Result */}
-      <Section number={resultNumber} label="RESULT">
-        {paragraphs(project.result)}
-      </Section>
+      {project.result && (
+        <CaseSection label="Result">{paragraphs(project.result)}</CaseSection>
+      )}
+
+      {/* Stack */}
+      <CaseSection label="Stack">
+        <p className="font-mono text-body leading-relaxed text-ink">
+          {project.stackDetailed}
+        </p>
+      </CaseSection>
 
       {/* Footer nav */}
       <nav
-        className="px-gutter py-section-y border-t border-border"
+        className="border-t border-rule px-gutter py-section-y"
         data-testid="case-nav"
       >
-        <div className="mx-auto max-w-container flex items-center justify-between gap-4">
+        <div className="mx-auto flex max-w-container items-center justify-between gap-4">
           {prev ? (
             <CaseNavLink
               href={`/work/${prev.slug}`}
@@ -284,14 +319,12 @@ function CaseNavLink({
   return (
     <Link
       href={href}
-      className="group font-mono text-mono uppercase tracking-widest text-fg-muted hover:text-fg transition-colors duration-base"
+      className="group font-mono text-mono uppercase tracking-widest text-ink-muted transition-colors duration-base hover:text-ink"
     >
-      <span className="block text-fg-dim text-[10px] tracking-[0.14em]">
-        {direction === "prev" ? "\u2190 PREVIOUS WORK" : "NEXT WORK \u2192"}
+      <span className="block text-[10px] tracking-[0.14em] text-ink-dim">
+        {direction === "prev" ? "← Previous" : "Next →"}
       </span>
-      <span className="block mt-1 text-fg group-hover:text-signal transition-colors duration-base">
-        {label}
-      </span>
+      <span className="mt-1 block text-ink group-hover:text-ink">{label}</span>
     </Link>
   );
 }
