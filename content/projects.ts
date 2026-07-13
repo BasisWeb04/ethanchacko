@@ -190,7 +190,7 @@ export const projects: Project[] = [
     eyebrow: "Case study · Data + lead generation",
     headerStatus: { tone: "pending", label: "In build" },
     stack: ["Python", "Enrichment", "Verification", "Scoring"],
-    thumbnailUrl: "/work/lead-data-engine-illustration.webp",
+    thumbnailUrl: "/work/lead-data-engine-dashboard.png",
     thumbnailLabel: "lead data / graded pilot",
     year: "2026",
     context: "",
@@ -218,12 +218,11 @@ export const projects: Project[] = [
     ],
     exhibits: [
       {
-        src: "/work/lead-data-engine-illustration.webp",
-        alt: "Illustration of the lead-data deliverable format: real column headers over generic, redacted sample rows.",
-        illustration: true,
-        aspect: "aspect-[16/10]",
+        src: "/work/lead-data-engine-dashboard.png",
+        alt: "A recorded run of the lead engine, company and contact names redacted: 31 companies discovered, filtered and verified down to 4 shipped records with sources.",
+        aspect: "aspect-[1718/1112]",
         caption:
-          "Illustration of the deliverable format. The columns and layout are real; the sample rows are generic placeholder, not client data.",
+          "A recorded run of the engine, company and contact identifiers redacted. It discovers, filters, verifies, dedupes, ranks, and ships a final record with its sources. Emails and direct dials are masked in the preview, and this is a recorded run, not a live pull.",
       },
     ],
     ledger: {
@@ -251,17 +250,16 @@ export const projects: Project[] = [
     eyebrow: "Case study · AI implementation",
     headerStatus: { tone: "live", label: "Running on his real reports" },
     stack: ["AI implementation", "Standards grounding", "Structured output"],
-    thumbnailUrl: "/work/ai-report-reviewer-illustration.webp",
+    thumbnailUrl: "/work/ai-report-reviewer-dashboard.png",
     thumbnailLabel: "ai review / scorecard",
     year: "2026",
     context: "",
     cover: {
-      src: "/work/ai-report-reviewer-illustration.webp",
-      alt: "Illustration of the AI review scorecard format: generic inspection sections with pass and flag markers over placeholder findings.",
-      illustration: true,
-      aspect: "aspect-[16/10]",
+      src: "/work/ai-report-reviewer-dashboard.png",
+      alt: "The AI reviewer running on a real inspection, client name redacted: 136 photos auto-sorted into likely issues, needs-a-look, and cleared, scored against the owner's own rubric.",
+      aspect: "aspect-[1776/1880]",
       caption:
-        "Illustration of the review scorecard format. The layout is real; the section findings are placeholder text, not a real report.",
+        "The AI reviewer on a real inspection, client name redacted. It sorted 136 photos into defects, needs-eyes, and cleared against the owner's own rubric, and surfaces every photo for the inspector's final say. No accuracy number is claimed yet.",
     },
     sections: [
       {
