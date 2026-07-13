@@ -162,14 +162,13 @@ export default function ForAgenciesPage() {
       {/* Hero */}
       <section className="px-gutter py-section-y" data-testid="agencies-hero">
         <div className="mx-auto max-w-container">
-          <SectionLabel label="FOR AGENCIES" className="mb-8" />
+          <SectionLabel boxed label="For agencies" className="mb-8" />
           <h1 className="text-h1 text-ink">
             A second pair of hands
             <br />
-            that <span className="mark-phrase">ships</span>{" "}
-            under your brand.
+            that <span className="mark-phrase">ships</span> under your brand.
           </h1>
-          <p className="text-body text-ink-muted leading-relaxed mt-8 max-w-[58ch]">
+          <p className="mt-8 max-w-[58ch] font-serif text-body leading-relaxed text-ink-muted">
             The integration-heavy GoHighLevel, n8n, and custom builds most
             subcontractors won&apos;t take. The webhook plumbing with no native
             connector, the migrations that have to be right the first time, the
@@ -180,9 +179,9 @@ export default function ForAgenciesPage() {
       </section>
 
       {/* Proof */}
-      <Section label="PROOF" testId="agencies-proof">
-        <h2 className="text-h2 text-ink mb-6">One production build, still running.</h2>
-        <p className="text-body text-ink-muted leading-relaxed max-w-[64ch]">
+      <Section label="Proof" testId="agencies-proof">
+        <h2 className="mb-6 text-h2 text-ink">One production build, still running.</h2>
+        <p className="max-w-[64ch] font-serif text-body leading-relaxed text-ink-muted">
           A US home-inspection company needed their inspection software talking
           to GoHighLevel. No native connector exists. I built the bridge on
           self-hosted n8n and have run it in production since May 2026. The
@@ -191,54 +190,49 @@ export default function ForAgenciesPage() {
           attribution layer is built and the live results are still ahead.
         </p>
 
-        {/* Stats */}
-        <dl className="mt-10 grid grid-cols-2 sm:grid-cols-4 border-t border-l border-rule">
+        {/* Specifications */}
+        <dl className="mt-10 grid grid-cols-2 border-l border-t border-rule sm:grid-cols-4">
           {stats.map((s) => (
             <div
               key={s.label}
               data-testid="proof-stat"
               className="border-b border-r border-rule px-5 py-6"
             >
-              <dt
-                className={`font-mono text-h2 ${
-                  s.signal ? "text-ink" : "text-ink"
-                }`}
-              >
-                {s.value}
+              <dt className="font-mono text-h2 text-ink">
+                {s.signal ? <span className="mark-phrase">{s.value}</span> : s.value}
               </dt>
-              <dd className="font-mono text-mono uppercase tracking-widest text-ink-dim mt-3">
+              <dd className="mt-3 font-sans text-[0.66rem] font-semibold uppercase leading-snug tracking-[0.09em] text-ink-dim">
                 {s.label}
               </dd>
             </div>
           ))}
         </dl>
 
-        {/* Screenshot */}
+        {/* Screenshot, mounted as an exhibit */}
         <figure className="mt-12">
-          <div className="relative aspect-[16/9] rounded-md overflow-hidden border border-rule bg-paper-elev">
-            <Image
-              src="/work/n8n-overview.png"
-              alt="Live n8n production dashboard: 318 production executions, 0 failed, 0% failure rate, 0.7 second average run time, with the inspection-software-to-GoHighLevel integration workflows published."
-              fill
-              sizes="(min-width: 1024px) 60vw, 100vw"
-              className="object-cover object-top"
-            />
+          <div className="relative overflow-hidden border border-rule bg-paper-elev">
+            <div className="relative aspect-[16/9]">
+              <Image
+                src="/work/n8n-overview.png"
+                alt="Live n8n production dashboard: 318 production executions, 0 failed, 0% failure rate, 0.7 second average run time, with the inspection-software-to-GoHighLevel integration workflows published."
+                fill
+                sizes="(min-width: 1024px) 60vw, 100vw"
+                className="object-cover object-top"
+              />
+            </div>
           </div>
-          <figcaption className="font-mono text-mono uppercase tracking-widest text-ink-dim mt-3">
-            <span className="text-ink-dim">/</span>
-            <span className="ml-2">
-              Live n8n dashboard, June 2026. 318 prod executions, 0 failed, 0%
-              failure rate, 0.7s avg.
-            </span>
+          <figcaption className="mt-3 font-mono text-mono leading-snug text-ink-dim">
+            Live n8n dashboard, June 2026. 318 prod executions, 0 failed, 0%
+            failure rate, 0.7s avg.
           </figcaption>
         </figure>
 
         {/* Constraint story */}
-        <div className="mt-12 border-l-2 border-ink pl-6 max-w-[68ch]">
-          <h3 className="text-h3 text-ink mb-4">
+        <div className="mt-12 max-w-[68ch] border-l-2 border-ink pl-6">
+          <h3 className="mb-4 text-h3 text-ink">
             The build that proves judgment, not just competence.
           </h3>
-          <p className="text-body text-ink-muted leading-relaxed">
+          <p className="font-serif text-body leading-relaxed text-ink-muted">
             The original scope assumed a two-way sync. Discovery proved it was
             impossible: the inspection software is outbound-webhook-only, no
             inbound API, no write path. I put that in writing as a scope
@@ -248,7 +242,7 @@ export default function ForAgenciesPage() {
             opportunities, deduped. The client got a complete, continuously
             updated CRM and no fake sync pretending to work.
           </p>
-          <p className="font-mono text-mono uppercase tracking-widest text-ink mt-6">
+          <p className="mt-6 font-sans text-[0.72rem] font-semibold uppercase tracking-[0.09em] text-ink">
             The rule: impossible asks get caught at discovery, not at the
             deadline.
           </p>
@@ -258,7 +252,7 @@ export default function ForAgenciesPage() {
         <div className="mt-10">
           <Link
             href="/work/inspection-revenue-engine"
-            className="inline-flex items-center gap-2 font-mono text-mono uppercase tracking-widest text-ink hover:text-ink transition-colors duration-base"
+            className="inline-flex items-center gap-2 font-sans text-[0.72rem] font-semibold uppercase tracking-[0.09em] text-ink transition-colors duration-base hover:text-mark-ink"
           >
             Read the full case study
             <ArrowUpRight size={14} aria-hidden="true" />
@@ -266,63 +260,59 @@ export default function ForAgenciesPage() {
         </div>
 
         {/* Third-party review */}
-        <div className="mt-12 border-l-2 border-ink pl-6 max-w-[68ch]">
-          <p className="text-body text-ink leading-relaxed">
+        <div className="mt-12 max-w-[68ch] border-l-2 border-mark pl-6">
+          <p className="font-serif text-body leading-relaxed text-ink">
             &ldquo;I&apos;ve been in the software development industry for over
             30 years, and he is one of the most professional people I&apos;ve
             worked with. He is highly attentive, communicates clearly, and
             follows requirements exactly while still offering thoughtful input
             when appropriate.&rdquo;
           </p>
-          <p className="text-body text-ink-muted leading-relaxed mt-4">
+          <p className="mt-4 font-serif text-body leading-relaxed text-ink-muted">
             &ldquo;He provided an extremely detailed and well-organized handoff
             document that clearly explains the entire setup. That level of
             thoroughness is rare.&rdquo;
           </p>
-          <p className="font-mono text-mono uppercase tracking-widest text-ink-dim mt-5">
-            <span className="text-ink-dim">/</span>
-            <span className="ml-2">
-              Verified 5.0 Upwork review, 30-year software-industry veteran
-            </span>
+          <p className="mt-5 font-mono text-mono text-ink-dim">
+            Verified 5.0 Upwork review, 30-year software-industry veteran
           </p>
         </div>
       </Section>
 
       {/* Workflow */}
-      <Section label="WORKFLOW" testId="agencies-workflow">
+      <Section label="Workflow" testId="agencies-workflow">
         <StackArchitecture />
       </Section>
 
       {/* What I build */}
-      <Section label="WHAT I BUILD" testId="agencies-showcase">
+      <Section label="What I build" testId="agencies-showcase">
         <h2 className="sr-only">What I build</h2>
         <BuildShowcase />
       </Section>
 
       {/* Terms sheet */}
-      <Section label="TERMS" testId="agencies-sheet">
+      <Section label="Terms" testId="agencies-sheet">
         <dl className="border-t border-rule">
           {rows.map((row) => (
             <div
               key={row.label}
               data-testid="sheet-row"
-              className="grid grid-cols-1 md:grid-cols-[180px_1fr] gap-3 md:gap-10 border-b border-rule py-6"
+              className="grid grid-cols-1 gap-3 border-b border-rule py-6 md:grid-cols-[180px_1fr] md:gap-10"
             >
               <dt
                 data-testid="sheet-label"
-                className="font-mono text-mono uppercase tracking-widest text-ink-muted pt-[2px]"
+                className="pt-[2px] font-sans text-[0.7rem] font-semibold uppercase tracking-[0.09em] text-ink-muted"
               >
-                <span className="text-ink-dim">/</span>
-                <span className="ml-2">{row.label}</span>
+                {row.label}
               </dt>
-              <dd className="text-body text-ink leading-relaxed">{row.body}</dd>
+              <dd className="text-body leading-relaxed text-ink">{row.body}</dd>
             </div>
           ))}
         </dl>
       </Section>
 
       {/* FAQ */}
-      <Section label="QUESTIONS" testId="agencies-faq">
+      <Section label="Questions" testId="agencies-faq">
         <div className="max-w-[64ch]">
           <dl className="border-t border-rule">
             {faq.map(({ q, a }) => (
@@ -331,11 +321,11 @@ export default function ForAgenciesPage() {
                 data-testid="faq-item"
                 className="border-b border-rule py-12"
               >
-                <dt className="font-mono text-mono uppercase tracking-widest text-ink mb-6">
-                  <span className="text-ink-dim">Q.</span>
-                  <span className="ml-3">{q}</span>
+                <dt className="mb-6 font-sans text-[0.95rem] font-bold text-ink">
+                  <span className="mr-2 text-ink-dim">Q.</span>
+                  {q}
                 </dt>
-                <dd className="text-body text-ink leading-relaxed space-y-4">
+                <dd className="space-y-4 font-serif text-body leading-relaxed text-ink">
                   {a}
                 </dd>
               </div>
@@ -345,7 +335,7 @@ export default function ForAgenciesPage() {
       </Section>
 
       {/* CTA */}
-      <Section label="CONTACT" testId="agencies-cta">
+      <Section label="Contact" testId="agencies-cta">
         <EmailReveal />
       </Section>
     </>

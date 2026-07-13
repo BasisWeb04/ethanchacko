@@ -9,7 +9,7 @@ import {
   type Tone,
 } from "@/content/projects";
 import { SectionLabel } from "@/components/section-label";
-import { StatusDot } from "@/components/status-dot";
+import { StatusStamp } from "@/components/status-stamp";
 import { StatusLedger } from "@/components/status-ledger";
 import { AnnotatedExhibit } from "@/components/annotated-exhibit";
 
@@ -61,7 +61,7 @@ function paragraphs(block: string) {
     .split(/\n\n+/)
     .filter(Boolean)
     .map((p, i) => (
-      <p key={i} className="text-body leading-relaxed text-ink">
+      <p key={i} className="font-serif text-body leading-relaxed text-ink">
         {p.split("\n").map((line, j, arr) => (
           <span key={j}>
             {line}
@@ -108,8 +108,17 @@ export default function CaseStudyPage({ params }: Params) {
     { label: "Approach", body: project.approach },
   ].filter((s): s is { label: string; body: string } => Boolean(s.body));
 
-  // Column count tracks the number of stats so the metrics band always closes
-  // its border cleanly (no dangling rule over empty tracks).
+  // Exhibit lettering: only where a page carries a real sequence (a cover plus
+  // body exhibits). The cover is A, the body exhibits follow.
+  const bodyExhibits = project.exhibits ?? [];
+  const totalExhibits = (project.cover ? 1 : 0) + bodyExhibits.length;
+  const useLetters = totalExhibits > 1;
+  const coverLetter = useLetters ? "A" : undefined;
+  const letterAt = (i: number) =>
+    useLetters ? String.fromCharCode(65 + (project.cover ? 1 : 0) + i) : undefined;
+
+  // Column count tracks the number of stats so the spec table always closes its
+  // border cleanly (no dangling rule over empty tracks).
   const statCount = project.stats?.length ?? 0;
   const statColsClass =
     statCount === 4
@@ -122,30 +131,25 @@ export default function CaseStudyPage({ params }: Params) {
 
   return (
     <article>
-      {/* Header */}
+      {/* Report title header */}
       <header className="px-gutter pt-16 pb-section-y" data-testid="case-header">
         <div className="mx-auto max-w-container">
-          <SectionLabel
-            label={project.eyebrow ?? "Case study"}
-            className="mb-6"
-          />
+          <SectionLabel label={project.eyebrow ?? "Case study"} className="mb-6" />
           <h1 className="text-h1 text-ink">{project.title}</h1>
-          <p className="mt-4 max-w-[60ch] text-body leading-relaxed text-ink-muted">
+          <p className="mt-4 max-w-[60ch] font-serif text-body leading-relaxed text-ink-muted">
             {project.description}
           </p>
 
-          <div className="mt-8 flex flex-wrap items-center gap-6">
-            <StatusDot tone={headerStatus.tone} label={headerStatus.label} />
-            <span className="font-mono text-mono uppercase tracking-widest text-ink-dim">
-              {project.year}
-            </span>
+          <div className="mt-8 flex flex-wrap items-center gap-5">
+            <StatusStamp tone={headerStatus.tone} label={headerStatus.label} press />
+            <span className="font-mono text-mono text-ink-dim">{project.year}</span>
             {project.liveUrl && (
               <a
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-testid="visit-live"
-                className="inline-flex items-center gap-2 border border-ink px-4 py-2 font-sans text-[0.9rem] text-ink transition-colors duration-base hover:bg-ink hover:text-paper"
+                className="inline-flex items-center gap-2 border border-ink px-4 py-2 font-sans text-[0.85rem] font-semibold text-ink transition-colors duration-base hover:border-mark hover:bg-mark hover:text-[color:var(--on-mark)]"
               >
                 Visit live site
                 <ArrowUpRight size={14} aria-hidden="true" />
@@ -153,27 +157,20 @@ export default function CaseStudyPage({ params }: Params) {
             )}
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-2">
-            {project.stack.map((t) => (
-              <span
-                key={t}
-                className="border border-rule px-2 py-1 font-mono text-mono text-ink-dim"
-              >
-                {t}
-              </span>
-            ))}
-          </div>
+          <p className="mt-6 font-mono text-mono text-ink-dim">
+            {project.stack.join("  ·  ")}
+          </p>
         </div>
       </header>
 
-      {/* Cover exhibit. Rich case studies (those with custom sections) only show
-          a cover when one is explicitly set, so an unlabeled thumbnail never
-          lands next to a claimed number. Light builds fall back to their
-          thumbnail, tiered as an illustration where that is what it is. */}
+      {/* Cover exhibit. Rich case studies only show a cover when one is
+          explicitly set, so an unlabeled thumbnail never lands next to a claimed
+          number. Light builds fall back to their thumbnail, tiered as an
+          illustration where that is what it is. */}
       {project.cover ? (
         <div className="px-gutter pb-section-y">
           <div className="mx-auto max-w-container">
-            <AnnotatedExhibit {...project.cover} priority />
+            <AnnotatedExhibit {...project.cover} letter={coverLetter} priority />
           </div>
         </div>
       ) : !project.sections && project.thumbnailUrl ? (
@@ -197,7 +194,7 @@ export default function CaseStudyPage({ params }: Params) {
         </div>
       ) : null}
 
-      {/* Stats band */}
+      {/* Specifications table */}
       {project.stats && project.stats.length > 0 && (
         <div className="px-gutter pb-section-y">
           <div className="mx-auto max-w-container">
@@ -215,7 +212,7 @@ export default function CaseStudyPage({ params }: Params) {
                       s.value
                     )}
                   </dt>
-                  <dd className="mt-2 font-mono text-[11px] uppercase leading-snug tracking-widest text-ink-dim">
+                  <dd className="mt-2 font-sans text-[0.66rem] font-semibold uppercase leading-snug tracking-[0.09em] text-ink-dim">
                     {s.label}
                   </dd>
                 </div>
@@ -239,22 +236,22 @@ export default function CaseStudyPage({ params }: Params) {
           ))}
 
       {/* Exhibits */}
-      {project.exhibits && project.exhibits.length > 0 && (
+      {bodyExhibits.length > 0 && (
         <section className="border-t border-rule px-gutter py-section-y">
           <div className="mx-auto grid max-w-container gap-x-8 gap-y-6 lg:grid-cols-[200px_minmax(0,1fr)]">
             <div className="lg:sticky lg:top-24 lg:self-start">
               <SectionLabel label="Exhibits" />
             </div>
             <div className="min-w-0 space-y-12">
-              {project.exhibits.map((ex) => (
-                <AnnotatedExhibit key={ex.src} {...ex} />
+              {bodyExhibits.map((ex, i) => (
+                <AnnotatedExhibit key={ex.src} {...ex} letter={letterAt(i)} />
               ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* Status ledger */}
+      {/* Status registry */}
       {project.ledger && (
         <CaseSection label="Status">
           <StatusLedger
@@ -319,12 +316,14 @@ function CaseNavLink({
   return (
     <Link
       href={href}
-      className="group font-mono text-mono uppercase tracking-widest text-ink-muted transition-colors duration-base hover:text-ink"
+      className="group transition-colors duration-base hover:text-ink"
     >
-      <span className="block text-[10px] tracking-[0.14em] text-ink-dim">
+      <span className="block font-sans text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-ink-dim">
         {direction === "prev" ? "← Previous" : "Next →"}
       </span>
-      <span className="mt-1 block text-ink group-hover:text-ink">{label}</span>
+      <span className="mt-1 block font-sans text-[0.95rem] font-semibold text-ink">
+        {label}
+      </span>
     </Link>
   );
 }

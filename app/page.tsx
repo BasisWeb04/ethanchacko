@@ -1,71 +1,63 @@
 import {
-  MapPin,
   User,
   Users,
-  Clock,
   Code2,
   Database,
   LayoutDashboard,
   Table2,
   Utensils,
   Bot,
-  Quote,
 } from "lucide-react";
 import { Section } from "@/components/section";
+import { SectionLabel } from "@/components/section-label";
 import { Button } from "@/components/button";
 import { EmailReveal } from "@/components/email-reveal";
-import { StatusDot } from "@/components/status-dot";
-import { GridBackground } from "@/components/grid-background";
-import { TiltHeadline } from "@/components/tilt-headline";
-import { HeroDevice } from "@/components/hero-device";
+import { AnnotatedExhibit } from "@/components/annotated-exhibit";
 import { WorkflowBand } from "@/components/workflow-band";
 import { ShippedMarquee } from "@/components/shipped-marquee";
 import { CaseFileCard } from "@/components/case-file-card";
+import { getProject } from "@/content/projects";
 
 type Tone = "live" | "pending" | "neutral";
 type IconType = React.ElementType;
 
 const caseFiles: {
-  caseLabel: string;
+  label: string;
   href: string;
   image: string;
   imageAlt: string;
-  icon: IconType;
   illustration?: boolean;
-  light?: boolean;
   statLead: string;
   statRest: string;
   status: { tone: Tone; label: string };
   priority?: boolean;
 }[] = [
   {
-    caseLabel: "Case 01 · CRM + Ops",
+    label: "CRM + operations",
     href: "/work/inspection-revenue-engine",
     image: "/work/n8n-overview.png",
     imageAlt: "Live production dashboard: executions logged, zero failed.",
-    icon: Database,
-    light: true,
     statLead: "0 failed events",
     statRest: "across every audit.",
     status: { tone: "live", label: "Live in production" },
     priority: true,
   },
   {
-    caseLabel: "Case 02 · Lead data",
+    label: "Lead data",
     href: "/work/lead-data-engine",
     image: "/work/lead-data-engine-dashboard.png",
-    imageAlt: "A recorded run of the lead engine, identifiers redacted: 31 discovered, 4 delivered.",
-    icon: Table2,
+    imageAlt:
+      "A recorded run of the lead engine, identifiers redacted: 31 discovered, 4 delivered.",
     statLead: "Graded 8/10",
     statRest: "on a paid pilot, then funded at $4,500.",
     status: { tone: "pending", label: "In build" },
   },
   {
-    caseLabel: "Case 03 · AI",
+    label: "AI implementation",
     href: "/work/ai-report-reviewer",
     image: "/work/ai-report-reviewer-dashboard.png",
-    imageAlt: "The AI reviewer on a real inspection, client name redacted: 136 photos auto-sorted.",
-    icon: Bot,
+    imageAlt:
+      "The AI reviewer on a real inspection, client name redacted: 136 photos auto-sorted.",
     statLead: "Holds",
     statRest: "where the client's DIY ChatGPT drifted.",
     status: { tone: "live", label: "Running on his real reports" },
@@ -88,48 +80,58 @@ function Chip({
 }
 
 export default function Home() {
+  const flagship = getProject("inspection-revenue-engine");
+  const exhibitA = flagship?.cover;
+
   return (
     <>
-      {/* Hero */}
-      <section
-        id="top"
-        className="relative overflow-hidden px-gutter pt-16 pb-section-y"
-        data-testid="hero"
-      >
-        <GridBackground />
-        <div className="mx-auto flex min-h-[82vh] max-w-container items-center">
-          <div className="grid w-full items-center gap-10 lg:grid-cols-[minmax(0,43%)_minmax(0,57%)] lg:gap-14">
-            <div>
-              <span className="inline-flex items-center rounded-full border border-rule bg-paper-elev/50 px-3 py-1">
-                <StatusDot tone="live" label="status: live · production" />
-              </span>
-              <TiltHeadline
-                wrapperClassName="mt-6"
-                className="max-w-[14ch] text-display text-ink"
-                delayMs={60}
-              />
+      {/* Hero: the artifact. A first-person lede, then Exhibit A at scale. */}
+      <section id="top" className="px-gutter pt-16 pb-section-y" data-testid="hero">
+        <div className="mx-auto max-w-container">
+          <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,42%)_minmax(0,58%)] lg:gap-14">
+            <div className="exhibit-settle">
+              <SectionLabel boxed label="On the record" className="mb-6" />
               <p
-                className="exhibit-settle mt-6 max-w-[46ch] text-body leading-relaxed text-ink-muted"
-                style={{ animationDelay: "150ms" }}
-                data-testid="hero-subhead"
+                className="max-w-[28ch] font-sans text-[clamp(1.55rem,3.1vw,2.5rem)] font-extrabold leading-[1.1] tracking-[-0.018em] text-ink"
+                data-testid="hero-lede"
               >
-                The CRMs, lead engines, and AI that service businesses actually
-                run on. Every claim below is a real screenshot.
+                Every booking one inspection company takes now writes itself
+                into their CRM.{" "}
+                <span className="mark-phrase">Zero failed events</span> across
+                every audit. I build systems like that, and this page is the
+                proof.
               </p>
-              <div
-                className="exhibit-settle mt-8 flex flex-wrap items-center gap-3"
-                style={{ animationDelay: "240ms" }}
+              <p
+                className="mt-6 font-mono text-mono text-ink-muted"
                 data-testid="hero-facts"
               >
-                <Button href="#contact" data-testid="cta-email">
+                Surprise, AZ · solo · replies inside 24 hours
+              </p>
+              <div className="mt-8">
+                <Button href="#contact" variant="primary" data-testid="cta-email">
                   Email me
                 </Button>
-                <Chip icon={MapPin}>Surprise, AZ</Chip>
-                <Chip icon={User}>Solo build</Chip>
-                <Chip icon={Clock}>Replies &lt; 24h</Chip>
               </div>
             </div>
-            <HeroDevice />
+
+            {exhibitA && (
+              <div
+                className="exhibit-settle"
+                style={{ animationDelay: "120ms" }}
+              >
+                <AnnotatedExhibit
+                  src={exhibitA.src}
+                  alt={exhibitA.alt}
+                  aspect={exhibitA.aspect ?? "aspect-[16/9]"}
+                  callouts={exhibitA.callouts}
+                  priority
+                  letter="A"
+                  label="Live dashboard · June 2026"
+                  stamp={{ tone: "live", label: "Live in production" }}
+                  caption="The live n8n dashboard, June 2026. Real production numbers, not test traffic. Hover to inspect."
+                />
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -137,7 +139,7 @@ export default function Home() {
       {/* Case files */}
       <Section label="Case files" testId="work-section" id="work">
         <h2 className="text-h2 text-ink">Three systems, on the record.</h2>
-        <p className="mt-2 font-mono text-mono uppercase tracking-widest text-ink-dim">
+        <p className="mt-2 text-small text-ink-muted">
           What is live · what is in build · what I will not claim yet
         </p>
         <div
@@ -148,7 +150,7 @@ export default function Home() {
             <div
               key={cf.href}
               className="exhibit-settle h-full"
-              style={{ animationDelay: `${200 + i * 90}ms` }}
+              style={{ animationDelay: `${120 + i * 80}ms` }}
             >
               <CaseFileCard {...cf} />
             </div>
@@ -156,7 +158,7 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* Workflow band */}
+      {/* The wiring foldout */}
       <WorkflowBand />
 
       {/* Honesty beat */}
@@ -185,24 +187,21 @@ export default function Home() {
 
       {/* Review */}
       <Section label="Review" testId="testimonial-section">
-        <figure className="relative max-w-[62ch]">
-          <Quote
-            className="absolute -left-1 -top-3 text-mark/40"
-            size={46}
-            aria-hidden="true"
-          />
-          <blockquote className="relative pt-6">
-            <p className="text-h2 font-normal leading-snug text-ink">
-              I&apos;ve been in the software development industry for over 30
-              years, and he is one of the most professional people I&apos;ve
-              worked with.
+        <figure className="max-w-[62ch]">
+          <div className="border-l-2 border-mark pl-6">
+            <blockquote>
+              <p className="font-serif text-[1.5rem] font-normal leading-snug text-ink sm:text-[1.9rem]">
+                I&apos;ve been in the software development industry for over 30
+                years, and he is one of the most professional people I&apos;ve
+                worked with.
+              </p>
+            </blockquote>
+            <p className="mt-5 font-serif text-body leading-relaxed text-ink-muted">
+              &ldquo;He provided an extremely detailed and well-organized handoff
+              document. That level of thoroughness is rare.&rdquo;
             </p>
-          </blockquote>
-          <p className="mt-5 text-body leading-relaxed text-ink-dim">
-            &ldquo;He provided an extremely detailed and well-organized handoff
-            document. That level of thoroughness is rare.&rdquo;
-          </p>
-          <figcaption className="mt-6 font-mono text-mono uppercase tracking-widest text-ink-dim">
+          </div>
+          <figcaption className="mt-6 font-mono text-mono text-ink-dim">
             Verified 5.0 Upwork review · 30-year software-industry veteran
           </figcaption>
         </figure>
@@ -210,11 +209,11 @@ export default function Home() {
 
       {/* About */}
       <Section label="About" testId="about-section" id="about">
-        <p className="max-w-[60ch] text-body leading-relaxed text-ink">
+        <p className="max-w-[60ch] font-serif text-body leading-relaxed text-ink">
           I work solo out of Surprise, Arizona. No team, no account manager, no
-          handoff between the person who sells you and the person who builds.
-          You talk to me, I build it, and I&apos;d rather show you a running
-          system than a proposal about one.
+          handoff between the person who sells you and the person who builds. You
+          talk to me, I build it, and I&apos;d rather show you a running system
+          than a proposal about one.
         </p>
         <div className="mt-6 flex flex-wrap gap-2">
           <Chip icon={User}>Solo full-stack builder</Chip>
@@ -238,19 +237,11 @@ export default function Home() {
 
       {/* Contact */}
       <Section label="Contact" testId="contact-section" id="contact">
-        <div className="relative overflow-hidden rounded-2xl border border-rule-strong bg-paper-elev/40 px-6 py-10 sm:px-10">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 -z-10"
-            style={{
-              background:
-                "radial-gradient(60% 80% at 15% 0%, rgba(46,155,255,0.10), transparent 60%)",
-            }}
-          />
-          <p className="mb-8 max-w-[52ch] text-h3 font-normal leading-snug text-ink">
+        <div className="border border-rule bg-paper-elev px-6 py-10 sm:px-10">
+          <p className="mb-8 max-w-[52ch] font-serif text-h3 font-normal leading-snug text-ink">
             Email me and you get me, not a form or an assistant. Tell me
-            what&apos;s leaking or what you want built, and if it&apos;s a fit
-            the next step is a short call.
+            what&apos;s leaking or what you want built, and if it&apos;s a fit the
+            next step is a short call.
           </p>
           <EmailReveal />
           <div className="mt-8 flex flex-col gap-2 font-mono text-mono text-ink-muted">

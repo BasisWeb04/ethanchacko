@@ -135,7 +135,7 @@ export function StackArchitecture() {
       {/* Caption */}
       <p
         data-testid="stack-caption"
-        className="mt-12 text-center font-mono text-mono uppercase tracking-widest text-ink"
+        className="mt-12 text-center font-sans text-[0.72rem] font-semibold uppercase tracking-[0.09em] text-ink"
       >
         NO ATTRIBUTION REQUIRED. YOUR CLIENT NEVER KNOWS I EXIST.
       </p>
@@ -159,11 +159,11 @@ function ColumnHeader({
       style={style}
     >
       {overline && (
-        <div className="font-mono text-[10px] tracking-[0.14em] uppercase text-ink mb-1">
+        <div className="mb-1 font-sans text-[10px] font-semibold uppercase tracking-[0.1em] text-ink">
           {overline}
         </div>
       )}
-      <div className="font-mono text-mono uppercase tracking-widest text-ink">
+      <div className="font-sans text-[0.72rem] font-semibold uppercase tracking-[0.09em] text-ink">
         {title}
       </div>
     </div>

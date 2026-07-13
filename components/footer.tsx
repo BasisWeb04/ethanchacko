@@ -11,11 +11,11 @@ export function Footer() {
   return (
     <footer className="border-t border-rule">
       <div className="mx-auto max-w-container px-gutter py-10">
-        <div className="flex flex-col gap-6 font-mono text-mono text-ink-muted sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex flex-col gap-6 text-small text-ink-muted sm:flex-row sm:items-start sm:justify-between">
           <div className="flex flex-col gap-3">
             <a
               href="mailto:ethan@basisweb.net"
-              className="text-ink transition-colors duration-base hover:text-ink-muted"
+              className="font-mono text-mono text-ink transition-colors duration-base hover:text-ink-muted"
             >
               ethan@basisweb.net
             </a>
@@ -60,6 +60,12 @@ export function Footer() {
             <span className="text-ink-dim">&copy; 2026 Ethan Chacko</span>
           </div>
         </div>
+
+        {/* Colophon */}
+        <p className="mt-8 border-t border-rule pt-6 font-mono text-mono leading-relaxed text-ink-dim">
+          Set in Libre Franklin, Source Serif, and Geist Mono. Built and
+          maintained by me.
+        </p>
       </div>
     </footer>
   );

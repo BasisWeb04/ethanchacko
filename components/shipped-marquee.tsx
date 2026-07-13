@@ -43,10 +43,10 @@ function Track({ clone = false }: { clone?: boolean }) {
 }
 
 /*
-  Replaces the seven-row text ledger: a slow, pausable marquee of his REAL
-  captures, framed, each linking to its case page. Duplicated track for a
-  seamless loop; the clone is aria-hidden and not focusable. Static under
-  reduced motion (the global reduced-motion rule stops the animation).
+  A slow, pausable marquee of his REAL captures, framed, each linking to its case
+  page. Duplicated track for a seamless loop; the clone is aria-hidden and not
+  focusable. Static under reduced motion (the global reduced-motion rule stops
+  the animation).
 */
 export function ShippedMarquee() {
   return (

@@ -5,8 +5,8 @@ export const alt = "Ethan Chacko, systems builder in Surprise, AZ";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// Use an older UA so Google Fonts serves woff (Satori in this Next.js
-// version rejects the woff2 signature wOF2).
+// Use an older UA so Google Fonts serves woff (Satori in this Next.js version
+// rejects the woff2 signature wOF2).
 const LEGACY_UA =
   "Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25";
 
@@ -20,26 +20,25 @@ async function fetchGoogleFontCssSrc(cssUrl: string) {
   return fontRes.arrayBuffer();
 }
 
-async function fetchGoogleFontWeight(family: string, weight: number) {
+function fetchFranklin(weight: number) {
   return fetchGoogleFontCssSrc(
-    `https://fonts.googleapis.com/css2?family=${encodeURIComponent(
-      family
-    )}:wght@${weight}&display=swap`
+    `https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@${weight}&display=swap`
   );
 }
 
 export default async function Image() {
-  const [serifBold, serifRegular] = await Promise.all([
-    fetchGoogleFontWeight("Source Serif 4", 700),
-    fetchGoogleFontWeight("Source Serif 4", 400),
+  const [franklinHeavy, franklinMedium] = await Promise.all([
+    fetchFranklin(800),
+    fetchFranklin(500),
   ]);
 
-  const paper = "#121211";
+  const paper = "#17181A";
   const ink = "#ECEAE3";
   const inkMuted = "#A8A29A";
-  const inkDim = "#726D64";
+  const inkDim = "#86878C";
   const mark = "#2E9BFF";
-  const rule = "#2A2926";
+  const markInk = "#5AA9FF";
+  const rule = "#2C2E33";
 
   return new ImageResponse(
     (
@@ -53,7 +52,7 @@ export default async function Image() {
           justifyContent: "space-between",
           padding: "72px 80px",
           position: "relative",
-          fontFamily: "SourceSerif",
+          fontFamily: "Franklin",
         }}
       >
         {/* Top rule + dateline */}
@@ -63,8 +62,8 @@ export default async function Image() {
             <div
               style={{
                 fontSize: 22,
-                fontWeight: 400,
-                letterSpacing: "0.14em",
+                fontWeight: 500,
+                letterSpacing: "0.1em",
                 textTransform: "uppercase",
                 color: inkDim,
                 display: "flex",
@@ -74,12 +73,7 @@ export default async function Image() {
             </div>
           </div>
           <div
-            style={{
-              marginTop: 22,
-              height: 1,
-              width: "100%",
-              background: rule,
-            }}
+            style={{ marginTop: 22, height: 1, width: "100%", background: rule }}
           />
         </div>
 
@@ -87,10 +81,10 @@ export default async function Image() {
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div
             style={{
-              fontWeight: 700,
-              fontSize: 128,
+              fontWeight: 800,
+              fontSize: 132,
               lineHeight: 1.0,
-              letterSpacing: "-0.02em",
+              letterSpacing: "-0.03em",
               color: ink,
               display: "flex",
             }}
@@ -100,54 +94,79 @@ export default async function Image() {
           <div
             style={{
               marginTop: 26,
-              fontWeight: 400,
+              fontWeight: 500,
               fontSize: 36,
               lineHeight: 1.3,
               color: inkMuted,
-              maxWidth: 900,
+              maxWidth: 920,
               display: "flex",
             }}
           >
-            I build the operational systems service businesses run on.
+            I build the systems service businesses run on.
           </div>
         </div>
 
-        {/* Bottom rule + footer */}
+        {/* Bottom rule + footer with azure stamp */}
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div
-            style={{
-              marginBottom: 22,
-              height: 1,
-              width: "100%",
-              background: rule,
-            }}
+            style={{ marginBottom: 22, height: 1, width: "100%", background: rule }}
           />
           <div
             style={{
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              fontSize: 22,
-              fontWeight: 400,
-              letterSpacing: "0.06em",
-              color: inkDim,
             }}
           >
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                fontSize: 24,
+                fontWeight: 500,
+                letterSpacing: "0.02em",
+                color: inkDim,
+              }}
+            >
               ethanchacko.com
             </div>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              Real systems, real screenshots.
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                border: `2px solid ${mark}`,
+                color: markInk,
+                background: paper,
+                padding: "8px 16px",
+                fontSize: 20,
+                fontWeight: 800,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+              }}
+            >
+              Real systems · real screenshots
             </div>
           </div>
         </div>
+
+        {/* Left margin accent, echoing the site's document rail */}
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            top: 0,
+            bottom: 0,
+            width: 8,
+            background: mark,
+          }}
+        />
       </div>
     ),
     {
       ...size,
       fonts: [
-        { name: "SourceSerif", data: serifRegular, weight: 400, style: "normal" },
-        { name: "SourceSerif", data: serifBold, weight: 700, style: "normal" },
+        { name: "Franklin", data: franklinMedium, weight: 500, style: "normal" },
+        { name: "Franklin", data: franklinHeavy, weight: 800, style: "normal" },
       ],
     }
   );

@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Source_Serif_4 } from "next/font/google";
+import { Source_Serif_4, Libre_Franklin } from "next/font/google";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
-import { SmoothScroll } from "@/components/smooth-scroll";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -22,6 +21,15 @@ const sourceSerif = Source_Serif_4({
   subsets: ["latin"],
   weight: ["400", "600", "700"],
   variable: "--font-source-serif",
+  display: "swap",
+});
+
+// Display + UI face. Loaded across the weight range so headlines can sit at
+// 750-850 and stamps/labels at 600-700.
+const libreFranklin = Libre_Franklin({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-libre-franklin",
   display: "swap",
 });
 
@@ -75,15 +83,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${sourceSerif.variable} font-serif antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${sourceSerif.variable} ${libreFranklin.variable} font-sans antialiased`}
       >
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[300] focus:bg-paper focus:text-ink focus:border focus:border-ink focus:px-3 focus:py-2 focus:font-mono focus:text-mono focus:uppercase focus:tracking-widest"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[300] focus:bg-paper focus:text-ink focus:border focus:border-ink focus:px-3 focus:py-2 focus:font-sans focus:text-small focus:font-semibold"
         >
           Skip to main content
         </a>
-        <SmoothScroll />
         <Nav />
         <main id="main" className="pt-16">
           {children}

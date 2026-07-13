@@ -43,8 +43,14 @@ export function EmailReveal() {
       <button
         onClick={handleClick}
         data-testid="email-reveal"
-        className="font-mono text-h2 text-ink cursor-pointer underline decoration-rule-strong decoration-2 underline-offset-[6px] transition-colors duration-base hover:decoration-mark"
+        className="group inline-flex cursor-pointer items-center gap-3 border border-ink bg-paper-elev px-4 py-3 font-mono text-h3 text-ink transition-colors duration-base hover:border-mark-ink"
       >
+        <span
+          aria-hidden="true"
+          className="field-label border-rule-strong text-ink-dim"
+        >
+          Email
+        </span>
         <span className="sr-only">
           {revealed
             ? `Email address ${EMAIL}`
@@ -84,7 +90,7 @@ export function EmailReveal() {
             exit={{ opacity: 0 }}
             transition={{ duration: reducedMotion ? 0 : 0.2 }}
             data-testid="copied-toast"
-            className="absolute -top-7 left-0 font-mono text-mono uppercase tracking-widest text-ink-muted"
+            className="absolute -top-7 left-0 font-sans text-[0.66rem] font-semibold uppercase tracking-[0.09em] text-ink-muted"
           >
             Copied
           </motion.span>

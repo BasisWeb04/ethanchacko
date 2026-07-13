@@ -28,8 +28,8 @@ test("homepage carries the receipts strip and contact", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator('[data-testid="hero"]')).toBeVisible();
   await expect(page.locator('[data-testid="case-file-card"]')).toHaveCount(3);
-  // The shipped marquee replaced the text ledger: a duplicated track of the
-  // seven real builds, so 14 links, all pointing at /work/.
+  // The shipped marquee: a duplicated track of the seven real builds, so 14
+  // links, all pointing at /work/.
   const shipped = page.locator('[data-testid="more-builds-section"]');
   await expect(shipped).toBeVisible();
   await expect(shipped.locator('a[href^="/work/"]')).toHaveCount(14);

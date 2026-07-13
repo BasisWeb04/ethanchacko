@@ -1,22 +1,19 @@
-import Image from "next/image";
+import { ExhibitImage } from "./exhibit-image";
+import { StatusStamp } from "./status-stamp";
+import type { Callout } from "@/content/projects";
 
-export type Callout = {
-  n: number;
-  /** Plain-words margin note, keyed to the marker number. */
-  note: string;
-  /** Optional pin position on the image, as percentages (0-100). */
-  x?: number;
-  y?: number;
-};
+export type { Callout };
+
+type Tone = "live" | "pending" | "neutral";
 
 /*
-  Signature element: the annotated exhibit. A real screenshot marked up the way
-  a careful engineer marks up a document for a client. Numbered markers pin to
-  points on the image and key to short plain-English notes underneath.
-  Translating a system into owner language is the service being sold, so the
-  design performs it. No browser chrome: the evidence stands on its own with a
-  caption. The caption states honestly what the image is (for an illustration of
-  Ethan's own tool, it says so, in the register of a diagram credit).
+  Signature element: the annotated exhibit, restaged as a mounted proof. A real
+  capture set on a paper mat with registration crop marks at the corners, marked
+  up the way a careful engineer marks a document for a client. Numbered markers
+  pin to points on the image and key to short plain-English notes underneath.
+  Tier-1 captures carry the inspection loupe; Tier-2 illustrations keep an honest
+  caption and no loupe. An optional header bar carries the exhibit letter, a
+  field label, and a pressed status stamp (the hero's "live dashboard" bar).
 */
 export function AnnotatedExhibit({
   src,
@@ -26,6 +23,9 @@ export function AnnotatedExhibit({
   aspect = "aspect-[16/10]",
   priority = false,
   illustration = false,
+  letter,
+  label,
+  stamp,
 }: {
   src: string;
   alt: string;
@@ -34,44 +34,54 @@ export function AnnotatedExhibit({
   aspect?: string;
   priority?: boolean;
   illustration?: boolean;
+  /** Exhibit letter where a page has a real sequence (A / B / C). */
+  letter?: string;
+  /** Field label shown in the exhibit header bar. */
+  label?: string;
+  /** Pressed status stamp on the exhibit header bar. */
+  stamp?: { tone: Tone; label: string };
 }) {
   const pinned = callouts.filter((c) => c.x != null && c.y != null);
+  const hasHeader = Boolean(label || stamp || letter);
 
   return (
     <figure data-testid="annotated-exhibit">
-      <div className="relative border border-rule bg-paper-elev">
-        <div className={`relative ${aspect}`}>
-          <Image
-            src={src}
-            alt={alt}
-            fill
-            sizes="(min-width: 1024px) 760px, 100vw"
-            priority={priority}
-            className="object-cover object-top"
-          />
-          {illustration && (
-            <span className="absolute left-0 top-0 bg-ink/85 px-2 py-1 font-mono text-[0.6rem] uppercase tracking-widest text-paper">
-              Illustration
+      <div className="relative border border-rule bg-paper-elev p-2 sm:p-3">
+        <CropMarks />
+
+        {hasHeader && (
+          <div className="mb-2 flex items-center justify-between gap-3 sm:mb-3">
+            <span className="inline-flex items-center gap-2.5">
+              {letter && (
+                <span className="inline-flex h-6 min-w-6 items-center justify-center border border-ink px-1 font-sans text-[0.7rem] font-bold text-ink">
+                  {letter}
+                </span>
+              )}
+              {label && (
+                <span className="font-sans text-[0.7rem] font-semibold uppercase tracking-[0.09em] text-ink-muted">
+                  {label}
+                </span>
+              )}
             </span>
-          )}
-          {pinned.map((c) => (
-            <span
-              key={c.n}
-              aria-hidden="true"
-              style={{ left: `${c.x}%`, top: `${c.y}%` }}
-              className="absolute flex h-6 w-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center border border-[#0A1826] bg-mark font-mono text-[11px] font-semibold text-[#0A1826] shadow-[0_1px_3px_rgba(0,0,0,0.4)]"
-            >
-              {c.n}
-            </span>
-          ))}
-        </div>
+            {stamp && <StatusStamp tone={stamp.tone} label={stamp.label} press />}
+          </div>
+        )}
+
+        <ExhibitImage
+          src={src}
+          alt={alt}
+          aspect={aspect}
+          priority={priority}
+          illustration={illustration}
+          pinned={pinned}
+        />
       </div>
 
       {callouts.length > 0 && (
         <ol className="mt-4 space-y-2.5">
           {callouts.map((c) => (
             <li key={c.n} className="flex gap-3">
-              <span className="mt-[1px] flex h-5 w-5 shrink-0 items-center justify-center border border-[#0A1826] bg-mark font-mono text-[11px] font-semibold text-[#0A1826]">
+              <span className="mt-[1px] flex h-5 w-5 shrink-0 items-center justify-center border border-[color:var(--on-mark)] bg-mark font-mono text-[11px] font-semibold text-[color:var(--on-mark)]">
                 {c.n}
               </span>
               <span className="font-mono text-[0.8rem] leading-relaxed text-ink-muted">
@@ -86,5 +96,18 @@ export function AnnotatedExhibit({
         {caption}
       </figcaption>
     </figure>
+  );
+}
+
+/* Registration marks at the four corners of the mat, like a printer's proof. */
+function CropMarks() {
+  const arm = "absolute h-2.5 w-2.5 border-rule-strong";
+  return (
+    <span aria-hidden="true">
+      <span className={`${arm} left-1 top-1 border-l border-t`} />
+      <span className={`${arm} right-1 top-1 border-r border-t`} />
+      <span className={`${arm} bottom-1 left-1 border-b border-l`} />
+      <span className={`${arm} bottom-1 right-1 border-b border-r`} />
+    </span>
   );
 }

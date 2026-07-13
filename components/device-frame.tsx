@@ -4,12 +4,9 @@ import { Globe } from "lucide-react";
 type Chrome = "browser" | "canvas" | "plain";
 
 /*
-  The one device frame every real screenshot on the site routes through. Three
-  chromes: a browser window (real web/app captures), a minimal canvas window
-  (n8n graphs), and plain (the two illustration renders, which keep their own
-  honest caption and never get fake browser chrome). A soft azure glow sits
-  under the frame; white screenshots get an inner ring + vignette so they read
-  as deliberate on the dark ground. Optional children overlay the image box.
+  The device frame the shipped marquee routes through. A browser window chrome
+  around real web/app captures, framed as documents pinned to the dark board.
+  Optional children overlay the image box.
 */
 export function DeviceFrame({
   src,

@@ -264,7 +264,7 @@ export const projects: Project[] = [
     sections: [
       {
         heading: "Context",
-        body: "A home inspection company owner had already tried building this himself. Hundreds of hours into ChatGPT and Gemini versions, all of them drifting. The rules got lost somewhere in one long chat and the model started improvising. That is how bolt-on AI usually ends, and it is why he came to me instead of trying a third chatbot.",
+        body: "A home inspection company owner had already tried building this himself. Hundreds of hours into ChatGPT versions, all of them drifting. The rules got lost somewhere in one long chat and the model started improvising. That is how bolt-on AI usually ends, and it is why he came to me instead of trying another chatbot.",
       },
       {
         heading: "The build",

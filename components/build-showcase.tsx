@@ -125,7 +125,7 @@ export function BuildShowcase() {
               data-tab={cat.tab}
               data-active={isActive ? "true" : "false"}
               onClick={() => handleTabClick(i)}
-              className={`relative pb-2 font-mono text-mono uppercase tracking-widest transition-colors duration-base motion-reduce:transition-none ${
+              className={`relative pb-2 font-sans text-[0.72rem] font-semibold uppercase tracking-[0.09em] transition-colors duration-base motion-reduce:transition-none ${
                 isActive ? "text-ink" : "text-ink-muted hover:text-ink"
               }`}
             >
@@ -154,7 +154,7 @@ export function BuildShowcase() {
             animate={reducedMotion ? undefined : { opacity: 1, x: 0 }}
             exit={reducedMotion ? undefined : { opacity: 0, x: -8 }}
             transition={{ duration: reducedMotion ? 0 : 0.22, ease: EASE }}
-            className="relative aspect-[16/10] rounded-md overflow-hidden border border-rule bg-paper-elev"
+            className="relative aspect-[16/10] overflow-hidden border border-rule bg-paper-elev"
           >
             <Image
               src={current.thumbnail}
@@ -187,9 +187,9 @@ export function BuildShowcase() {
               {current.examples.map((ex) => (
                 <li
                   key={ex}
-                  className="font-mono text-mono text-ink-dim uppercase tracking-widest"
+                  className="font-sans text-[0.72rem] font-semibold uppercase tracking-[0.09em] text-ink-muted"
                 >
-                  <span className="text-ink mr-2">&middot;</span>
+                  <span className="mr-2 text-mark-ink">&middot;</span>
                   {ex}
                 </li>
               ))}

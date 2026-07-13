@@ -4,11 +4,16 @@ const config: Config = {
   content: [
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    // content/ MUST stay scanned: the case-study aspect-[...] classes live in
+    // content/projects.ts and only compile because this glob is here. Drop it
+    // and every exhibit collapses to zero height.
     "./content/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       colors: {
+        // The Public Record: engineering-paper light. A cool document white,
+        // near-black ink, BasisWeb azure as the working accent.
         paper: {
           DEFAULT: "var(--paper)",
           elev: "var(--paper-elev)",
@@ -19,8 +24,10 @@ const config: Config = {
           dim: "var(--ink-dim)",
         },
         mark: {
+          // Azure as a FILL (with --on-mark text on top). For azure text or
+          // thin rules on paper, use `mark-ink` (deepened to pass AA).
           DEFAULT: "var(--mark)",
-          wash: "var(--mark-wash)",
+          ink: "var(--mark-ink)",
         },
         rule: {
           DEFAULT: "var(--rule)",
@@ -28,34 +35,39 @@ const config: Config = {
         },
         live: "var(--live)",
         pending: "var(--pending)",
+        redact: "var(--redact)",
       },
       fontFamily: {
-        // Source Serif 4 carries display and body: editorial and human to a
-        // non-technical reader without reading as costume.
+        // Display + UI: Libre Franklin (Franklin Gothic heritage, American
+        // printed forms). Institutional-human, not dev-tool. This is the body
+        // default; prose blocks opt back into the serif.
+        sans: ["var(--font-libre-franklin)", "system-ui", "sans-serif"],
+        // Body prose: Source Serif 4. The report reading register, in its
+        // honest job now (comfortable reading), not headline costume.
         serif: ["var(--font-source-serif)", "Georgia", "serif"],
-        // Geist Mono is the annotation register. It only ever appears attached
-        // to evidence: captions, data, status ledgers, margin notes.
+        // Data + annotations: Geist Mono. Only ever attached to evidence:
+        // captions, callout notes, table values, stamps, dates.
         mono: ["var(--font-geist-mono)", "ui-monospace", "monospace"],
-        // Geist Sans handles UI odds and ends (nav, buttons, controls).
-        sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
       },
       fontSize: {
+        // Display sizes carry Franklin metrics: heavy weight, tight tracking.
         display: [
-          "clamp(2.75rem, 6vw, 5.25rem)",
-          { lineHeight: "1.02", letterSpacing: "-0.021em", fontWeight: "700" },
+          "clamp(2.5rem, 5.6vw, 4.75rem)",
+          { lineHeight: "1.0", letterSpacing: "-0.022em", fontWeight: "800" },
         ],
         h1: [
-          "clamp(2.25rem, 4.5vw, 3.5rem)",
-          { lineHeight: "1.08", letterSpacing: "-0.02em", fontWeight: "700" },
+          "clamp(2rem, 4.2vw, 3.25rem)",
+          { lineHeight: "1.05", letterSpacing: "-0.02em", fontWeight: "800" },
         ],
         h2: [
-          "clamp(1.5rem, 3vw, 2.1rem)",
-          { lineHeight: "1.2", letterSpacing: "-0.012em", fontWeight: "600" },
+          "clamp(1.5rem, 3vw, 2.15rem)",
+          { lineHeight: "1.12", letterSpacing: "-0.012em", fontWeight: "750" },
         ],
-        h3: ["1.35rem", { lineHeight: "1.3", fontWeight: "600" }],
+        h3: ["1.3rem", { lineHeight: "1.28", fontWeight: "700" }],
+        // Body prose scale unchanged.
         body: ["1.0625rem", { lineHeight: "1.65" }],
         small: ["0.875rem", { lineHeight: "1.55" }],
-        mono: ["0.8125rem", { lineHeight: "1.5", letterSpacing: "0.03em" }],
+        mono: ["0.8125rem", { lineHeight: "1.5", letterSpacing: "0.02em" }],
       },
       maxWidth: {
         container: "1200px",

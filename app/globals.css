@@ -3,23 +3,26 @@
 @tailwind utilities;
 
 /*
-  Dark ground, warm-neutral rather than pure black, so it reads intentional and
-  not like a default terminal. The single accent is BasisWeb's azure, tying the
-  personal site to the agency brand. It is only ever a fill with dark text on it.
+  THE PUBLIC RECORD: file-room dark.
+  A warm-neutral dark ground (not pure black), light ink, BasisWeb azure as the
+  working accent. Exhibits mount as elevated panels on the dark board. The azure
+  is a FILL with dark --on-mark text on top; for azure text, rules, and the
+  focus ring on the dark ground we use the lighter --mark-ink, which clears AA.
 */
 :root {
-  --paper: #121211;
-  --paper-elev: #1C1B18;
-  --ink: #ECEAE3;
-  --ink-muted: #A8A29A;
-  --ink-dim: #726D64;
-  --mark: #2E9BFF;
-  --mark-wash: #8CAAFF;
-  --on-mark: #0A1826;
-  --live: #4ECB7B;
-  --pending: #E8873A;
-  --rule: #2A2926;
-  --rule-strong: #3B392F;
+  --paper: #17181a; /* ground: warm-neutral dark, not pure black */
+  --paper-elev: #212227; /* elevated panels: cards, table headers, exhibit mats */
+  --ink: #eceae3; /* text */
+  --ink-muted: #a8a29a; /* secondary text */
+  --ink-dim: #86878c; /* quiet labels / captions (AA-safe on the dark ground) */
+  --mark: #2e9bff; /* BasisWeb azure, used as a fill */
+  --on-mark: #0a1826; /* text/rules on top of an azure fill */
+  --mark-ink: #5aa9ff; /* azure for text, rules, focus on the dark ground (AA) */
+  --live: #4ecb7b; /* LIVE stamp, bright on dark */
+  --pending: #e8873a; /* IN BUILD stamp, bright on dark */
+  --rule: #2c2e33; /* hairlines */
+  --rule-strong: #44464b; /* stronger hairlines */
+  --redact: #0a0a0a; /* redaction-bar black, used honestly */
 }
 
 body {
@@ -44,13 +47,15 @@ body {
     outline: none;
   }
 
+  /* Azure at full strength only reads 2.7:1 on paper, so the focus ring uses
+     the deepened mark-ink to clear the 3:1 non-text contrast floor. */
   :focus-visible {
-    outline: 2px solid var(--mark);
+    outline: 2px solid var(--mark-ink);
     outline-offset: 2px;
-    border-radius: 2px;
+    border-radius: 1px;
   }
 
-  /* Anchor targets clear the fixed nav (native-scroll fallback). */
+  /* Anchor targets clear the sticky masthead (native smooth-scroll). */
   section[id] {
     scroll-margin-top: 5rem;
   }
@@ -62,45 +67,49 @@ body {
   }
 
   /*
-    The accent mark: a solid brand-blue block with dark navy text on top.
-    Clones across wrapped lines.
+    The accent mark: a solid azure block with dark navy text on top. This pair
+    passes AA. Clones across wrapped lines.
   */
   .mark-phrase {
     background-color: var(--mark);
     color: var(--on-mark);
     padding: 0 0.14em;
-    border-radius: 1px;
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
   }
+
+  /* Boxed form-field label (usgraphics register): a hairline box around a
+     small Franklin label, for places the document metaphor wants a field. */
+  .field-label {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--rule-strong);
+    padding: 0.15rem 0.5rem;
+    font-weight: 600;
+    font-size: 0.66rem;
+    line-height: 1;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  /* Grab affordance for the wiring foldout. */
+  .cursor-grab {
+    cursor: grab;
+  }
+  .cursor-grabbing {
+    cursor: grabbing;
+  }
 }
 
-/* Native smooth scroll as the fallback when Lenis is off (reduced motion). */
+/* Native smooth scroll replaces Lenis: no dependency, honest document scroll. */
 html {
   scroll-behavior: smooth;
 }
 
-/* Lenis smooth-scroll runtime styles. */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-.lenis.lenis-smooth iframe {
-  pointer-events: none;
-}
-
 /*
-  Nav underline: a highlighter stroke drawn left-to-right on hover and pinned
-  under the current page.
+  Masthead links: a highlighter stroke drawn left-to-right on hover, pinned
+  under the current page. Azure fill, the mark-phrase mechanic in miniature.
 */
 .nav-link {
   position: relative;
@@ -112,7 +121,7 @@ html.lenis body {
   left: 0;
   bottom: -3px;
   width: 100%;
-  height: 3px;
+  height: 2px;
   background: var(--mark);
   transform: scaleX(0);
   transform-origin: left;
@@ -204,8 +213,31 @@ html.lenis body {
   animation: exhibit-settle 560ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/*
+  Status stamps press onto the page like an ink stamp: a fast squash from
+  slightly oversized to flat, once, on first scroll into view.
+*/
+@keyframes stamp-press {
+  0% {
+    opacity: 0;
+    transform: scale(1.12);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.stamp-press {
+  animation: stamp-press 300ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .exhibit-settle {
+  .exhibit-settle,
+  .stamp-press {
     animation: none;
   }
 
