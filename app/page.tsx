@@ -1,12 +1,12 @@
 import {
-  User,
   Users,
   Code2,
   Database,
-  LayoutDashboard,
   Table2,
   Utensils,
-  Bot,
+  Terminal,
+  Workflow,
+  Sparkles,
 } from "lucide-react";
 import { Section } from "@/components/section";
 import { SectionLabel } from "@/components/section-label";
@@ -16,6 +16,7 @@ import { AnnotatedExhibit } from "@/components/annotated-exhibit";
 import { WorkflowBand } from "@/components/workflow-band";
 import { ShippedMarquee } from "@/components/shipped-marquee";
 import { CaseFileCard } from "@/components/case-file-card";
+import { TiltPlane } from "@/components/tilt-plane";
 import { getProject } from "@/content/projects";
 
 type Tone = "live" | "pending" | "neutral";
@@ -91,16 +92,23 @@ export default function Home() {
           <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,42%)_minmax(0,58%)] lg:gap-14">
             <div className="exhibit-settle">
               <SectionLabel boxed label="On the record" className="mb-6" />
-              <p
-                className="max-w-[28ch] font-sans text-[clamp(1.55rem,3.1vw,2.5rem)] font-extrabold leading-[1.1] tracking-[-0.018em] text-ink"
-                data-testid="hero-lede"
+              <TiltPlane
+                hitClassName="-m-2 p-2"
+                perspective={520}
+                maxDeg={16}
+                liftZ={48}
               >
-                Every booking one inspection company takes now writes itself
-                into their CRM.{" "}
-                <span className="mark-phrase">Zero failed events</span> across
-                every audit. I build systems like that, and this page is the
-                proof.
-              </p>
+                <p
+                  className="max-w-[28ch] font-sans text-[clamp(1.55rem,3.1vw,2.5rem)] font-extrabold leading-[1.1] tracking-[-0.018em] text-ink"
+                  data-testid="hero-lede"
+                >
+                  Every booking one inspection company takes now writes itself
+                  into their CRM.{" "}
+                  <span className="mark-phrase">Zero failed events</span> across
+                  every audit. I build systems like that, and this page is the
+                  proof.
+                </p>
+              </TiltPlane>
               <p
                 className="mt-6 font-mono text-mono text-ink-muted"
                 data-testid="hero-facts"
@@ -215,11 +223,29 @@ export default function Home() {
           talk to me, I build it, and I&apos;d rather show you a running system
           than a proposal about one.
         </p>
-        <div className="mt-6 flex flex-wrap gap-2">
-          <Chip icon={User}>Solo full-stack builder</Chip>
-          <Chip icon={Code2}>Next.js · React · TypeScript</Chip>
-          <Chip icon={Bot}>AI &amp; LLM automation</Chip>
-          <Chip icon={LayoutDashboard}>Dashboards &amp; internal tools</Chip>
+        <p className="mt-5 max-w-[60ch] font-serif text-body leading-relaxed text-ink-muted">
+          The path here wasn&apos;t a bootcamp. I started with Java in AP
+          Computer Science, then taught myself the rest one layer at a time:
+          Python first, then TypeScript, Next.js, and Tailwind for the web side.
+          College took me lower down the stack, into how operating systems
+          actually run on both Windows and Ubuntu, and into networking. That is
+          what turned me from someone who writes apps into someone who wires up
+          whole systems. From there came n8n for automation, MySQL and Supabase
+          for the data underneath, and now LLMs and AI to move faster than one
+          person usually can.
+        </p>
+
+        <div className="mt-8">
+          <p className="font-mono text-mono uppercase tracking-widest text-ink-dim">
+            The stack
+          </p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Chip icon={Code2}>TypeScript · Next.js · Tailwind</Chip>
+            <Chip icon={Terminal}>Linux · Windows · networking</Chip>
+            <Chip icon={Workflow}>n8n automation</Chip>
+            <Chip icon={Database}>MySQL · Supabase</Chip>
+            <Chip icon={Sparkles}>LLMs &amp; AI</Chip>
+          </div>
         </div>
 
         <div className="mt-10">
